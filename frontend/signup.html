@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | Vidyastra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>(function(){try{var s=localStorage.getItem('vidyastra_appearance');if(!s)return;var p=JSON.parse(s),r=document.documentElement;['theme-default','theme-vedic','theme-modern','theme-academic'].forEach(c=>r.classList.remove(c));['font-default','font-sans','font-classical'].forEach(c=>r.classList.remove(c));r.classList.remove('mode-dark');if(p.theme)r.classList.add('theme-'+p.theme);if(p.font)r.classList.add('font-'+p.font);if(p.mode==='dark')r.classList.add('mode-dark');}catch(e){}})();</script>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            background: linear-gradient(135deg, #1a0a00 0%, #2d1200 40%, #1a0a00 100%);
+        }
+
+        /* ── Left panel ── */
+        .left-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 3rem 4rem;
+            color: #fff;
+        }
+        .brand { font-family:'Merriweather',serif; font-size:2rem; font-weight:900; color:#f97316; margin-bottom:3rem; text-decoration:none; display:inline-block; }
+        .brand span { color:#fff; }
+        .left-title { font-family:'Merriweather',serif; font-size:clamp(2rem,3.5vw,3rem); font-weight:900; line-height:1.2; margin-bottom:1.25rem; color:#fff; }
+        .left-title em { color:#f97316; font-style:normal; }
+        .left-sub { font-size:1rem; color:rgba(255,255,255,0.65); line-height:1.7; max-width:38ch; margin-bottom:2.5rem; }
+        .perks { display:flex; flex-direction:column; gap:0.85rem; }
+        .perk { display:flex; align-items:center; gap:0.75rem; font-size:0.9rem; color:rgba(255,255,255,0.8); }
+        .perk-icon { width:32px; height:32px; border-radius:8px; background:rgba(249,115,22,0.2); display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+        @media(max-width:768px){ .left-panel { display:none; } }
+
+        /* ── Right panel ── */
+        .right-panel {
+            width: 500px;
+            flex-shrink: 0;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 2.5rem;
+            min-height: 100vh;
+            overflow-y: auto;
+        }
+        @media(max-width:768px){ .right-panel { width:100%; padding:2rem 1.5rem; } }
+
+        .mobile-brand { display:none; font-family:'Merriweather',serif; font-size:1.6rem; font-weight:900; color:#c2410c; margin-bottom:2rem; text-decoration:none; }
+        .mobile-brand span { color:#111; }
+        @media(max-width:768px){ .mobile-brand { display:block; } }
+
+        /* ── Role pills ── */
+        .role-pills { display:flex; gap:0.5rem; margin-bottom:1.75rem; background:#f5f5f5; padding:4px; border-radius:10px; }
+        .role-pill { flex:1; padding:0.6rem 0.5rem; border:none; border-radius:7px; background:transparent; font-size:0.8rem; font-weight:600; color:#888; cursor:pointer; transition:all 0.2s; font-family:'Inter',sans-serif; }
+        .role-pill:hover { color:#333; }
+        .role-pill.active { background:#fff; color:#c2410c; box-shadow:0 2px 8px rgba(0,0,0,0.1); }
+        .role-pill.active.teacher { color:#1d4ed8; }
+        .role-pill.active.mentor  { color:#111; }
+
+        .form-heading { margin-bottom:1.5rem; }
+        .form-heading h2 { font-family:'Merriweather',serif; font-size:1.5rem; font-weight:800; color:#111; margin-bottom:0.25rem; }
+        .form-heading p { font-size:0.88rem; color:#888; }
+
+        .field { margin-bottom:1rem; }
+        .field label { display:block; font-size:0.78rem; font-weight:600; color:#555; margin-bottom:0.35rem; }
+        .field input, .field select {
+            width:100%; padding:0.75rem 1rem;
+            border:1.5px solid #e5e5e5; border-radius:8px;
+            font-family:'Inter',sans-serif; font-size:0.93rem;
+            color:#111; background:#fafafa; transition:all 0.2s;
+        }
+        .field input:focus, .field select:focus { outline:none; border-color:#c2410c; background:#fff; box-shadow:0 0 0 3px rgba(194,65,12,0.08); }
+        .role-teacher .field input:focus, .role-teacher .field select:focus { border-color:#1d4ed8; box-shadow:0 0 0 3px rgba(29,78,216,0.08); }
+        .role-mentor  .field input:focus, .role-mentor  .field select:focus { border-color:#111;    box-shadow:0 0 0 3px rgba(0,0,0,0.06); }
+
+        .extra-field { display:none; }
+        .extra-field.visible { display:block; }
+
+        .submit-btn {
+            width:100%; padding:0.9rem; border:none; border-radius:8px;
+            background:linear-gradient(135deg,#c2410c,#ea580c); color:#fff;
+            font-size:1rem; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif;
+            transition:all 0.2s; margin-top:0.5rem; letter-spacing:0.02em;
+        }
+        .submit-btn:hover { background:linear-gradient(135deg,#9a3412,#c2410c); transform:translateY(-1px); box-shadow:0 4px 16px rgba(194,65,12,0.3); }
+        .role-teacher .submit-btn { background:linear-gradient(135deg,#1d4ed8,#3b82f6); }
+        .role-teacher .submit-btn:hover { background:linear-gradient(135deg,#1e3a8a,#1d4ed8); box-shadow:0 4px 16px rgba(29,78,216,0.3); }
+        .role-mentor  .submit-btn { background:linear-gradient(135deg,#111,#374151); }
+        .role-mentor  .submit-btn:hover { background:linear-gradient(135deg,#000,#111); box-shadow:0 4px 16px rgba(0,0,0,0.25); }
+
+        .divider { display:flex; align-items:center; gap:1rem; margin:1.25rem 0; color:#ccc; font-size:0.8rem; }
+        .divider::before, .divider::after { content:''; flex:1; height:1px; background:#e5e5e5; }
+
+        .form-footer { text-align:center; margin-top:1.25rem; font-size:0.88rem; color:#888; }
+        .form-footer a { font-weight:700; color:#c2410c; text-decoration:none; }
+        .form-footer a:hover { text-decoration:underline; }
+        .role-teacher .form-footer a { color:#1d4ed8; }
+        .role-mentor  .form-footer a { color:#111; }
+
+        .back-link { display:inline-flex; align-items:center; gap:0.4rem; font-size:0.82rem; color:#aaa; text-decoration:none; margin-bottom:1.75rem; transition:color 0.2s; }
+        .back-link:hover { color:#c2410c; }
+    </style>
+</head>
+<body>
+
+<!-- Left panel -->
+<div class="left-panel">
+    <a href="index.html" class="brand"><span>Vidya</span>stra</a>
+    <h1 class="left-title">Join the<br>modern<br><em>Gurukul.</em></h1>
+    <p class="left-sub">Create your free account and start learning, teaching, or mentoring today.</p>
+    <div class="perks">
+        <div class="perk"><div class="perk-icon">📚</div>Access hundreds of courses</div>
+        <div class="perk"><div class="perk-icon">🤝</div>Connect with mentors & gurus</div>
+        <div class="perk"><div class="perk-icon">🤖</div>AI-powered doubt solver</div>
+        <div class="perk"><div class="perk-icon">📈</div>Track your progress</div>
+    </div>
+</div>
+
+<!-- Right form panel -->
+<div class="right-panel" id="right-panel">
+    <a href="login.html" class="back-link">← Already have an account?</a>
+    <a href="index.html" class="mobile-brand"><span>Vidya</span>stra</a>
+
+    <div class="role-pills">
+        <button class="role-pill active"  data-role="student"  onclick="switchRole('student')">👤 Student</button>
+        <button class="role-pill teacher" data-role="teacher"  onclick="switchRole('teacher')">📘 Guru</button>
+        <button class="role-pill mentor"  data-role="mentor"   onclick="switchRole('mentor')">★ Saarthi</button>
+    </div>
+
+    <div class="form-heading">
+        <h2 id="form-title">Create Student Account</h2>
+        <p id="form-sub">Start your journey toward mastery</p>
+    </div>
+
+    <div class="field">
+        <label>Full Name</label>
+        <input id="su-name" type="text" placeholder="Your full name">
+    </div>
+    <div class="field">
+        <label>Email Address</label>
+        <input id="su-email" type="email" placeholder="you@example.com">
+    </div>
+    <div class="field">
+        <label>Password</label>
+        <input id="su-password" type="password" placeholder="Create a password">
+    </div>
+
+    <!-- Teacher extra -->
+    <div class="field extra-field" id="field-subject">
+        <label>Subject / Expertise</label>
+        <input id="su-subject" type="text" placeholder="e.g. Mathematics, Sanskrit">
+    </div>
+
+    <!-- Mentor extra -->
+    <div class="field extra-field" id="field-expertise">
+        <label>Mentoring Area</label>
+        <input id="su-expertise" type="text" placeholder="e.g. Career Guidance, Research">
+    </div>
+
+    <button class="submit-btn" id="signup-btn" onclick="handleSignup()">Create Account</button>
+
+    <div class="divider">or</div>
+
+    <div class="form-footer">
+        Already have an account? <a href="login.html" id="login-link">Sign in →</a>
+    </div>
+</div>
+
+<script>
+    const roles = {
+        student: { title:'Create Student Account', sub:'Start your journey toward mastery',      btn:'Create Account',      dest:'learning-home.html' },
+        teacher: { title:'Enroll as Guru',          sub:'Join and start teaching your students',  btn:'Submit Enrollment',   dest:'teacher-home.html'  },
+        mentor:  { title:'Apply as Saarthi',        sub:'Guide the next generation of learners',  btn:'Submit Application',  dest:'mentor-home.html'   },
+    };
+
+    let currentRole = 'student';
+
+    function switchRole(role) {
+        currentRole = role;
+        const r = roles[role];
+        document.querySelectorAll('.role-pill').forEach(t => t.classList.remove('active'));
+        document.querySelector(`[data-role="${role}"]`).classList.add('active');
+        document.getElementById('right-panel').className = `right-panel role-${role}`;
+        document.getElementById('form-title').textContent = r.title;
+        document.getElementById('form-sub').textContent   = r.sub;
+        document.getElementById('signup-btn').textContent = r.btn;
+        document.getElementById('login-link').href        = `login.html?role=${role}`;
+        document.getElementById('field-subject').classList.toggle('visible',   role === 'teacher');
+        document.getElementById('field-expertise').classList.toggle('visible', role === 'mentor');
+    }
+
+    function handleSignup() {
+        const btn  = document.getElementById('signup-btn');
+        const name = document.getElementById('su-name').value.trim() || 'New User';
+        const email= document.getElementById('su-email').value.trim() || 'user@vidyastra.in';
+
+        btn.textContent  = 'Creating account…';
+        btn.style.opacity = '0.8';
+
+        // Save session directly — no backend validation
+        const user = { id: Date.now(), name, email, role: currentRole };
+        localStorage.setItem('auth_user', JSON.stringify(user));
+        localStorage.setItem('userName', name);
+        localStorage.setItem('user_role', currentRole);
+
+        setTimeout(() => {
+            window.location.href = roles[currentRole].dest;
+        }, 400);
+    }
+
+    // Pre-select role from URL ?role=teacher
+    const urlRole = new URLSearchParams(window.location.search).get('role');
+    if (urlRole && roles[urlRole]) switchRole(urlRole);
+</script>
+</body>
+</html>

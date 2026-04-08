@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library | Vidyastra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        (function(){try{var s=localStorage.getItem('vidyastra_appearance');if(!s)return;var p=JSON.parse(s),r=document.documentElement;['theme-default','theme-vedic','theme-modern','theme-academic'].forEach(function(c){r.classList.remove(c);});['font-default','font-sans','font-classical'].forEach(function(c){r.classList.remove(c);});r.classList.remove('mode-dark');if(p.theme)r.classList.add('theme-'+p.theme);if(p.font)r.classList.add('font-'+p.font);if(p.mode==='dark')r.classList.add('mode-dark');}catch(e){}})();
+    </script>
+    <link rel="stylesheet" href="css/style.css?v=2">
+    <style>
+        .lb-nav { background:var(--color-surface); border-bottom:1px solid var(--color-border); padding:1rem 0; position:sticky; top:0; z-index:100; }
+        .lb-nav-inner { max-width:1200px; margin:0 auto; padding:0 1.5rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+        .lb-nav-links { display:flex; align-items:center; gap:0.25rem; list-style:none; }
+        .lb-nav-links a { padding:0.4rem 0.85rem; border-radius:6px; font-size:0.9rem; font-weight:500; color:var(--color-text-main); text-decoration:none; transition:background 0.15s,color 0.15s; }
+        .lb-nav-links a:hover, .lb-nav-links a.active { background:var(--color-bg-alt); color:var(--color-primary); }
+
+        .lb-page { max-width:1200px; margin:0 auto; padding:2.5rem 1.5rem 4rem; }
+
+        /* Section header */
+        .lb-section { margin-bottom:3rem; }
+        .lb-section-header {
+            display:flex; align-items:center; gap:0.75rem;
+            margin-bottom:1.25rem;
+            padding-bottom:0.75rem;
+            border-bottom:1px solid var(--color-border);
+        }
+        .lb-section-icon { font-size:1.4rem; line-height:1; }
+        .lb-section-header h2 {
+            font-size:1rem; font-family:var(--font-heading); font-weight:700;
+            text-transform:uppercase; letter-spacing:0.07em;
+            color:var(--color-text-muted); margin:0;
+        }
+
+        /* Grid */
+        .lb-grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fill, minmax(220px,1fr));
+            gap:1.1rem;
+        }
+
+        /* Card */
+        .lb-card {
+            background:var(--color-surface);
+            border:1px solid var(--color-border);
+            border-radius:8px;
+            padding:1.25rem;
+            display:flex;
+            flex-direction:column;
+            gap:0.75rem;
+            transition:border-color 0.2s, box-shadow 0.2s;
+        }
+        .lb-card:hover {
+            border-color:var(--color-primary);
+            box-shadow:0 4px 14px rgba(0,0,0,0.06);
+        }
+        .lb-card-thumb {
+            width:44px; height:44px;
+            border-radius:8px;
+            display:flex; align-items:center; justify-content:center;
+            font-size:1.4rem;
+            flex-shrink:0;
+        }
+        .lb-card-thumb.pdf   { background:#FEE2E2; }
+        .lb-card-thumb.note  { background:#FEF9C3; }
+        .lb-card-thumb.book  { background:#DBEAFE; }
+
+        .lb-card-body { flex:1; }
+        .lb-card-body h3 { font-size:0.9rem; font-weight:700; color:var(--color-text-main); margin-bottom:0.2rem; line-height:1.35; }
+        .lb-card-body p  { font-size:0.75rem; color:var(--color-text-muted); margin:0; line-height:1.4; }
+
+        .lb-tag {
+            display:inline-block;
+            font-size:0.65rem; font-weight:700;
+            text-transform:uppercase; letter-spacing:0.05em;
+            padding:0.2rem 0.55rem; border-radius:999px;
+            margin-bottom:0.5rem;
+        }
+        .lb-tag.pdf  { background:#FEE2E2; color:#991B1B; }
+        .lb-tag.note { background:#FEF9C3; color:#854D0E; }
+        .lb-tag.book { background:#DBEAFE; color:#1E40AF; }
+
+        .lb-btn {
+            display:inline-flex; align-items:center; gap:0.4rem;
+            padding:0.5rem 1rem;
+            border-radius:6px;
+            border:1px solid var(--color-border);
+            background:var(--color-bg-alt);
+            color:var(--color-text-main);
+            font-size:0.78rem; font-weight:600;
+            cursor:pointer; text-decoration:none;
+            transition:border-color 0.2s, background 0.2s, color 0.2s;
+            align-self:flex-start;
+        }
+        .lb-btn:hover { border-color:var(--color-primary); background:var(--color-surface); color:var(--color-primary); }
+    </style>
+</head>
+<body class="bg-motif">
+
+    <nav class="lb-nav">
+        <div class="lb-nav-inner">
+            <a href="index.html" class="nav-brand"><span>Vidya</span>stra</a>
+            <ul class="lb-nav-links">
+                <li><a href="learning-home.html">Home</a></li>
+                <li><a href="courses.html">Courses</a></li>
+                <li><a href="progress.html">Progress</a></li>
+                <li><a href="library.html" class="active">Library</a></li>
+            </ul>
+            <button type="button" class="appearance-toggle" aria-label="Appearance settings" aria-expanded="false" aria-controls="appearance-panel">Appearance</button>
+        </div>
+    </nav>
+
+    <div class="lb-page">
+
+        <div style="margin-bottom:2.5rem;" class="animate-on-scroll">
+            <h1 style="font-size:clamp(1.75rem,3vw,2.25rem);margin-bottom:0.3rem;">Library</h1>
+            <p style="margin:0;color:var(--color-text-muted);font-size:1rem;">Your collection of PDFs, notes, and reference books.</p>
+        </div>
+
+        <!-- PDFs -->
+        <div class="lb-section animate-on-scroll">
+            <div class="lb-section-header">
+                <span class="lb-section-icon">📄</span>
+                <h2>PDFs</h2>
+            </div>
+            <div class="lb-grid">
+
+                <div class="lb-card">
+                    <div class="lb-card-thumb pdf">📄</div>
+                    <div class="lb-card-body">
+                        <span class="lb-tag pdf">PDF</span>
+                        <h3>Vedic Mathematics — Complete Guide</h3>
+                        <p>All 16 sutras with worked examples and exercises.</p>
+                    </div>
+                    <a href="#" class="lb-btn" onclick="alert('Download coming soon!');return false;">⬇ Download</a>
+                </div>
+
+                <div class="lb-card">
+                    <div class="lb-card-thumb pdf">📄</div>
+                    <div class="lb-card-body">
+                        <span class="lb-tag pdf">PDF</span>
+                        <h3>Classical Mechanics — Formula Sheet</h3>
+                        <p>Quick reference for kinematics, dynamics, and energy.</p>
+                    </div>
+                    <a href="#" class="lb-btn" onclick="alert('Download coming soon!');return false;">⬇ Download</a>
+                </div>
+
+                <div class="lb-card">
+                    <div class="lb-card-thumb pdf">📄</div>
+                    <div class="lb-card-body">
+                        <span class="lb-tag pdf">PDF</span>
+                        <h3>Sanskrit Grammar — Devanagari Script</h3>
+                        <p>Beginner's guide to reading and writing Sanskrit.</p>
+                    </div>
+                    <a href="#" class="lb-btn" onclick="alert('Download coming soon!');return false;">⬇ Download</a>
+                </div>
+
+                <div class="lb-card">
+                    <div class="lb-card-thumb pdf">📄</div>
+                    <div class="lb-card-body">
+                        <span class="lb-tag pdf">PDF</span>
+                        <h3>Web Development Cheatsheet</h3>
+                        <p>HTML, CSS, and JavaScript quick reference.</p>
+                    </div>
+                    <a href="#" class="lb-btn" onclick="alert('Download coming soon!');return false;">⬇ Download</a>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Notes -->
+        <div class="lb-section animate-on-scroll">
+            <div class="lb-section-header">
+                <span class="lb-section-icon">📝</span>
+                <h2>Notes</h2>
+            </div>
+            <div class="lb-grid">
+
+                <div class="lb-card">
+                    <div class="lb-card-thumb note">📝</div>
+                    <div class="lb-card-body">
+                        <span class="lb-tag note">Note</span>
+                        <h3>Indian Philosophy — Key Concepts</h3>
+                        <p>Summary notes on Vedanta, Nyaya, and Samkhya schools.</p>
+                    </div>
+                    <a href="#" class="lb-btn" onclick="alert('View coming soon!');return false;">👁 View</a>
+                </div>
+
+                <div class="lb-card">
+                    <div class="lb-card-thumb note">📝</div>
+                    <div class="lb-card-body">
+                        <span class="lb-tag note">Note</span>
+                        <h3>Calculus — Limits & Derivatives</h3>
+                        <p>Handwritten-style notes with diagrams and proofs.</p>
+                    </div>
+                    <a href="#" class="lb-btn" onclick="alert('View coming soon!');return false;">👁 View</a>
+                </div>
+
+                <div class="lb-card">
+                    <div class="lb-card-thumb note">📝</div>
+                    <div class="lb-card-body">
+                        <span class="lb-tag note">Note</span>
+                        <h3>Ayurveda — Dosha Overview</h3>
+                        <p>Vata, Pitta, Kapha — characteristics and balance.</p>
+                    </div>
+                    <a href="#" class="lb-btn" onclick="alert('View coming soon!');return false;">👁 View</a>
+                </div>
+
+                <div class="lb-card">
+                    <div class="lb-card-thumb note">📝</div>
+                    <div class="lb-card-body">
+                        <span class="lb-tag note">Note</span>
+                        <h3>World History — Timeline</h3>
+                        <p>Major civilisations and turning points from 3000 BCE.</p>
+                    </div>
+                    <a href="#" class="lb-btn" onclick="alert('View coming soon!');return false;">👁 View</a>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Books -->
+        <div class="lb-section animate-on-scroll">
+            <div class="lb-section-header">
+                <span class="lb-section-icon">📚</span>
+                <h2>Books</h2>
+            </div>
+            <div class="lb-grid">
+
+                <div class="lb-card">
+                    <div class="lb-card-thumb book">📚</div>
+                    <div class="lb-card-body">
+                        <span class="lb-tag book">Book</span>
+                        <h3>The Arthashastra</h3>
+                        <p>Kautilya's treatise on statecraft, economics, and strategy.</p>
+                    </div>
+                    <a href="#" class="lb-btn" onclick="alert('Read coming soon!');return false;">📖 Read</a>
+                </div>
+
+                <div class="lb-card">
+                    <div class="lb-card-thumb book">📚</div>
+                    <div class="lb-card-body">
+                        <span class="lb-tag book">Book</span>
+                        <h3>Aryabhatiya</h3>
+                        <p>Aryabhata's classic work on mathematics and astronomy.</p>
+                    </div>
+                    <a href="#" class="lb-btn" onclick="alert('Read coming soon!');return false;">📖 Read</a>
+                </div>
+
+                <div class="lb-card">
+                    <div class="lb-card-thumb book">📚</div>
+                    <div class="lb-card-body">
+                        <span class="lb-tag book">Book</span>
+                        <h3>Feynman Lectures on Physics</h3>
+                        <p>Vol. 1 — Mechanics, radiation, and heat.</p>
+                    </div>
+                    <a href="#" class="lb-btn" onclick="alert('Read coming soon!');return false;">📖 Read</a>
+                </div>
+
+                <div class="lb-card">
+                    <div class="lb-card-thumb book">📚</div>
+                    <div class="lb-card-body">
+                        <span class="lb-tag book">Book</span>
+                        <h3>Introduction to Algorithms</h3>
+                        <p>CLRS — the definitive reference for computer science.</p>
+                    </div>
+                    <a href="#" class="lb-btn" onclick="alert('Read coming soon!');return false;">📖 Read</a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Appearance Panel -->
+    <div id="appearance-panel" class="appearance-panel" aria-hidden="true" hidden>
+        <div class="appearance-panel-header">Appearance</div>
+        <div class="appearance-panel-body">
+            <div class="appearance-panel-row">
+                <label class="appearance-toggle-label"><input type="checkbox" class="appearance-dark-toggle"><span>Dark mode</span></label>
+            </div>
+            <div class="appearance-panel-row">
+                <span class="appearance-field-label">Theme</span>
+                <select id="appearance-theme-select" class="appearance-select">
+                    <option value="default">Default Light</option>
+                    <option value="vedic">Vedic Warm</option>
+                    <option value="modern">Modern Minimal</option>
+                    <option value="academic">Academic Calm</option>
+                </select>
+            </div>
+            <div class="appearance-panel-row">
+                <span class="appearance-field-label">Font</span>
+                <select id="appearance-font-select" class="appearance-select">
+                    <option value="default">Default Serif</option>
+                    <option value="sans">Clean Sans-Serif</option>
+                    <option value="classical">Traditional Classical Serif</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js?v=2"></script>
+</body>
+</html>

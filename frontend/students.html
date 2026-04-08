@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Students | Vidyastra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        (function(){try{var s=localStorage.getItem('vidyastra_appearance');if(!s)return;var p=JSON.parse(s),r=document.documentElement;['theme-default','theme-vedic','theme-modern','theme-academic'].forEach(function(c){r.classList.remove(c);});['font-default','font-sans','font-classical'].forEach(function(c){r.classList.remove(c);});r.classList.remove('mode-dark');if(p.theme)r.classList.add('theme-'+p.theme);if(p.font)r.classList.add('font-'+p.font);if(p.mode==='dark')r.classList.add('mode-dark');}catch(e){}})();
+    </script>
+    <link rel="stylesheet" href="css/style.css?v=2">
+    <style>
+        .st-nav { background:var(--color-surface); border-bottom:1px solid var(--color-border); padding:1rem 0; position:sticky; top:0; z-index:100; }
+        .st-nav-inner { max-width:1200px; margin:0 auto; padding:0 1.5rem; display:flex; align-items:center; justify-content:space-between; }
+        .st-back { font-size:0.88rem; font-weight:600; color:var(--color-text-muted); text-decoration:none; display:inline-flex; align-items:center; gap:0.4rem; transition:color 0.15s; }
+        .st-back:hover { color:var(--color-primary); }
+
+        .st-page { max-width:1100px; margin:0 auto; padding:2.5rem 1.5rem 4rem; }
+
+        /* Search + filter bar */
+        .st-toolbar {
+            display:flex; align-items:center; justify-content:space-between;
+            flex-wrap:wrap; gap:0.75rem;
+            margin-bottom:1.5rem;
+        }
+        .st-search {
+            padding:0.6rem 1rem;
+            border:1.5px solid var(--color-border);
+            border-radius:6px;
+            font-family:var(--font-body);
+            font-size:0.88rem;
+            color:var(--color-text-main);
+            background:var(--color-surface);
+            width:260px;
+            transition:border-color 0.2s;
+        }
+        .st-search:focus { outline:none; border-color:var(--color-primary); }
+
+        /* Table wrapper */
+        .st-table-wrap {
+            background:var(--color-surface);
+            border:1px solid var(--color-border);
+            border-radius:8px;
+            overflow:hidden;
+            overflow-x:auto;
+        }
+        table { width:100%; border-collapse:collapse; min-width:600px; }
+        thead { background:var(--color-bg-alt); }
+        thead th {
+            padding:0.9rem 1.25rem;
+            text-align:left;
+            font-size:0.75rem;
+            font-family:var(--font-heading);
+            font-weight:700;
+            text-transform:uppercase;
+            letter-spacing:0.07em;
+            color:var(--color-text-muted);
+            border-bottom:1px solid var(--color-border);
+            white-space:nowrap;
+        }
+        tbody tr { border-bottom:1px solid var(--color-border); transition:background 0.15s; }
+        tbody tr:last-child { border-bottom:none; }
+        tbody tr:hover { background:var(--color-bg-alt); }
+        tbody td { padding:0.9rem 1.25rem; font-size:0.88rem; color:var(--color-text-main); vertical-align:middle; }
+
+        /* Avatar cell */
+        .st-avatar {
+            width:34px; height:34px; border-radius:50%;
+            background:var(--color-primary); color:#fff;
+            display:inline-flex; align-items:center; justify-content:center;
+            font-size:0.75rem; font-weight:700;
+            flex-shrink:0; margin-right:0.65rem;
+            vertical-align:middle;
+        }
+        .st-name-cell { display:flex; align-items:center; }
+
+        /* Progress bar */
+        .st-bar-wrap { display:flex; align-items:center; gap:0.6rem; }
+        .st-bar { flex:1; height:6px; background:var(--color-border); border-radius:3px; overflow:hidden; min-width:80px; }
+        .st-bar-fill { height:100%; border-radius:3px; background:var(--color-primary); }
+        .st-bar-fill.high  { background:#16a34a; }
+        .st-bar-fill.mid   { background:var(--color-primary); }
+        .st-bar-fill.low   { background:var(--color-accent); }
+        .st-pct { font-size:0.78rem; font-weight:600; color:var(--color-text-muted); white-space:nowrap; }
+
+        /* View Details btn */
+        .st-btn {
+            padding:0.4rem 0.9rem;
+            border-radius:5px;
+            border:1px solid var(--color-border);
+            background:var(--color-bg-alt);
+            font-size:0.78rem; font-weight:600;
+            color:var(--color-text-main);
+            cursor:pointer;
+            transition:border-color 0.15s, color 0.15s, background 0.15s;
+            white-space:nowrap;
+        }
+        .st-btn:hover { border-color:var(--color-primary); color:var(--color-primary); background:var(--color-surface); }
+
+        /* Empty state */
+        .st-empty { text-align:center; padding:3rem; color:var(--color-text-muted); font-size:0.9rem; }
+    </style>
+</head>
+<body class="bg-motif">
+
+    <nav class="st-nav">
+        <div class="st-nav-inner">
+            <a href="teacher-home.html" class="st-back">← Back to Dashboard</a>
+            <a href="index.html" class="nav-brand"><span>Vidya</span>stra</a>
+            <button type="button" class="appearance-toggle" aria-label="Appearance settings" aria-expanded="false" aria-controls="appearance-panel">Appearance</button>
+        </div>
+    </nav>
+
+    <div class="st-page">
+
+        <div style="margin-bottom:1.75rem;" class="animate-on-scroll">
+            <h1 style="font-size:clamp(1.6rem,3vw,2rem);margin-bottom:0.25rem;">My Students</h1>
+            <p style="margin:0;color:var(--color-text-muted);font-size:0.95rem;">Manage and track all enrolled students across your courses.</p>
+        </div>
+
+        <div class="st-toolbar animate-on-scroll">
+            <input class="st-search" type="text" id="st-search" placeholder="🔍  Search by name or course…" oninput="filterTable()">
+            <span style="font-size:0.82rem;color:var(--color-text-muted);" id="st-count">10 students</span>
+        </div>
+
+        <div class="st-table-wrap animate-on-scroll">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        <th>Course Enrolled</th>
+                        <th>Progress</th>
+                        <th>Joined</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="st-tbody">
+                    <!-- Rows injected by JS -->
+                </tbody>
+            </table>
+            <div class="st-empty" id="st-empty" style="display:none;">No students match your search.</div>
+        </div>
+    </div>
+
+    <!-- Appearance Panel -->
+    <div id="appearance-panel" class="appearance-panel" aria-hidden="true" hidden>
+        <div class="appearance-panel-header">Appearance</div>
+        <div class="appearance-panel-body">
+            <div class="appearance-panel-row">
+                <label class="appearance-toggle-label"><input type="checkbox" class="appearance-dark-toggle"><span>Dark mode</span></label>
+            </div>
+            <div class="appearance-panel-row">
+                <span class="appearance-field-label">Theme</span>
+                <select id="appearance-theme-select" class="appearance-select">
+                    <option value="default">Default Light</option>
+                    <option value="vedic">Vedic Warm</option>
+                    <option value="modern">Modern Minimal</option>
+                    <option value="academic">Academic Calm</option>
+                </select>
+            </div>
+            <div class="appearance-panel-row">
+                <span class="appearance-field-label">Font</span>
+                <select id="appearance-font-select" class="appearance-select">
+                    <option value="default">Default Serif</option>
+                    <option value="sans">Clean Sans-Serif</option>
+                    <option value="classical">Traditional Classical Serif</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var students = [
+            { name:'Arjun Kumar',      course:'Vedic Mathematics',      progress:72, joined:'12 Jan 2025' },
+            { name:'Priya Sharma',     course:'Web Development Basics', progress:60, joined:'15 Jan 2025' },
+            { name:'Rohan Mehta',      course:'Classical Mechanics',    progress:35, joined:'20 Jan 2025' },
+            { name:'Ananya Singh',     course:'Indian Philosophy',      progress:88, joined:'22 Jan 2025' },
+            { name:'Vikram Nair',      course:'Vedic Mathematics',      progress:45, joined:'28 Jan 2025' },
+            { name:'Sneha Patel',      course:'Sanskrit Foundations',   progress:100,joined:'02 Feb 2025' },
+            { name:'Karan Joshi',      course:'Advanced Mathematics',   progress:55, joined:'05 Feb 2025' },
+            { name:'Meera Iyer',       course:'Web Development Basics', progress:20, joined:'08 Feb 2025' },
+            { name:'Aditya Verma',     course:'Classical Mechanics',    progress:90, joined:'10 Feb 2025' },
+            { name:'Lakshmi Reddy',    course:'Indian Philosophy',      progress:65, joined:'14 Feb 2025' },
+        ];
+
+        function initials(name) {
+            var p = name.trim().split(' ');
+            return p.length >= 2 ? (p[0][0] + p[p.length-1][0]).toUpperCase() : name.slice(0,2).toUpperCase();
+        }
+
+        function barClass(p) {
+            return p >= 75 ? 'high' : p >= 40 ? 'mid' : 'low';
+        }
+
+        function renderTable(data) {
+            var tbody = document.getElementById('st-tbody');
+            var empty = document.getElementById('st-empty');
+            var count = document.getElementById('st-count');
+
+            if (!data.length) {
+                tbody.innerHTML = '';
+                empty.style.display = 'block';
+                count.textContent = '0 students';
+                return;
+            }
+            empty.style.display = 'none';
+            count.textContent = data.length + ' student' + (data.length !== 1 ? 's' : '');
+
+            tbody.innerHTML = data.map(function(s) {
+                return '<tr>' +
+                    '<td><div class="st-name-cell"><span class="st-avatar">' + initials(s.name) + '</span>' + s.name + '</div></td>' +
+                    '<td>' + s.course + '</td>' +
+                    '<td><div class="st-bar-wrap"><div class="st-bar"><div class="st-bar-fill ' + barClass(s.progress) + '" style="width:' + s.progress + '%"></div></div><span class="st-pct">' + s.progress + '%</span></div></td>' +
+                    '<td style="color:var(--color-text-muted);font-size:0.82rem;">' + s.joined + '</td>' +
+                    '<td><button class="st-btn" onclick="viewDetails(\'' + s.name + '\')">View Details</button></td>' +
+                '</tr>';
+            }).join('');
+        }
+
+        function filterTable() {
+            var q = document.getElementById('st-search').value.toLowerCase();
+            var filtered = students.filter(function(s){
+                return s.name.toLowerCase().includes(q) || s.course.toLowerCase().includes(q);
+            });
+            renderTable(filtered);
+        }
+
+        function viewDetails(name) {
+            alert('Student: ' + name + '\nFull details coming soon.');
+        }
+
+        renderTable(students);
+    </script>
+    <script src="js/main.js?v=2"></script>
+</body>
+</html>

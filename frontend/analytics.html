@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics | Vidyastra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        (function(){try{var s=localStorage.getItem('vidyastra_appearance');if(!s)return;var p=JSON.parse(s),r=document.documentElement;['theme-default','theme-vedic','theme-modern','theme-academic'].forEach(function(c){r.classList.remove(c);});['font-default','font-sans','font-classical'].forEach(function(c){r.classList.remove(c);});r.classList.remove('mode-dark');if(p.theme)r.classList.add('theme-'+p.theme);if(p.font)r.classList.add('font-'+p.font);if(p.mode==='dark')r.classList.add('mode-dark');}catch(e){}})();
+    </script>
+    <link rel="stylesheet" href="css/style.css?v=2">
+    <style>
+        .an-nav { background:var(--color-surface); border-bottom:1px solid var(--color-border); padding:1rem 0; position:sticky; top:0; z-index:100; }
+        .an-nav-inner { max-width:1200px; margin:0 auto; padding:0 1.5rem; display:flex; align-items:center; justify-content:space-between; }
+        .an-back { font-size:0.88rem; font-weight:600; color:var(--color-text-muted); text-decoration:none; display:inline-flex; align-items:center; gap:0.4rem; transition:color 0.15s; }
+        .an-back:hover { color:var(--color-primary); }
+
+        .an-page { max-width:1100px; margin:0 auto; padding:2.5rem 1.5rem 4rem; }
+
+        /* Section label */
+        .an-label {
+            font-size:0.82rem; font-family:var(--font-heading); font-weight:700;
+            text-transform:uppercase; letter-spacing:0.07em; color:var(--color-text-muted);
+            margin-bottom:1rem; padding-bottom:0.6rem; border-bottom:1px solid var(--color-border);
+        }
+
+        /* ── Stat cards ── */
+        .an-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:1.25rem; margin-bottom:2.5rem; }
+        @media(max-width:640px){ .an-stats { grid-template-columns:1fr; } }
+
+        .an-stat {
+            background:var(--color-surface); border:1px solid var(--color-border);
+            border-radius:8px; padding:1.5rem;
+            display:flex; flex-direction:column; gap:0.5rem;
+            transition:border-color 0.2s, box-shadow 0.2s;
+        }
+        .an-stat:hover { border-color:var(--color-primary); box-shadow:0 4px 14px rgba(0,0,0,0.06); }
+        .an-stat-icon  { font-size:1.6rem; }
+        .an-stat-value { font-family:var(--font-heading); font-size:2.1rem; font-weight:800; color:var(--color-primary); line-height:1; }
+        .an-stat-label { font-size:0.78rem; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; color:var(--color-text-muted); }
+        .an-stat-delta { font-size:0.78rem; font-weight:600; color:#16a34a; }
+
+        /* ── Charts grid ── */
+        .an-charts { display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-bottom:2.5rem; }
+        @media(max-width:768px){ .an-charts { grid-template-columns:1fr; } }
+
+        .an-chart-card {
+            background:var(--color-surface); border:1px solid var(--color-border);
+            border-radius:8px; padding:1.5rem;
+        }
+        .an-chart-title { font-size:0.88rem; font-weight:700; color:var(--color-text-main); margin-bottom:1.25rem; }
+
+        /* Bar chart */
+        .an-bar-chart { display:flex; align-items:flex-end; gap:0.6rem; height:140px; }
+        .an-bar-col { display:flex; flex-direction:column; align-items:center; gap:0.35rem; flex:1; }
+        .an-bar {
+            width:100%; border-radius:4px 4px 0 0;
+            background:var(--color-primary); opacity:0.85;
+            transition:opacity 0.2s;
+            min-height:4px;
+        }
+        .an-bar:hover { opacity:1; }
+        .an-bar.blue { background:var(--color-secondary); }
+        .an-bar.green { background:#16a34a; }
+        .an-bar-val { font-size:0.68rem; font-weight:700; color:var(--color-text-muted); }
+        .an-bar-lbl { font-size:0.65rem; color:var(--color-text-muted); text-align:center; }
+
+        /* Line chart (CSS only) */
+        .an-line-chart { position:relative; height:140px; }
+        .an-line-svg { width:100%; height:100%; }
+
+        /* Donut chart */
+        .an-donut-wrap { display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap; }
+        .an-donut { position:relative; width:110px; height:110px; flex-shrink:0; }
+        .an-donut svg { transform:rotate(-90deg); }
+        .an-donut-label {
+            position:absolute; top:50%; left:50%;
+            transform:translate(-50%,-50%);
+            text-align:center;
+        }
+        .an-donut-label span { display:block; font-size:1.1rem; font-weight:800; font-family:var(--font-heading); color:var(--color-primary); line-height:1; }
+        .an-donut-label small { font-size:0.6rem; color:var(--color-text-muted); text-transform:uppercase; letter-spacing:0.04em; }
+        .an-legend { display:flex; flex-direction:column; gap:0.5rem; }
+        .an-legend-item { display:flex; align-items:center; gap:0.5rem; font-size:0.78rem; color:var(--color-text-muted); }
+        .an-legend-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+
+        /* Top courses table */
+        .an-top-table { width:100%; border-collapse:collapse; }
+        .an-top-table th {
+            text-align:left; font-size:0.72rem; font-weight:700;
+            text-transform:uppercase; letter-spacing:0.06em;
+            color:var(--color-text-muted); padding:0.5rem 0.75rem;
+            border-bottom:1px solid var(--color-border);
+        }
+        .an-top-table td { padding:0.65rem 0.75rem; font-size:0.83rem; color:var(--color-text-main); border-bottom:1px solid var(--color-border); }
+        .an-top-table tr:last-child td { border-bottom:none; }
+        .an-top-table tr:hover td { background:var(--color-bg-alt); }
+        .an-mini-bar { height:5px; background:var(--color-border); border-radius:3px; overflow:hidden; min-width:60px; }
+        .an-mini-fill { height:100%; background:var(--color-primary); border-radius:3px; }
+    </style>
+</head>
+<body class="bg-motif">
+
+    <nav class="an-nav">
+        <div class="an-nav-inner">
+            <a href="teacher-home.html" class="an-back">← Back to Dashboard</a>
+            <a href="index.html" class="nav-brand"><span>Vidya</span>stra</a>
+            <button type="button" class="appearance-toggle" aria-label="Appearance settings" aria-expanded="false" aria-controls="appearance-panel">Appearance</button>
+        </div>
+    </nav>
+
+    <div class="an-page">
+
+        <div style="margin-bottom:2rem;" class="animate-on-scroll">
+            <h1 style="font-size:clamp(1.6rem,3vw,2rem);margin-bottom:0.25rem;">Analytics</h1>
+            <p style="margin:0;color:var(--color-text-muted);font-size:0.95rem;">Overview of your course performance and earnings.</p>
+        </div>
+
+        <!-- ── Stat Cards ── -->
+        <p class="an-label animate-on-scroll">Key Metrics</p>
+        <div class="an-stats">
+            <div class="an-stat animate-on-scroll">
+                <span class="an-stat-icon">👁️</span>
+                <span class="an-stat-value">24,810</span>
+                <span class="an-stat-label">Total Views</span>
+                <span class="an-stat-delta">↑ 12% this month</span>
+            </div>
+            <div class="an-stat animate-on-scroll">
+                <span class="an-stat-icon">👨‍🎓</span>
+                <span class="an-stat-value">1,348</span>
+                <span class="an-stat-label">Total Enrollments</span>
+                <span class="an-stat-delta">↑ 8% this month</span>
+            </div>
+            <div class="an-stat animate-on-scroll">
+                <span class="an-stat-icon">💰</span>
+                <span class="an-stat-value">₹84,200</span>
+                <span class="an-stat-label">Total Revenue</span>
+                <span class="an-stat-delta">↑ 21% this month</span>
+            </div>
+        </div>
+
+        <!-- ── Charts ── -->
+        <p class="an-label animate-on-scroll">Charts</p>
+        <div class="an-charts">
+
+            <!-- Monthly Enrollments bar chart -->
+            <div class="an-chart-card animate-on-scroll">
+                <div class="an-chart-title">Monthly Enrollments</div>
+                <div class="an-bar-chart" id="enroll-chart"></div>
+            </div>
+
+            <!-- Monthly Revenue bar chart -->
+            <div class="an-chart-card animate-on-scroll">
+                <div class="an-chart-title">Monthly Revenue (₹)</div>
+                <div class="an-bar-chart" id="revenue-chart"></div>
+            </div>
+
+            <!-- Views line chart (SVG) -->
+            <div class="an-chart-card animate-on-scroll">
+                <div class="an-chart-title">Weekly Views</div>
+                <div class="an-line-chart">
+                    <svg class="an-line-svg" viewBox="0 0 300 120" preserveAspectRatio="none">
+                        <defs>
+                            <linearGradient id="lineGrad" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="var(--color-primary)" stop-opacity="0.2"/>
+                                <stop offset="100%" stop-color="var(--color-primary)" stop-opacity="0"/>
+                            </linearGradient>
+                        </defs>
+                        <!-- Area fill -->
+                        <path d="M0,90 L42,70 L84,55 L126,65 L168,40 L210,30 L252,20 L300,10 L300,120 L0,120 Z"
+                              fill="url(#lineGrad)"/>
+                        <!-- Line -->
+                        <polyline points="0,90 42,70 84,55 126,65 168,40 210,30 252,20 300,10"
+                                  fill="none" stroke="var(--color-primary)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+                        <!-- Dots -->
+                        <circle cx="0"   cy="90" r="4" fill="var(--color-primary)"/>
+                        <circle cx="42"  cy="70" r="4" fill="var(--color-primary)"/>
+                        <circle cx="84"  cy="55" r="4" fill="var(--color-primary)"/>
+                        <circle cx="126" cy="65" r="4" fill="var(--color-primary)"/>
+                        <circle cx="168" cy="40" r="4" fill="var(--color-primary)"/>
+                        <circle cx="210" cy="30" r="4" fill="var(--color-primary)"/>
+                        <circle cx="252" cy="20" r="4" fill="var(--color-primary)"/>
+                        <circle cx="300" cy="10" r="4" fill="var(--color-primary)"/>
+                        <!-- X labels -->
+                        <text x="0"   y="118" font-size="9" fill="var(--color-text-muted)" text-anchor="middle">W1</text>
+                        <text x="42"  y="118" font-size="9" fill="var(--color-text-muted)" text-anchor="middle">W2</text>
+                        <text x="84"  y="118" font-size="9" fill="var(--color-text-muted)" text-anchor="middle">W3</text>
+                        <text x="126" y="118" font-size="9" fill="var(--color-text-muted)" text-anchor="middle">W4</text>
+                        <text x="168" y="118" font-size="9" fill="var(--color-text-muted)" text-anchor="middle">W5</text>
+                        <text x="210" y="118" font-size="9" fill="var(--color-text-muted)" text-anchor="middle">W6</text>
+                        <text x="252" y="118" font-size="9" fill="var(--color-text-muted)" text-anchor="middle">W7</text>
+                        <text x="300" y="118" font-size="9" fill="var(--color-text-muted)" text-anchor="middle">W8</text>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Course distribution donut -->
+            <div class="an-chart-card animate-on-scroll">
+                <div class="an-chart-title">Enrollment by Course</div>
+                <div class="an-donut-wrap">
+                    <div class="an-donut">
+                        <svg viewBox="0 0 36 36" width="110" height="110">
+                            <!-- Total circle bg -->
+                            <circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--color-border)" stroke-width="3.5"/>
+                            <!-- Vedic Math: 35% -->
+                            <circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--color-primary)"
+                                    stroke-width="3.5" stroke-dasharray="35 65" stroke-dashoffset="0"/>
+                            <!-- Web Dev: 25% -->
+                            <circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--color-secondary)"
+                                    stroke-width="3.5" stroke-dasharray="25 75" stroke-dashoffset="-35"/>
+                            <!-- Mechanics: 20% -->
+                            <circle cx="18" cy="18" r="15.9" fill="none" stroke="#16a34a"
+                                    stroke-width="3.5" stroke-dasharray="20 80" stroke-dashoffset="-60"/>
+                            <!-- Others: 20% -->
+                            <circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--color-accent)"
+                                    stroke-width="3.5" stroke-dasharray="20 80" stroke-dashoffset="-80"/>
+                        </svg>
+                        <div class="an-donut-label">
+                            <span>1,348</span>
+                            <small>students</small>
+                        </div>
+                    </div>
+                    <div class="an-legend">
+                        <div class="an-legend-item"><span class="an-legend-dot" style="background:var(--color-primary)"></span>Vedic Mathematics — 35%</div>
+                        <div class="an-legend-item"><span class="an-legend-dot" style="background:var(--color-secondary)"></span>Web Development — 25%</div>
+                        <div class="an-legend-item"><span class="an-legend-dot" style="background:#16a34a"></span>Classical Mechanics — 20%</div>
+                        <div class="an-legend-item"><span class="an-legend-dot" style="background:var(--color-accent)"></span>Others — 20%</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ── Top Courses ── -->
+        <p class="an-label animate-on-scroll">Top Performing Courses</p>
+        <div class="an-chart-card animate-on-scroll">
+            <table class="an-top-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Course</th>
+                        <th>Views</th>
+                        <th>Enrollments</th>
+                        <th>Revenue</th>
+                        <th>Completion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="color:var(--color-text-muted);">1</td>
+                        <td><strong>Vedic Mathematics</strong></td>
+                        <td>9,240</td>
+                        <td>472</td>
+                        <td>₹28,320</td>
+                        <td><div class="an-mini-bar"><div class="an-mini-fill" style="width:78%"></div></div></td>
+                    </tr>
+                    <tr>
+                        <td style="color:var(--color-text-muted);">2</td>
+                        <td><strong>Web Development Basics</strong></td>
+                        <td>7,810</td>
+                        <td>337</td>
+                        <td>₹20,220</td>
+                        <td><div class="an-mini-bar"><div class="an-mini-fill" style="width:62%"></div></div></td>
+                    </tr>
+                    <tr>
+                        <td style="color:var(--color-text-muted);">3</td>
+                        <td><strong>Classical Mechanics</strong></td>
+                        <td>4,200</td>
+                        <td>270</td>
+                        <td>₹16,200</td>
+                        <td><div class="an-mini-bar"><div class="an-mini-fill" style="width:55%"></div></div></td>
+                    </tr>
+                    <tr>
+                        <td style="color:var(--color-text-muted);">4</td>
+                        <td><strong>Indian Philosophy</strong></td>
+                        <td>2,100</td>
+                        <td>180</td>
+                        <td>₹10,800</td>
+                        <td><div class="an-mini-bar"><div class="an-mini-fill" style="width:44%"></div></div></td>
+                    </tr>
+                    <tr>
+                        <td style="color:var(--color-text-muted);">5</td>
+                        <td><strong>Sanskrit Foundations</strong></td>
+                        <td>1,460</td>
+                        <td>89</td>
+                        <td>₹8,660</td>
+                        <td><div class="an-mini-bar"><div class="an-mini-fill" style="width:91%"></div></div></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <!-- Appearance Panel -->
+    <div id="appearance-panel" class="appearance-panel" aria-hidden="true" hidden>
+        <div class="appearance-panel-header">Appearance</div>
+        <div class="appearance-panel-body">
+            <div class="appearance-panel-row">
+                <label class="appearance-toggle-label"><input type="checkbox" class="appearance-dark-toggle"><span>Dark mode</span></label>
+            </div>
+            <div class="appearance-panel-row">
+                <span class="appearance-field-label">Theme</span>
+                <select id="appearance-theme-select" class="appearance-select">
+                    <option value="default">Default Light</option>
+                    <option value="vedic">Vedic Warm</option>
+                    <option value="modern">Modern Minimal</option>
+                    <option value="academic">Academic Calm</option>
+                </select>
+            </div>
+            <div class="appearance-panel-row">
+                <span class="appearance-field-label">Font</span>
+                <select id="appearance-font-select" class="appearance-select">
+                    <option value="default">Default Serif</option>
+                    <option value="sans">Clean Sans-Serif</option>
+                    <option value="classical">Traditional Classical Serif</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Monthly Enrollments bar chart
+        var enrollData = [
+            { lbl:'Sep', val:62 }, { lbl:'Oct', val:88 }, { lbl:'Nov', val:74 },
+            { lbl:'Dec', val:95 }, { lbl:'Jan', val:110 },{ lbl:'Feb', val:130 },
+            { lbl:'Mar', val:148 }
+        ];
+        var maxE = Math.max.apply(null, enrollData.map(function(d){ return d.val; }));
+        document.getElementById('enroll-chart').innerHTML = enrollData.map(function(d){
+            var h = Math.round((d.val / maxE) * 120);
+            return '<div class="an-bar-col">' +
+                '<span class="an-bar-val">' + d.val + '</span>' +
+                '<div class="an-bar" style="height:' + h + 'px"></div>' +
+                '<span class="an-bar-lbl">' + d.lbl + '</span>' +
+            '</div>';
+        }).join('');
+
+        // Monthly Revenue bar chart
+        var revData = [
+            { lbl:'Sep', val:4200 }, { lbl:'Oct', val:6800 }, { lbl:'Nov', val:5900 },
+            { lbl:'Dec', val:8100 }, { lbl:'Jan', val:9400 }, { lbl:'Feb', val:11200 },
+            { lbl:'Mar', val:13600 }
+        ];
+        var maxR = Math.max.apply(null, revData.map(function(d){ return d.val; }));
+        document.getElementById('revenue-chart').innerHTML = revData.map(function(d){
+            var h = Math.round((d.val / maxR) * 120);
+            return '<div class="an-bar-col">' +
+                '<span class="an-bar-val">₹' + (d.val/1000).toFixed(1) + 'k</span>' +
+                '<div class="an-bar blue" style="height:' + h + 'px"></div>' +
+                '<span class="an-bar-lbl">' + d.lbl + '</span>' +
+            '</div>';
+        }).join('');
+    </script>
+    <script src="js/main.js?v=2"></script>
+</body>
+</html>

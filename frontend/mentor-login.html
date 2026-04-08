@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saarthi Portal | Vidyastra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        (function() {
+            try {
+                var stored = localStorage.getItem('vidyastra_appearance');
+                if (!stored) return;
+                var parsed = JSON.parse(stored);
+                var root = document.documentElement;
+                if (!root) return;
+                var theme = parsed.theme || 'default';
+                var font = parsed.font || 'default';
+                var mode = parsed.mode || 'light';
+                var themeClasses = ['theme-default', 'theme-vedic', 'theme-modern', 'theme-academic'];
+                var fontClasses = ['font-default', 'font-sans', 'font-classical'];
+                for (var i = 0; i < themeClasses.length; i++) root.classList.remove(themeClasses[i]);
+                for (var j = 0; j < fontClasses.length; j++) root.classList.remove(fontClasses[j]);
+                root.classList.remove('mode-dark');
+                if (theme === 'default' || theme === 'vedic' || theme === 'modern' || theme === 'academic') {
+                    root.classList.add('theme-' + theme);
+                }
+                if (font === 'default' || font === 'sans' || font === 'classical') {
+                    root.classList.add('font-' + font);
+                }
+                if (mode === 'dark') {
+                    root.classList.add('mode-dark');
+                }
+            } catch (e) {
+            }
+        })();
+    </script>
+    <link rel="stylesheet" href="css/style.css?v=2">
+    <style>
+        .auth-container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: #FFFFFF;
+            border: 1px solid var(--color-border);
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+        .auth-form {
+            padding: 2.5rem;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--color-text-main);
+        }
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: 2px;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+        .auth-footer {
+            margin-top: 1.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--color-text-muted);
+        }
+        @media (max-width: 768px) {
+            .auth-form {
+                padding: 2rem 1.75rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .auth-form {
+                padding: 1.75rem 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-motif">
+
+    <header class="site-header temple-border-top">
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+            <a href="index.html" class="nav-brand animate-on-scroll">
+                <span style="color: var(--color-text-main);">Vidya</span>stra
+            </a>
+            <nav class="animate-on-scroll">
+                <a href="choose-path.html" class="nav-link">Change Role</a>
+                <button type="button" class="appearance-toggle" aria-label="Appearance settings" aria-expanded="false" aria-controls="appearance-panel">Appearance</button>
+            </nav>
+        </div>
+    </header>
+
+    <section class="section hero-sunrise animate-on-scroll" style="min-height: calc(100vh - 80px); display: flex; align-items: center; padding: 4rem 0;">
+        <div class="container">
+            <div class="auth-container animate-on-scroll">
+                <div class="auth-form">
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <h3 style="margin-bottom: 0.5rem;">Welcome, Mentor</h3>
+                        <p style="font-size: 0.9rem;">Log in to guide learners with your experience.</p>
+                    </div>
+
+                    <div id="mentor-login-form">
+                        <div class="form-group">
+                            <label class="form-label" for="email">Email Address</label>
+                            <input id="email" name="email" type="email" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="password">Password</label>
+                            <div class="password-wrapper">
+                                <input id="password" name="password" type="password" class="form-input">
+                                <button type="button" class="password-toggle" aria-label="Show password"></button>
+                            </div>
+                        </div>
+                        <button type="button" id="mentor-login-btn" class="btn" style="width: 100%;">Log In</button>
+                    </div>
+
+                    <div class="auth-footer">
+                        <span>New mentor here? </span><a href="mentor-application.html">Apply to join.</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="appearance-panel" class="appearance-panel" aria-hidden="true" hidden>
+        <div class="appearance-panel-header">Appearance</div>
+        <div class="appearance-panel-body">
+            <div class="appearance-panel-row">
+                <label class="appearance-toggle-label">
+                    <input type="checkbox" class="appearance-dark-toggle">
+                    <span>Dark mode</span>
+                </label>
+            </div>
+            <div class="appearance-panel-row">
+                <span class="appearance-field-label">Theme</span>
+                <select id="appearance-theme-select" class="appearance-select">
+                    <option value="default">Default Light</option>
+                    <option value="vedic">Vedic Warm</option>
+                    <option value="modern">Modern Minimal</option>
+                    <option value="academic">Academic Calm</option>
+                </select>
+            </div>
+            <div class="appearance-panel-row">
+                <span class="appearance-field-label">Font</span>
+                <select id="appearance-font-select" class="appearance-select">
+                    <option value="default">Default Serif</option>
+                    <option value="sans">Clean Sans-Serif</option>
+                    <option value="classical">Traditional Classical Serif</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('mentor-login-btn').addEventListener('click', function() {
+            window.location.href = 'mentor-home.html';
+        });
+    </script>
+    <script src="js/main.js?v=2"></script>
+</body>
+</html>

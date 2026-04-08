@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Messages | Vidyastra</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial, sans-serif; background: #f5f5f5; color: #111; height: 100vh; display: flex; flex-direction: column; }
+
+        .navbar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 30px; background: #fff; border-bottom: 2px solid #111;
+            flex-shrink: 0;
+        }
+        .navbar h2 { font-size: 1.2rem; }
+        .navbar a { color: #111; text-decoration: none; font-size: 0.9rem; font-weight: 600; }
+        .navbar a:hover { text-decoration: underline; }
+
+        /* Layout */
+        .chat-layout {
+            display: flex; flex: 1; overflow: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px; background: #fff; border-right: 2px solid #111;
+            display: flex; flex-direction: column; flex-shrink: 0;
+        }
+        .sidebar-header {
+            padding: 14px 16px; font-size: 0.78rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.06em;
+            color: #555; border-bottom: 1px solid #ddd;
+        }
+        .contact {
+            display: flex; align-items: center; gap: 10px;
+            padding: 12px 16px; cursor: pointer; border-bottom: 1px solid #eee;
+            transition: background 0.1s;
+        }
+        .contact:hover, .contact.active { background: #f0f0f0; }
+        .contact.active { border-left: 3px solid #111; }
+        .c-avatar {
+            width: 36px; height: 36px; border-radius: 50%;
+            background: #111; color: #fff;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.75rem; font-weight: 700; flex-shrink: 0;
+        }
+        .c-info { flex: 1; min-width: 0; }
+        .c-name    { font-size: 0.88rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .c-preview { font-size: 0.75rem; color: #888; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        /* Chat panel */
+        .chat-panel { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+        .chat-header {
+            padding: 14px 20px; background: #fff; border-bottom: 2px solid #111;
+            display: flex; align-items: center; gap: 12px; flex-shrink: 0;
+        }
+        .chat-header .c-avatar { width: 34px; height: 34px; font-size: 0.72rem; }
+        .chat-header-name { font-size: 1rem; font-weight: 700; }
+        .chat-header-status { font-size: 0.75rem; color: #16a34a; font-weight: 600; }
+
+        /* Messages */
+        .messages {
+            flex: 1; overflow-y: auto; padding: 20px;
+            display: flex; flex-direction: column; gap: 10px;
+            background: #f9f9f9;
+        }
+        .msg { display: flex; flex-direction: column; max-width: 65%; }
+        .msg.sent { align-self: flex-end; align-items: flex-end; }
+        .msg.recv { align-self: flex-start; align-items: flex-start; }
+        .bubble {
+            padding: 10px 14px; border-radius: 12px;
+            font-size: 0.88rem; line-height: 1.5; word-break: break-word;
+        }
+        .msg.sent .bubble { background: #111; color: #fff; border-bottom-right-radius: 3px; }
+        .msg.recv .bubble { background: #fff; color: #111; border: 1px solid #ddd; border-bottom-left-radius: 3px; }
+        .msg-time { font-size: 0.65rem; color: #aaa; margin-top: 3px; }
+
+        .date-divider {
+            text-align: center; font-size: 0.72rem; color: #aaa;
+            font-weight: 600; margin: 4px 0;
+        }
+
+        /* Input bar */
+        .input-bar {
+            display: flex; gap: 10px; padding: 14px 20px;
+            background: #fff; border-top: 2px solid #111; flex-shrink: 0;
+        }
+        .input-bar input {
+            flex: 1; padding: 10px 14px;
+            border: 2px solid #111; border-radius: 999px;
+            font-family: Arial; font-size: 0.9rem; color: #111;
+            outline: none;
+        }
+        .input-bar input:focus { border-color: #333; }
+        .send-btn {
+            width: 42px; height: 42px; border-radius: 50%;
+            background: #111; color: #fff; border: none;
+            font-size: 1rem; cursor: pointer; display: flex;
+            align-items: center; justify-content: center;
+            transition: background 0.15s;
+        }
+        .send-btn:hover { background: #333; }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <h2>Vidyastra · Messages</h2>
+        <a href="mentor-home.html">← Dashboard</a>
+    </div>
+
+    <div class="chat-layout">
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">Conversations</div>
+            <div id="contact-list"></div>
+        </div>
+
+        <!-- Chat -->
+        <div class="chat-panel">
+            <div class="chat-header">
+                <div class="c-avatar" id="chat-avatar">AK</div>
+                <div>
+                    <div class="chat-header-name" id="chat-name">Arjun Kumar</div>
+                    <div class="chat-header-status">● Online</div>
+                </div>
+            </div>
+            <div class="messages" id="messages"></div>
+            <div class="input-bar">
+                <input type="text" id="msg-input" placeholder="Type a message…" autocomplete="off">
+                <button class="send-btn" onclick="sendMessage()" title="Send">➤</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var contacts = [
+            { name: 'Arjun Kumar',  preview: 'Thanks for the session!' },
+            { name: 'Priya Sharma', preview: 'Can we reschedule?' },
+            { name: 'Rohan Mehta',  preview: 'I have a doubt in calculus.' },
+            { name: 'Ananya Singh', preview: 'The notes were helpful.' },
+            { name: 'Vikram Nair',  preview: 'See you tomorrow!' },
+        ];
+
+        var chats = {
+            0: [
+                { text: 'Namaste! I wanted to ask about JEE preparation.', sent: false, time: '17:50' },
+                { text: 'Namaste Arjun! Start with NCERT, then move to HC Verma.', sent: true, time: '17:52' },
+                { text: 'How many hours should I study daily?', sent: false, time: '17:54' },
+                { text: 'Aim for 6–8 focused hours. Quality over quantity.', sent: true, time: '17:56' },
+                { text: 'Thanks for the session!', sent: false, time: '18:02' },
+            ],
+            1: [
+                { text: 'Can we reschedule our session to Friday?', sent: false, time: '17:44' },
+                { text: 'Sure Priya, Friday works. What time?', sent: true, time: '17:45' },
+            ],
+            2: [
+                { text: 'I have a doubt in calculus — limits.', sent: false, time: '16:28' },
+                { text: 'Share the problem and I\'ll walk you through it.', sent: true, time: '16:30' },
+            ],
+        };
+
+        var active = 0;
+
+        function initials(name) {
+            var p = name.trim().split(' ');
+            return p.length >= 2 ? (p[0][0] + p[p.length-1][0]).toUpperCase() : name.slice(0,2).toUpperCase();
+        }
+
+        function now() {
+            var d = new Date();
+            return d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0');
+        }
+
+        function renderContacts() {
+            document.getElementById('contact-list').innerHTML = contacts.map(function(c, i) {
+                return '<div class="contact' + (i === active ? ' active' : '') + '" onclick="switchContact(' + i + ')">' +
+                    '<div class="c-avatar">' + initials(c.name) + '</div>' +
+                    '<div class="c-info"><div class="c-name">' + c.name + '</div><div class="c-preview">' + c.preview + '</div></div>' +
+                '</div>';
+            }).join('');
+        }
+
+        function renderMessages() {
+            var msgs = chats[active] || [];
+            var box  = document.getElementById('messages');
+            box.innerHTML = '<div class="date-divider">Today</div>' +
+                msgs.map(function(m) {
+                    return '<div class="msg ' + (m.sent ? 'sent' : 'recv') + '">' +
+                        '<div class="bubble">' + m.text + '</div>' +
+                        '<div class="msg-time">' + m.time + (m.sent ? ' ✓✓' : '') + '</div>' +
+                    '</div>';
+                }).join('');
+            box.scrollTop = box.scrollHeight;
+        }
+
+        function switchContact(i) {
+            active = i;
+            document.getElementById('chat-name').textContent   = contacts[i].name;
+            document.getElementById('chat-avatar').textContent = initials(contacts[i].name);
+            renderContacts();
+            renderMessages();
+        }
+
+        function sendMessage() {
+            var input = document.getElementById('msg-input');
+            var text  = input.value.trim();
+            if (!text) return;
+
+            if (!chats[active]) chats[active] = [];
+            chats[active].push({ text: text, sent: true, time: now() });
+            contacts[active].preview = text;
+            input.value = '';
+            renderContacts();
+            renderMessages();
+
+            // Auto-reply
+            setTimeout(function() {
+                var replies = ['Got it!', 'Sure, understood.', 'Thanks for sharing!', 'Let\'s discuss this soon.', 'Noted 🙏'];
+                var reply = replies[Math.floor(Math.random() * replies.length)];
+                chats[active].push({ text: reply, sent: false, time: now() });
+                contacts[active].preview = reply;
+                renderContacts();
+                renderMessages();
+            }, 1000);
+        }
+
+        document.getElementById('msg-input').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') { e.preventDefault(); sendMessage(); }
+        });
+
+        renderContacts();
+        renderMessages();
+    </script>
+</body>
+</html>

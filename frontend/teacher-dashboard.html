@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guru Portal | Vidyastra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        (function() {
+            try {
+                var stored = localStorage.getItem('vidyastra_appearance');
+                if (!stored) return;
+                var parsed = JSON.parse(stored);
+                var root = document.documentElement;
+                if (!root) return;
+                var theme = parsed.theme || 'default';
+                var font = parsed.font || 'default';
+                var mode = parsed.mode || 'light';
+                var themeClasses = ['theme-default', 'theme-vedic', 'theme-modern', 'theme-academic'];
+                var fontClasses = ['font-default', 'font-sans', 'font-classical'];
+                for (var i = 0; i < themeClasses.length; i++) root.classList.remove(themeClasses[i]);
+                for (var j = 0; j < fontClasses.length; j++) root.classList.remove(fontClasses[j]);
+                root.classList.remove('mode-dark');
+                if (theme === 'default' || theme === 'vedic' || theme === 'modern' || theme === 'academic') {
+                    root.classList.add('theme-' + theme);
+                }
+                if (font === 'default' || font === 'sans' || font === 'classical') {
+                    root.classList.add('font-' + font);
+                }
+                if (mode === 'dark') {
+                    root.classList.add('mode-dark');
+                }
+            } catch (e) {
+            }
+        })();
+    </script>
+    <link rel="stylesheet" href="css/style.css?v=2">
+</head>
+<body class="bg-motif">
+
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar temple-border-top">
+            <a href="index.html" class="nav-brand animate-on-scroll" style="display: block; margin-bottom: 3rem;"><span style="color: var(--color-text-main);">Vidya</span>stra</a>
+            
+            <nav class="animate-on-scroll">
+                <a href="#" class="sidebar-link active">Overview</a>
+                <a href="#" class="sidebar-link">Cohort Roster</a>
+                <a href="#" class="sidebar-link">Curriculum Plan</a>
+                <a href="#" class="sidebar-link">Evaluations</a>
+                <a href="#" class="sidebar-link">Mentorship Requests</a>
+            </nav>
+
+            <div class="animate-on-scroll" style="margin-top: auto; padding-top: 2rem; border-top: 1px solid var(--color-border);">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+                    <div>
+                        <p style="font-size: 0.9rem; font-weight: 600; margin-bottom: 0;">Prof. Mehta</p>
+                        <p style="font-size: 0.75rem; margin-bottom: 0;">Senior Acharya</p>
+                    </div>
+                    <button type="button" class="appearance-toggle" aria-label="Appearance settings" aria-expanded="false" aria-controls="appearance-panel">Appearance</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="animate-on-scroll" style="margin-bottom: 3rem; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h1>Cohort Overview</h1>
+                    <p>Monitoring the progress of the Batch of 2026.</p>
+                </div>
+                <button class="btn">New Evaluation</button>
+            </header>
+
+            <div class="card animate-on-scroll">
+                <h3 style="margin-bottom: 1.5rem;">Scholar Performance</h3>
+                
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Scholar Name</th>
+                            <th>Discipline</th>
+                            <th>Attendance</th>
+                            <th>Mastery Level</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Arjun Kumar</td>
+                            <td>Physics</td>
+                            <td>98%</td>
+                            <td>Exemplary</td>
+                            <td><span style="color: var(--color-accent); font-weight: 600;">Good Standing</span></td>
+                        </tr>
+                        <tr>
+                            <td>Priya Sharma</td>
+                            <td>Mathematics</td>
+                            <td>95%</td>
+                            <td>Proficient</td>
+                            <td><span style="color: var(--color-accent); font-weight: 600;">Good Standing</span></td>
+                        </tr>
+                        <tr>
+                            <td>Neha Singh</td>
+                            <td>Literature</td>
+                            <td>82%</td>
+                            <td>Developing</td>
+                            <td><span style="color: var(--color-primary); font-weight: 600;">Needs Guidance</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <div id="appearance-panel" class="appearance-panel" aria-hidden="true" hidden>
+        <div class="appearance-panel-header">Appearance</div>
+        <div class="appearance-panel-body">
+            <div class="appearance-panel-row">
+                <label class="appearance-toggle-label">
+                    <input type="checkbox" class="appearance-dark-toggle">
+                    <span>Dark mode</span>
+                </label>
+            </div>
+            <div class="appearance-panel-row">
+                <span class="appearance-field-label">Theme</span>
+                <select id="appearance-theme-select" class="appearance-select">
+                    <option value="default">Default Light</option>
+                    <option value="vedic">Vedic Warm</option>
+                    <option value="modern">Modern Minimal</option>
+                    <option value="academic">Academic Calm</option>
+                </select>
+            </div>
+            <div class="appearance-panel-row">
+                <span class="appearance-field-label">Font</span>
+                <select id="appearance-font-select" class="appearance-select">
+                    <option value="default">Default Serif</option>
+                    <option value="sans">Clean Sans-Serif</option>
+                    <option value="classical">Traditional Classical Serif</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js?v=2"></script>
+</body>
+</html>

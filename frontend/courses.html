@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses | Vidyastra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        (function(){try{var s=localStorage.getItem('vidyastra_appearance');if(!s)return;var p=JSON.parse(s),r=document.documentElement;['theme-default','theme-vedic','theme-modern','theme-academic'].forEach(function(c){r.classList.remove(c);});['font-default','font-sans','font-classical'].forEach(function(c){r.classList.remove(c);});r.classList.remove('mode-dark');if(p.theme)r.classList.add('theme-'+p.theme);if(p.font)r.classList.add('font-'+p.font);if(p.mode==='dark')r.classList.add('mode-dark');}catch(e){}})();
+    </script>
+    <link rel="stylesheet" href="css/style.css?v=2">
+    <style>
+        .cp-nav { background:var(--color-surface); border-bottom:1px solid var(--color-border); padding:1rem 0; position:sticky; top:0; z-index:100; }
+        .cp-nav-inner { max-width:1200px; margin:0 auto; padding:0 1.5rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+        .cp-nav-links { display:flex; align-items:center; gap:0.25rem; list-style:none; }
+        .cp-nav-links a { padding:0.4rem 0.85rem; border-radius:6px; font-size:0.9rem; font-weight:500; color:var(--color-text-main); text-decoration:none; transition:background 0.15s,color 0.15s; }
+        .cp-nav-links a:hover,.cp-nav-links a.active { background:var(--color-bg-alt); color:var(--color-primary); }
+        .cp-nav-right { display:flex; align-items:center; gap:1rem; }
+        .cp-avatar { width:36px;height:36px;border-radius:50%;background:var(--color-primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.82rem;cursor:pointer; }
+
+        .co-page { max-width:1200px; margin:0 auto; padding:0 1.5rem 4rem; }
+
+        /* Hero */
+        .co-hero { padding:3rem 0 2rem; }
+        .co-hero h1 { font-size:clamp(1.75rem,3vw,2.5rem); margin-bottom:0.4rem; }
+        .co-hero p  { font-size:1rem; color:var(--color-text-muted); margin:0; }
+
+        /* Row */
+        .co-row { margin-bottom:3rem; }
+        .co-row-header { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:1rem; padding-bottom:0.6rem; border-bottom:1px solid var(--color-border); }
+        .co-row-header h2 { font-size:1rem; font-family:var(--font-heading); font-weight:700; text-transform:uppercase; letter-spacing:0.07em; color:var(--color-text-muted); margin:0; }
+        .co-row-header a  { font-size:0.82rem; color:var(--color-primary); font-weight:600; text-decoration:none; }
+
+        /* Scroll track */
+        .co-scroll {
+            display:flex;
+            gap:1rem;
+            overflow-x:auto;
+            padding-bottom:0.75rem;
+            scroll-snap-type:x mandatory;
+            -webkit-overflow-scrolling:touch;
+        }
+        .co-scroll::-webkit-scrollbar { height:4px; }
+        .co-scroll::-webkit-scrollbar-track { background:var(--color-border); border-radius:2px; }
+        .co-scroll::-webkit-scrollbar-thumb { background:var(--color-primary); border-radius:2px; }
+
+        /* Card */
+        .co-card {
+            flex:0 0 220px;
+            background:var(--color-surface);
+            border:1px solid var(--color-border);
+            border-radius:8px;
+            overflow:hidden;
+            cursor:pointer;
+            scroll-snap-align:start;
+            transition:transform 0.2s ease, border-color 0.2s, box-shadow 0.2s;
+            text-decoration:none;
+            color:inherit;
+            display:flex;
+            flex-direction:column;
+        }
+        .co-card:hover {
+            transform:scale(1.05);
+            border-color:var(--color-primary);
+            box-shadow:0 8px 24px rgba(0,0,0,0.12);
+            z-index:2;
+        }
+        .co-thumb {
+            height:120px;
+            background:linear-gradient(135deg,var(--color-bg-alt),var(--color-border));
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:2.25rem;
+            flex-shrink:0;
+        }
+        .co-card-body { padding:0.9rem 1rem 1rem; flex:1; display:flex; flex-direction:column; }
+        .co-card-body h3 { font-size:0.88rem; font-weight:700; color:var(--color-text-main); margin-bottom:0.3rem; line-height:1.3; }
+        .co-card-body p  { font-size:0.75rem; color:var(--color-text-muted); margin:0 0 0.75rem; line-height:1.45; flex:1; }
+        .co-card-tag { font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--color-primary); }
+
+        /* Progress bar inside card */
+        .co-card-progress { height:3px; background:var(--color-border); border-radius:2px; margin-top:0.6rem; overflow:hidden; }
+        .co-card-progress-fill { height:100%; background:var(--color-primary); border-radius:2px; }
+    </style>
+</head>
+<body class="bg-motif">
+
+    <nav class="cp-nav">
+        <div class="cp-nav-inner">
+            <a href="index.html" class="nav-brand"><span>Vidya</span>stra</a>
+            <ul class="cp-nav-links">
+                <li><a href="learning-home.html">Home</a></li>
+                <li><a href="courses.html" class="active">Courses</a></li>
+                <li><a href="progress.html">Progress</a></li>
+                <li><a href="student-dashboard.html">Profile</a></li>
+            </ul>
+            <div class="cp-nav-right">
+                <div class="cp-avatar" id="nav-avatar">S</div>
+                <button type="button" class="appearance-toggle" aria-label="Appearance settings" aria-expanded="false" aria-controls="appearance-panel">Appearance</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="co-page">
+        <div class="co-hero animate-on-scroll">
+            <h1>Your Courses</h1>
+            <p>Pick up where you left off, or explore something new.</p>
+        </div>
+
+        <!-- ── From API ── -->
+        <div class="co-row animate-on-scroll">
+            <div class="co-row-header">
+                <h2>All Courses (Live from API)</h2>
+            </div>
+            <div class="co-scroll" id="api-courses-row">
+                <p style="color:var(--color-text-muted);padding:1rem;">Loading courses…</p>
+            </div>
+        </div>
+
+        <!-- ── Continue Learning ── -->
+        <div class="co-row animate-on-scroll">
+            <div class="co-row-header">
+                <h2>Continue Learning</h2>
+                <a href="progress.html">See progress →</a>
+            </div>
+            <div class="co-scroll">
+                <a href="course-player.html" class="co-card">
+                    <div class="co-thumb">💻</div>
+                    <div class="co-card-body">
+                        <h3>Web Development Basics</h3>
+                        <p>Module 3 of 8 — HTML, CSS & JS fundamentals.</p>
+                        <div class="co-card-progress"><div class="co-card-progress-fill" style="width:60%"></div></div>
+                        <span class="co-card-tag" style="margin-top:0.5rem;display:block;">60% complete</span>
+                    </div>
+                </a>
+                <a href="course-player.html" class="co-card">
+                    <div class="co-thumb">📐</div>
+                    <div class="co-card-body">
+                        <h3>Vedic Mathematics</h3>
+                        <p>Module 4 of 10 — Sutras for rapid calculation.</p>
+                        <div class="co-card-progress"><div class="co-card-progress-fill" style="width:40%"></div></div>
+                        <span class="co-card-tag" style="margin-top:0.5rem;display:block;">40% complete</span>
+                    </div>
+                </a>
+                <a href="course-player.html" class="co-card">
+                    <div class="co-thumb">⚙️</div>
+                    <div class="co-card-body">
+                        <h3>Classical Mechanics</h3>
+                        <p>Module 2 of 6 — Kinematics and Newton's laws.</p>
+                        <div class="co-card-progress"><div class="co-card-progress-fill" style="width:25%"></div></div>
+                        <span class="co-card-tag" style="margin-top:0.5rem;display:block;">25% complete</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- ── Recommended ── -->
+        <div class="co-row animate-on-scroll">
+            <div class="co-row-header">
+                <h2>Recommended for You</h2>
+            </div>
+            <div class="co-scroll">
+                <a href="course-player.html" class="co-card">
+                    <div class="co-thumb">🏛️</div>
+                    <div class="co-card-body">
+                        <h3>Indian Philosophy</h3>
+                        <p>Vedanta, Nyaya, and classical schools of thought.</p>
+                        <span class="co-card-tag">8 modules</span>
+                    </div>
+                </a>
+                <a href="course-player.html" class="co-card">
+                    <div class="co-thumb">🧬</div>
+                    <div class="co-card-body">
+                        <h3>Life Sciences</h3>
+                        <p>Biology, ecology, and the science of living systems.</p>
+                        <span class="co-card-tag">10 modules</span>
+                    </div>
+                </a>
+                <a href="course-player.html" class="co-card">
+                    <div class="co-thumb">🔭</div>
+                    <div class="co-card-body">
+                        <h3>Astronomy & Cosmos</h3>
+                        <p>From ancient Vedic astronomy to modern astrophysics.</p>
+                        <span class="co-card-tag">6 modules</span>
+                    </div>
+                </a>
+                <a href="course-player.html" class="co-card">
+                    <div class="co-thumb">🎵</div>
+                    <div class="co-card-body">
+                        <h3>Indian Classical Music</h3>
+                        <p>Ragas, talas, and the theory of Hindustani music.</p>
+                        <span class="co-card-tag">12 modules</span>
+                    </div>
+                </a>
+                <a href="course-player.html" class="co-card">
+                    <div class="co-thumb">📜</div>
+                    <div class="co-card-body">
+                        <h3>Sanskrit Foundations</h3>
+                        <p>Grammar, script, and reading classical texts.</p>
+                        <span class="co-card-tag">9 modules</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- ── Popular ── -->
+        <div class="co-row animate-on-scroll">
+            <div class="co-row-header">
+                <h2>Popular Courses</h2>
+            </div>
+            <div class="co-scroll">
+                <a href="course-player.html" class="co-card">
+                    <div class="co-thumb">🧮</div>
+                    <div class="co-card-body">
+                        <h3>Advanced Mathematics</h3>
+                        <p>Calculus, linear algebra, and number theory.</p>
+                        <span class="co-card-tag">⭐ 4.9 · 2.4k students</span>
+                    </div>
+                </a>
+                <a href="course-player.html" class="co-card">
+                    <div class="co-thumb">⚗️</div>
+                    <div class="co-card-body">
+                        <h3>Chemistry Essentials</h3>
+                        <p>Atomic structure, bonding, and reactions.</p>
+                        <span class="co-card-tag">⭐ 4.8 · 1.9k students</span>
+                    </div>
+                </a>
+                <a href="course-player.html" class="co-card">
+                    <div class="co-thumb">🌐</div>
+                    <div class="co-card-body">
+                        <h3>World History</h3>
+                        <p>Civilisations, empires, and turning points.</p>
+                        <span class="co-card-tag">⭐ 4.7 · 3.1k students</span>
+                    </div>
+                </a>
+                <a href="course-player.html" class="co-card">
+                    <div class="co-thumb">🧠</div>
+                    <div class="co-card-body">
+                        <h3>Psychology & Mind</h3>
+                        <p>Cognitive science, behaviour, and mental models.</p>
+                        <span class="co-card-tag">⭐ 4.8 · 2.2k students</span>
+                    </div>
+                </a>
+                <a href="course-player.html" class="co-card">
+                    <div class="co-thumb">📊</div>
+                    <div class="co-card-body">
+                        <h3>Data & Statistics</h3>
+                        <p>Probability, inference, and data interpretation.</p>
+                        <span class="co-card-tag">⭐ 4.6 · 1.7k students</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- ── New Releases ── -->
+        <div class="co-row animate-on-scroll">
+            <div class="co-row-header">
+                <h2>New Releases</h2>
+            </div>
+            <div class="co-scroll">
+                <a href="course-player.html" class="co-card">
+                    <div class="co-thumb">🤖</div>
+                    <div class="co-card-body">
+                        <h3>Intro to AI</h3>
+                        <p>Machine learning concepts for absolute beginners.</p>
+                        <span class="co-card-tag">🆕 Just added</span>
+                    </div>
+                </a>
+                <a href="course-player.html" class="co-card">
+                    <div class="co-thumb">🌿</div>
+                    <div class="co-card-body">
+                        <h3>Ayurveda Basics</h3>
+                        <p>Doshas, herbs, and the science of holistic health.</p>
+                        <span class="co-card-tag">🆕 Just added</span>
+                    </div>
+                </a>
+                <a href="course-player.html" class="co-card">
+                    <div class="co-thumb">🏗️</div>
+                    <div class="co-card-body">
+                        <h3>Architecture & Design</h3>
+                        <p>Vastu Shastra meets modern spatial design.</p>
+                        <span class="co-card-tag">🆕 Just added</span>
+                    </div>
+                </a>
+                <a href="course-player.html" class="co-card">
+                    <div class="co-thumb">🎭</div>
+                    <div class="co-card-body">
+                        <h3>Performing Arts</h3>
+                        <p>Bharatanatyam, theatre, and expressive arts.</p>
+                        <span class="co-card-tag">🆕 Just added</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Appearance Panel -->
+    <div id="appearance-panel" class="appearance-panel" aria-hidden="true" hidden>
+        <div class="appearance-panel-header">Appearance</div>
+        <div class="appearance-panel-body">
+            <div class="appearance-panel-row">
+                <label class="appearance-toggle-label"><input type="checkbox" class="appearance-dark-toggle"><span>Dark mode</span></label>
+            </div>
+            <div class="appearance-panel-row">
+                <span class="appearance-field-label">Theme</span>
+                <select id="appearance-theme-select" class="appearance-select">
+                    <option value="default">Default Light</option>
+                    <option value="vedic">Vedic Warm</option>
+                    <option value="modern">Modern Minimal</option>
+                    <option value="academic">Academic Calm</option>
+                </select>
+            </div>
+            <div class="appearance-panel-row">
+                <span class="appearance-field-label">Font</span>
+                <select id="appearance-font-select" class="appearance-select">
+                    <option value="default">Default Serif</option>
+                    <option value="sans">Clean Sans-Serif</option>
+                    <option value="classical">Traditional Classical Serif</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function(){
+            var name = localStorage.getItem('userName') || 'Student';
+            try { var u = JSON.parse(localStorage.getItem('auth_user')||'null'); if(u&&u.name) name=u.name; } catch(e){}
+            var av = document.getElementById('nav-avatar');
+            if(av){ var p=name.trim().split(' '); av.textContent=p.length>=2?(p[0][0]+p[p.length-1][0]).toUpperCase():name.slice(0,2).toUpperCase(); }
+        })();
+    </script>
+    <script src="js/api.js"></script>
+    <script src="js/courses.js"></script>
+    <script src="js/main.js?v=2"></script>
+</body>
+</html>

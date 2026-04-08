@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome, Shishya | Vidyastra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        (function() {
+            try {
+                var stored = localStorage.getItem('vidyastra_appearance');
+                if (!stored) return;
+                var parsed = JSON.parse(stored);
+                var root = document.documentElement;
+                if (!root) return;
+                var theme = parsed.theme || 'default';
+                var font = parsed.font || 'default';
+                var mode = parsed.mode || 'light';
+                var themeClasses = ['theme-default', 'theme-vedic', 'theme-modern', 'theme-academic'];
+                var fontClasses = ['font-default', 'font-sans', 'font-classical'];
+                for (var i = 0; i < themeClasses.length; i++) root.classList.remove(themeClasses[i]);
+                for (var j = 0; j < fontClasses.length; j++) root.classList.remove(fontClasses[j]);
+                root.classList.remove('mode-dark');
+                if (theme === 'default' || theme === 'vedic' || theme === 'modern' || theme === 'academic') {
+                    root.classList.add('theme-' + theme);
+                }
+                if (font === 'default' || font === 'sans' || font === 'classical') {
+                    root.classList.add('font-' + font);
+                }
+                if (mode === 'dark') {
+                    root.classList.add('mode-dark');
+                }
+            } catch (e) {
+            }
+        })();
+    </script>
+    <link rel="stylesheet" href="css/style.css?v=2">
+    <style>
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(44, 36, 32, 0.4); /* Softer Deep Earth overlay */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-container {
+            background: var(--color-bg); /* Warm Parchment theme */
+            width: 90%;
+            max-width: 480px;
+            padding: 3.5rem 2.5rem 3rem 2.5rem;
+            border-radius: 12px;
+            position: relative;
+            box-shadow: 0 30px 60px rgba(44, 36, 32, 0.15);
+            border: 1px solid var(--color-border);
+            border-top: 6px solid var(--color-primary); /* Agni accent */
+            transform: translateY(20px) scale(0.98);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            text-align: center;
+        }
+
+        .modal-overlay.active .modal-container {
+            transform: translateY(0) scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.25rem;
+            right: 1.25rem;
+            font-size: 1.75rem;
+            cursor: pointer;
+            color: var(--color-text-muted);
+            transition: all 0.2s ease;
+            border: none;
+            background: rgba(0,0,0,0.03);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            padding-bottom: 4px;
+        }
+
+        .modal-close:hover {
+            background: rgba(194, 65, 12, 0.1);
+            color: var(--color-primary);
+            transform: rotate(90deg);
+        }
+
+        .modal-title {
+            margin-bottom: 1.25rem;
+            color: var(--color-text-main);
+            font-family: var(--font-heading);
+            font-size: 2.25rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .modal-description {
+            color: var(--color-text-muted);
+            margin-bottom: 2.5rem;
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            max-width: 32ch;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .modal-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+        }
+
+        /* Ensure modal buttons look premium and consistent */
+        .modal-actions .btn {
+            width: 100%;
+            padding: 1.125rem 1.5rem;
+            font-size: 0.95rem;
+            letter-spacing: 0.08em;
+            border-radius: 8px;
+            font-weight: 700;
+            text-transform: uppercase;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(194, 65, 12, 0.1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+
+        /* Sign Up (Primary Button) - Soft Beige/Golden */
+        .modal-actions .btn-primary {
+            background-color: #FFEDD5;
+            color: #9A3412 !important;
+            border: 2px solid #FFEDD5;
+        }
+
+        .modal-actions .btn-primary:hover {
+            background-color: #FED7AA;
+            border-color: #FED7AA;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(154, 52, 18, 0.1);
+        }
+
+        /* Sign In (Secondary Button) - Matches Sign Up style */
+        .modal-actions .btn-secondary {
+            background-color: #FFEDD5;
+            color: #9A3412 !important;
+            border: 2px solid #FFEDD5;
+        }
+
+        .modal-actions .btn-secondary:hover {
+            background-color: #FED7AA;
+            border-color: #FED7AA;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(154, 52, 18, 0.1);
+        }
+
+        @media (max-width: 480px) {
+            .modal-actions {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .modal-container {
+                padding: 3rem 1.5rem 2.5rem 1.5rem;
+                width: 95%;
+            }
+            .modal-title {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-motif">
+    <div class="page-transition-overlay"></div>
+
+    <header class="site-header temple-border-top">
+        <div class="container" style="display: flex; justify-content: center; align-items: center; position: relative;">
+            <a href="index.html" class="nav-brand animate-on-scroll">
+                <span style="color: var(--color-text-main);">Vidya</span>stra
+            </a>
+            <button type="button" class="appearance-toggle" aria-label="Appearance settings" aria-expanded="false" aria-controls="appearance-panel" style="position: absolute; right: 0;">Appearance</button>
+        </div>
+    </header>
+
+    <main class="section" style="min-height: calc(100vh - 120px); display: flex; align-items: center;">
+        <div class="container">
+            <div class="animate-on-scroll shishya-hero">
+                <div class="bg-vedic-subtle" style="position: absolute; inset: -40px; opacity: 0.35; pointer-events: none;"></div>
+                <h1 style="margin-bottom: 0.75rem; white-space: nowrap;">Welcome, Shishya</h1>
+                <p class="text-lead" style="color: var(--color-text-muted);">
+                    This space is for serious learners who are ready to think with others, listen deeply, and build understanding together.
+                </p>
+            </div>
+
+            <div class="collab-flow animate-on-scroll">
+                <div style="text-align: center; margin-bottom: var(--space-ms);">
+                    <h2 style="margin-bottom: 0.5rem;">Collaborative Learning Flow</h2>
+                    <p style="font-size: 0.95rem; color: var(--color-text-muted); max-width: 40rem; margin: 0 auto;">
+                        A simple view of how teams learn together inside the student portal.
+                    </p>
+                </div>
+
+                <div class="collab-flow-steps">
+                    <div class="collab-step collab-step--start">
+                        <div class="collab-step-card">
+                            <span class="collab-step-tag">Start</span>
+                            <p>Student logs into the portal.</p>
+                        </div>
+                    </div>
+
+                    <div class="collab-step collab-step--process">
+                        <div class="collab-step-card">
+                            <span class="collab-step-tag">Process</span>
+                            <p>Student selects a theme or subject for the session.</p>
+                        </div>
+                    </div>
+
+                    <div class="collab-step collab-step--process">
+                        <div class="collab-step-card">
+                            <span class="collab-step-tag">Process</span>
+                            <p>System assigns students into diverse teams based on region and background.</p>
+                        </div>
+                    </div>
+
+                    <div class="collab-step collab-step--process">
+                        <div class="collab-step-card">
+                            <span class="collab-step-tag">Process</span>
+                            <p>Each team receives a problem statement or challenge.</p>
+                        </div>
+                    </div>
+
+                    <div class="collab-step collab-step--process">
+                        <div class="collab-step-card">
+                            <span class="collab-step-tag">Process</span>
+                            <p>Students work on the problem within a defined time interval.</p>
+                        </div>
+                    </div>
+
+                    <div class="collab-step collab-step--discussion">
+                        <div class="collab-step-card">
+                            <span class="collab-step-tag">Discussion</span>
+                            <p>Team discussion phase where each student shares ideas and approaches.</p>
+                        </div>
+                    </div>
+
+                    <div class="collab-step collab-step--process">
+                        <div class="collab-step-card">
+                            <span class="collab-step-tag">Process</span>
+                            <p>Team evaluates ideas and understands different perspectives.</p>
+                        </div>
+                    </div>
+
+                    <div class="collab-step collab-step--decision">
+                        <div class="collab-step-card">
+                            <span class="collab-step-tag">Decision</span>
+                            <p>Is the team satisfied with the solution?</p>
+                            <div class="collab-decision-branches">
+                                <span>Yes: move to final submission.</span>
+                                <span>No: return to discussion and refinement.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="collab-step collab-step--submission">
+                        <div class="collab-step-card">
+                            <span class="collab-step-tag">Submission</span>
+                            <p>Final solution submission by the team.</p>
+                        </div>
+                    </div>
+
+                    <div class="collab-step collab-step--process">
+                        <div class="collab-step-card">
+                            <span class="collab-step-tag">Reflection</span>
+                            <p>Reflection or feedback stage to capture learning from the activity.</p>
+                        </div>
+                    </div>
+
+                    <div class="collab-step collab-step--end collab-step--last">
+                        <div class="collab-step-card">
+                            <span class="collab-step-tag">End</span>
+                            <p>Cycle completes. Student is ready for the next challenge.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="animate-on-scroll" style="text-align: center; margin-top: var(--space-lg);">
+                <button type="button" class="btn" id="open-access-modal">
+                    Enter Student Portal
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Student Access Modal -->
+    <div class="modal-overlay" id="access-modal-overlay">
+        <div class="modal-container">
+            <button class="modal-close" id="close-access-modal" aria-label="Close modal">&times;</button>
+            <h2 class="modal-title">Student Access</h2>
+            <p class="modal-description">
+                Please select your method of entry. <br>
+                For serious learners who seek to grow and think together.
+            </p>
+            <div class="modal-actions">
+                <a href="login-student.html" class="btn btn-secondary">Sign In</a>
+                <a href="signup-student.html" class="btn btn-primary">Sign Up</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="appearance-panel" class="appearance-panel" aria-hidden="true" hidden>
+        <div class="appearance-panel-header">Appearance</div>
+        <div class="appearance-panel-body">
+            <div class="appearance-panel-row">
+                <label class="appearance-toggle-label">
+                    <input type="checkbox" class="appearance-dark-toggle">
+                    <span>Dark mode</span>
+                </label>
+            </div>
+            <div class="appearance-panel-row">
+                <span class="appearance-field-label">Theme</span>
+                <select id="appearance-theme-select" class="appearance-select">
+                    <option value="default">Default Light</option>
+                    <option value="vedic">Vedic Warm</option>
+                    <option value="modern">Modern Minimal</option>
+                    <option value="academic">Academic Calm</option>
+                </select>
+            </div>
+            <div class="appearance-panel-row">
+                <span class="appearance-field-label">Font</span>
+                <select id="appearance-font-select" class="appearance-select">
+                    <option value="default">Default Serif</option>
+                    <option value="sans">Clean Sans-Serif</option>
+                    <option value="classical">Traditional Classical Serif</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js?v=2"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const openModalBtn = document.getElementById('open-access-modal');
+            const closeModalBtn = document.getElementById('close-access-modal');
+            const modalOverlay = document.getElementById('access-modal-overlay');
+
+            if (openModalBtn && modalOverlay) {
+                openModalBtn.addEventListener('click', function() {
+                    modalOverlay.classList.add('active');
+                    document.body.style.overflow = 'hidden'; // Prevent scroll
+                });
+            }
+
+            if (closeModalBtn && modalOverlay) {
+                closeModalBtn.addEventListener('click', function() {
+                    modalOverlay.classList.remove('active');
+                    document.body.style.overflow = ''; // Restore scroll
+                });
+            }
+
+            // Close when clicking outside
+            window.addEventListener('click', function(e) {
+                if (e.target === modalOverlay) {
+                    modalOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+            
+            // Close on Escape key
+            window.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+                    modalOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

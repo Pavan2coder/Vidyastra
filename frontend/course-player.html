@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Player | Vidyastra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>(function(){try{var s=localStorage.getItem('vidyastra_appearance');if(!s)return;var p=JSON.parse(s),r=document.documentElement;['theme-default','theme-vedic','theme-modern','theme-academic'].forEach(c=>r.classList.remove(c));['font-default','font-sans','font-classical'].forEach(c=>r.classList.remove(c));r.classList.remove('mode-dark');if(p.theme)r.classList.add('theme-'+p.theme);if(p.font)r.classList.add('font-'+p.font);if(p.mode==='dark')r.classList.add('mode-dark');}catch(e){}})();</script>
+    <link rel="stylesheet" href="css/style.css?v=2">
+    <style>
+        body { background-image: none !important; }
+
+        /* ── Navbar ── */
+        .pl-nav { background:var(--color-surface); border-bottom:1px solid var(--color-border); padding:0.85rem 0; position:sticky; top:0; z-index:100; }
+        .pl-nav-inner { max-width:1400px; margin:0 auto; padding:0 1.5rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+        .pl-back { display:inline-flex; align-items:center; gap:0.4rem; font-size:0.88rem; font-weight:600; color:var(--color-text-muted); text-decoration:none; transition:color 0.15s; }
+        .pl-back:hover { color:var(--color-primary); }
+
+        /* ── Layout ── */
+        .pl-layout { display:grid; grid-template-columns:1fr 320px; min-height:calc(100vh - 56px); }
+        @media(max-width:900px){ .pl-layout { grid-template-columns:1fr; } }
+
+        /* ── Video ── */
+        .pl-main { padding:1.5rem; display:flex; flex-direction:column; gap:1.25rem; }
+        .pl-video-wrap {
+            background:#000; border-radius:8px; overflow:hidden;
+            aspect-ratio:16/9; position:relative;
+        }
+        .pl-video-wrap iframe {
+            width:100%; height:100%; border:none; display:block;
+        }
+
+        /* ── Info bar ── */
+        .pl-info { background:var(--color-surface); border:1px solid var(--color-border); border-radius:8px; padding:1.5rem; }
+        .pl-course-title  { font-size:1.3rem; font-weight:700; font-family:var(--font-heading); color:var(--color-text-main); margin-bottom:0.3rem; }
+        .pl-module-title  { font-size:1rem; color:var(--color-primary); font-weight:600; margin-bottom:0.75rem; }
+        .pl-instructor    { font-size:0.85rem; color:var(--color-text-muted); margin-bottom:1.25rem; }
+        .pl-actions       { display:flex; gap:0.75rem; flex-wrap:wrap; }
+
+        /* ── Sidebar ── */
+        .pl-sidebar { border-left:1px solid var(--color-border); background:var(--color-surface); display:flex; flex-direction:column; }
+        @media(max-width:900px){ .pl-sidebar { border-left:none; border-top:1px solid var(--color-border); } }
+        .pl-sidebar-header { padding:1rem 1.25rem; border-bottom:1px solid var(--color-border); font-size:0.82rem; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; color:var(--color-text-muted); }
+        .pl-module-list { overflow-y:auto; flex:1; }
+        .pl-module-item { display:flex; align-items:flex-start; gap:0.75rem; padding:0.9rem 1.25rem; border-bottom:1px solid var(--color-border); cursor:pointer; transition:background 0.15s; }
+        .pl-module-item:hover { background:var(--color-bg-alt); }
+        .pl-module-item.active { background:var(--color-bg-alt); border-left:3px solid var(--color-primary); }
+        .pl-module-num { width:26px; height:26px; border-radius:50%; background:var(--color-border); display:flex; align-items:center; justify-content:center; font-size:0.72rem; font-weight:700; color:var(--color-text-muted); flex-shrink:0; margin-top:1px; }
+        .pl-module-item.active .pl-module-num, .pl-module-item.done .pl-module-num { background:var(--color-primary); color:#fff; }
+        .pl-module-text h4 { font-size:0.85rem; font-weight:600; color:var(--color-text-main); margin-bottom:0.15rem; line-height:1.3; }
+        .pl-module-text p  { font-size:0.75rem; color:var(--color-text-muted); margin:0; }
+
+        /* ── Modal base ── */
+        .vd-modal-overlay {
+            position:fixed; inset:0; background:rgba(0,0,0,0.55);
+            display:flex; align-items:center; justify-content:center;
+            z-index:2000; opacity:0; visibility:hidden;
+            transition:opacity 0.25s, visibility 0.25s;
+            padding:1rem;
+        }
+        .vd-modal-overlay.open { opacity:1; visibility:visible; }
+        .vd-modal {
+            background:var(--color-surface); border:1px solid var(--color-border);
+            border-radius:12px; width:100%; max-width:560px;
+            box-shadow:0 20px 60px rgba(0,0,0,0.2);
+            transform:translateY(16px); transition:transform 0.25s;
+            overflow:hidden;
+        }
+        .vd-modal-overlay.open .vd-modal { transform:translateY(0); }
+        .vd-modal-head {
+            padding:1.25rem 1.5rem; border-bottom:1px solid var(--color-border);
+            display:flex; align-items:center; justify-content:space-between;
+        }
+        .vd-modal-head h3 { font-size:1.1rem; font-family:var(--font-heading); margin:0; }
+        .vd-modal-close {
+            width:32px; height:32px; border-radius:50%; border:1px solid var(--color-border);
+            background:var(--color-bg-alt); color:var(--color-text-muted);
+            font-size:1rem; cursor:pointer; display:flex; align-items:center; justify-content:center;
+            transition:all 0.2s;
+        }
+        .vd-modal-close:hover { background:var(--color-primary); color:#fff; border-color:var(--color-primary); }
+        .vd-modal-body { padding:1.5rem; }
+
+        /* ── Chat UI (AI + Doubt) ── */
+        .chat-messages {
+            height:280px; overflow-y:auto; display:flex; flex-direction:column; gap:0.75rem;
+            margin-bottom:1rem; padding:0.5rem;
+            border:1px solid var(--color-border); border-radius:8px;
+            background:var(--color-bg-alt);
+        }
+        .chat-msg { max-width:85%; padding:0.65rem 1rem; border-radius:10px; font-size:0.88rem; line-height:1.5; }
+        .chat-msg.bot  { background:var(--color-surface); border:1px solid var(--color-border); align-self:flex-start; }
+        .chat-msg.user { background:var(--color-primary); color:#fff; align-self:flex-end; }
+        .chat-msg.typing { opacity:0.6; font-style:italic; }
+        .chat-input-row { display:flex; gap:0.5rem; }
+        .chat-input {
+            flex:1; padding:0.7rem 1rem; border:1.5px solid var(--color-border); border-radius:8px;
+            font-family:var(--font-body); font-size:0.9rem; background:var(--color-surface); color:var(--color-text-main);
+            transition:border-color 0.2s;
+        }
+        .chat-input:focus { outline:none; border-color:var(--color-primary); }
+        .chat-send {
+            padding:0.7rem 1.25rem; border-radius:8px; border:none;
+            background:var(--color-primary); color:#fff; font-weight:700; font-size:0.9rem;
+            cursor:pointer; transition:background 0.2s;
+        }
+        .chat-send:hover { background:var(--color-primary-hover); }
+    </style>
+</head>
+<body class="bg-motif">
+
+    <!-- Navbar -->
+    <nav class="pl-nav">
+        <div class="pl-nav-inner">
+            <a href="courses.html" class="pl-back">← Back to Courses</a>
+            <a href="index.html" class="nav-brand"><span>Vidya</span>stra</a>
+            <button type="button" class="appearance-toggle" aria-label="Appearance settings" aria-expanded="false" aria-controls="appearance-panel">Appearance</button>
+        </div>
+    </nav>
+
+    <!-- Player Layout -->
+    <div class="pl-layout">
+
+        <!-- Left: Video + Info -->
+        <div class="pl-main">
+            <!-- YouTube embed — real FreeCodeCamp videos -->
+            <div class="pl-video-wrap">
+                <iframe
+                    id="yt-player"
+                    src="https://www.youtube.com/embed/zJSY8tbf_ys?rel=0&modestbranding=1"
+                    title="Course Video"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+                </iframe>
+            </div>
+
+            <div class="pl-info animate-on-scroll">
+                <div class="pl-course-title" id="course-title">Web Development Basics</div>
+                <div class="pl-module-title" id="current-module">Module 1: Introduction to the Web</div>
+                <div class="pl-instructor">👤 Instructor: freeCodeCamp.org</div>
+                <div class="pl-actions">
+                    <button class="btn btn-sm" id="mark-done-btn" onclick="markDone()">✓ Mark as Completed</button>
+                    <button class="btn btn-sm btn-outline" onclick="openDoubt()">🤔 Doubt Solver</button>
+                    <button class="btn btn-sm btn-outline" onclick="openAI()">🤖 AI Solver</button>
+                    <a href="courses.html" class="btn btn-sm btn-outline">← Back</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Module List -->
+        <aside class="pl-sidebar">
+            <div class="pl-sidebar-header">Course Content</div>
+            <div class="pl-module-list" id="module-list"></div>
+        </aside>
+    </div>
+
+    <!-- ── Doubt Solver Modal ── -->
+    <div class="vd-modal-overlay" id="doubt-modal">
+        <div class="vd-modal">
+            <div class="vd-modal-head">
+                <h3>🤔 Doubt Solver</h3>
+                <button class="vd-modal-close" onclick="closeModal('doubt-modal')">✕</button>
+            </div>
+            <div class="vd-modal-body">
+                <div class="chat-messages" id="doubt-messages"></div>
+                <div class="chat-input-row">
+                    <input class="chat-input" id="doubt-input" type="text" placeholder="Type your doubt here…" onkeydown="if(event.key==='Enter') sendDoubt()">
+                    <button class="chat-send" onclick="sendDoubt()">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── AI Solver Modal ── -->
+    <div class="vd-modal-overlay" id="ai-modal">
+        <div class="vd-modal">
+            <div class="vd-modal-head">
+                <h3>🤖 AI Solver Agent</h3>
+                <button class="vd-modal-close" onclick="closeModal('ai-modal')">✕</button>
+            </div>
+            <div class="vd-modal-body">
+                <div class="chat-messages" id="ai-messages"></div>
+                <div class="chat-input-row">
+                    <input class="chat-input" id="ai-input" type="text" placeholder="Ask me anything about this course…" onkeydown="if(event.key==='Enter') sendAI()">
+                    <button class="chat-send" onclick="sendAI()">Ask</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Appearance Panel -->
+    <div id="appearance-panel" class="appearance-panel" aria-hidden="true" hidden>
+        <div class="appearance-panel-header">Appearance</div>
+        <div class="appearance-panel-body">
+            <div class="appearance-panel-row">
+                <label class="appearance-toggle-label"><input type="checkbox" class="appearance-dark-toggle"><span>Dark mode</span></label>
+            </div>
+            <div class="appearance-panel-row">
+                <span class="appearance-field-label">Theme</span>
+                <select id="appearance-theme-select" class="appearance-select">
+                    <option value="default">Default Light</option>
+                    <option value="vedic">Vedic Warm</option>
+                    <option value="modern">Modern Minimal</option>
+                    <option value="academic">Academic Calm</option>
+                </select>
+            </div>
+            <div class="appearance-panel-row">
+                <span class="appearance-field-label">Font</span>
+                <select id="appearance-font-select" class="appearance-select">
+                    <option value="default">Default Serif</option>
+                    <option value="sans">Clean Sans-Serif</option>
+                    <option value="classical">Traditional Classical Serif</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ── Course modules with real YouTube video IDs (freeCodeCamp) ──
+        var modules = [
+            { title:'Introduction to the Web',    duration:'12 min', yt:'zJSY8tbf_ys' },
+            { title:'HTML Structure & Semantics', duration:'18 min', yt:'kUMe1FH4CHE' },
+            { title:'CSS Fundamentals',           duration:'22 min', yt:'OXGznpKZ_sA' },
+            { title:'JavaScript Basics',          duration:'30 min', yt:'PkZNo7MFNFg' },
+            { title:'DOM Manipulation',           duration:'25 min', yt:'5fb2aPlgoys' },
+            { title:'Responsive Design',          duration:'20 min', yt:'srvUrASNj0s' },
+            { title:'Forms & Validation',         duration:'15 min', yt:'fNcJuPIZ2kg' },
+            { title:'Final Project',              duration:'45 min', yt:'G3e-cpL7ofc' },
+        ];
+
+        var completed = JSON.parse(localStorage.getItem('vd_completed') || '[]');
+        var current   = 0;
+
+        function renderModules() {
+            var list = document.getElementById('module-list');
+            list.innerHTML = modules.map(function(m, i) {
+                var isDone   = completed.indexOf(i) !== -1;
+                var isActive = i === current;
+                return '<div class="pl-module-item' + (isActive?' active':'') + (isDone?' done':'') + '" onclick="selectModule(' + i + ')">' +
+                    '<div class="pl-module-num">' + (isDone ? '✓' : (i+1)) + '</div>' +
+                    '<div class="pl-module-text"><h4>' + m.title + '</h4><p>' + m.duration + '</p></div>' +
+                '</div>';
+            }).join('');
+        }
+
+        function selectModule(i) {
+            current = i;
+            var m = modules[i];
+            // Swap YouTube embed
+            document.getElementById('yt-player').src =
+                'https://www.youtube.com/embed/' + m.yt + '?rel=0&modestbranding=1&autoplay=1';
+            document.getElementById('current-module').textContent = 'Module ' + (i+1) + ': ' + m.title;
+            var btn = document.getElementById('mark-done-btn');
+            btn.textContent = completed.indexOf(i) !== -1 ? '✓ Completed' : '✓ Mark as Completed';
+            btn.disabled    = completed.indexOf(i) !== -1;
+            renderModules();
+        }
+
+        function markDone() {
+            if (completed.indexOf(current) === -1) {
+                completed.push(current);
+                localStorage.setItem('vd_completed', JSON.stringify(completed));
+            }
+            var btn = document.getElementById('mark-done-btn');
+            btn.textContent = '✓ Completed';
+            btn.disabled    = true;
+            renderModules();
+            if (current < modules.length - 1) setTimeout(function(){ selectModule(current + 1); }, 600);
+        }
+
+        // ── Modal helpers ──
+        function openModal(id) { document.getElementById(id).classList.add('open'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+        document.querySelectorAll('.vd-modal-overlay').forEach(function(el) {
+            el.addEventListener('click', function(e) { if (e.target === el) el.classList.remove('open'); });
+        });
+
+        // ── Doubt Solver ──
+        function openDoubt() {
+            var msgs = document.getElementById('doubt-messages');
+            if (!msgs.children.length) addMsg('doubt-messages', 'bot', '👋 Hi! I\'m your Doubt Solver. Ask me anything about this module — "' + modules[current].title + '".');
+            openModal('doubt-modal');
+            setTimeout(function(){ document.getElementById('doubt-input').focus(); }, 100);
+        }
+
+        function sendDoubt() {
+            var input = document.getElementById('doubt-input');
+            var q = input.value.trim();
+            if (!q) return;
+            addMsg('doubt-messages', 'user', q);
+            input.value = '';
+            addMsg('doubt-messages', 'bot typing', '⏳ Thinking…');
+            setTimeout(function() {
+                removeTyping('doubt-messages');
+                addMsg('doubt-messages', 'bot', getDoubtReply(q));
+            }, 1200);
+        }
+
+        function getDoubtReply(q) {
+            var lower = q.toLowerCase();
+            if (lower.includes('html'))       return '📄 HTML (HyperText Markup Language) is the skeleton of every webpage. It defines structure using tags like <div>, <p>, <h1> etc.';
+            if (lower.includes('css'))        return '🎨 CSS (Cascading Style Sheets) controls the visual appearance — colors, fonts, layout, spacing and animations.';
+            if (lower.includes('javascript') || lower.includes('js')) return '⚡ JavaScript adds interactivity to web pages — handling clicks, fetching data, updating the DOM dynamically.';
+            if (lower.includes('dom'))        return '🌳 The DOM (Document Object Model) is a tree representation of your HTML. JS uses it to read and modify page content.';
+            if (lower.includes('responsive')) return '📱 Responsive design makes your site look good on all screen sizes using CSS media queries and flexible layouts.';
+            if (lower.includes('function'))   return '🔧 A function is a reusable block of code. Define it once with `function name() {}` and call it whenever needed.';
+            if (lower.includes('variable'))   return '📦 Variables store data. Use `let` for values that change, `const` for constants, and avoid `var` in modern JS.';
+            return '🤔 Great question! This topic is covered in detail in the current module. Try rewatching from the beginning or ask a more specific question.';
+        }
+
+        // ── AI Solver ──
+        function openAI() {
+            var msgs = document.getElementById('ai-messages');
+            if (!msgs.children.length) addMsg('ai-messages', 'bot', '🤖 Hello! I\'m your AI Solver Agent. I can explain concepts, give examples, debug code, and help you understand anything in this course. What would you like to know?');
+            openModal('ai-modal');
+            setTimeout(function(){ document.getElementById('ai-input').focus(); }, 100);
+        }
+
+        function sendAI() {
+            var input = document.getElementById('ai-input');
+            var q = input.value.trim();
+            if (!q) return;
+            addMsg('ai-messages', 'user', q);
+            input.value = '';
+            addMsg('ai-messages', 'bot typing', '🤖 Analyzing your question…');
+            setTimeout(function() {
+                removeTyping('ai-messages');
+                addMsg('ai-messages', 'bot', getAIReply(q));
+            }, 1500);
+        }
+
+        function getAIReply(q) {
+            var lower = q.toLowerCase();
+            if (lower.includes('explain') || lower.includes('what is')) {
+                if (lower.includes('html'))  return '📘 HTML is the foundation of the web. Think of it as the bones of a webpage. Every element you see — headings, paragraphs, images, buttons — is an HTML element wrapped in tags like `<h1>`, `<img>`, `<button>`.';
+                if (lower.includes('css'))   return '🎨 CSS is the styling language of the web. It works by selecting HTML elements and applying rules: `color: red`, `font-size: 18px`, `display: flex`. Without CSS, every website would look like a plain text document.';
+                if (lower.includes('js') || lower.includes('javascript')) return '⚡ JavaScript is the programming language of the web. It runs in the browser and lets you respond to user actions, fetch data from servers, and update the page without reloading.';
+            }
+            if (lower.includes('example') || lower.includes('code')) {
+                return '💻 Here\'s a quick example:\n\n```html\n<button onclick="greet()">Click me</button>\n<script>\nfunction greet() {\n  alert("Namaste! 🙏");\n}\n</script>\n```\n\nThis creates a button that shows a greeting when clicked.';
+            }
+            if (lower.includes('difference')) return '🔍 Great comparison question! The key differences usually come down to: purpose (what it does), syntax (how you write it), and when it runs. Could you be more specific about which two things you\'re comparing?';
+            if (lower.includes('error') || lower.includes('bug') || lower.includes('fix')) return '🐛 Debugging tip: Open your browser\'s DevTools (F12), go to the Console tab, and look for red error messages. They tell you exactly which line has the problem and what went wrong.';
+            if (lower.includes('best practice')) return '✅ Best practices in web dev: 1) Write semantic HTML, 2) Keep CSS organized with classes, 3) Use `const`/`let` instead of `var`, 4) Comment your code, 5) Test on multiple browsers and screen sizes.';
+            return '🤖 Interesting question! Based on the current module "' + modules[current].title + '", I\'d suggest: focus on understanding the core concept first, then practice with small examples. Would you like me to break down a specific part in more detail?';
+        }
+
+        // ── Chat helpers ──
+        function addMsg(containerId, type, text) {
+            var container = document.getElementById(containerId);
+            var div = document.createElement('div');
+            div.className = 'chat-msg ' + type;
+            div.textContent = text;
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function removeTyping(containerId) {
+            var container = document.getElementById(containerId);
+            var typing = container.querySelector('.typing');
+            if (typing) typing.remove();
+        }
+
+        renderModules();
+    </script>
+    <script src="js/main.js?v=2"></script>
+</body>
+</html>

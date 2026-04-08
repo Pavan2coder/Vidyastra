@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Progress | Vidyastra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        (function(){try{var s=localStorage.getItem('vidyastra_appearance');if(!s)return;var p=JSON.parse(s),r=document.documentElement;['theme-default','theme-vedic','theme-modern','theme-academic'].forEach(function(c){r.classList.remove(c);});['font-default','font-sans','font-classical'].forEach(function(c){r.classList.remove(c);});r.classList.remove('mode-dark');if(p.theme)r.classList.add('theme-'+p.theme);if(p.font)r.classList.add('font-'+p.font);if(p.mode==='dark')r.classList.add('mode-dark');}catch(e){}})();
+    </script>
+    <link rel="stylesheet" href="css/style.css?v=2">
+    <style>
+        .pg-nav { background:var(--color-surface); border-bottom:1px solid var(--color-border); padding:1rem 0; position:sticky; top:0; z-index:100; }
+        .pg-nav-inner { max-width:1200px; margin:0 auto; padding:0 1.5rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+        .pg-nav-links { display:flex; align-items:center; gap:0.25rem; list-style:none; }
+        .pg-nav-links a { padding:0.4rem 0.85rem; border-radius:6px; font-size:0.9rem; font-weight:500; color:var(--color-text-main); text-decoration:none; transition:background 0.15s,color 0.15s; }
+        .pg-nav-links a:hover,.pg-nav-links a.active { background:var(--color-bg-alt); color:var(--color-primary); }
+
+        .pg-page { max-width:1200px; margin:0 auto; padding:2.5rem 1.5rem 4rem; }
+
+        /* Summary cards */
+        .pg-summary { display:grid; grid-template-columns:repeat(3,1fr); gap:1.25rem; margin-bottom:2.5rem; }
+        @media(max-width:640px){ .pg-summary { grid-template-columns:1fr; } }
+        .pg-stat {
+            background:var(--color-surface);
+            border:1px solid var(--color-border);
+            border-radius:8px;
+            padding:1.5rem;
+            text-align:center;
+            box-shadow:0 2px 8px rgba(0,0,0,0.04);
+        }
+        .pg-stat-icon  { font-size:1.75rem; display:block; margin-bottom:0.5rem; }
+        .pg-stat-value { font-family:var(--font-heading); font-size:2.25rem; font-weight:800; color:var(--color-primary); display:block; line-height:1; margin-bottom:0.35rem; }
+        .pg-stat-label { font-size:0.78rem; text-transform:uppercase; letter-spacing:0.06em; font-weight:600; color:var(--color-text-muted); }
+
+        /* Filter */
+        .pg-filter { display:flex; gap:0.5rem; margin-bottom:1.5rem; }
+        .pg-filter-btn {
+            padding:0.45rem 1.1rem;
+            border-radius:999px;
+            border:1px solid var(--color-border);
+            background:var(--color-surface);
+            font-size:0.82rem;
+            font-weight:600;
+            cursor:pointer;
+            color:var(--color-text-muted);
+            transition:all 0.15s;
+        }
+        .pg-filter-btn.active, .pg-filter-btn:hover {
+            background:var(--color-primary);
+            border-color:var(--color-primary);
+            color:#fff;
+        }
+
+        /* Course rows */
+        .pg-course-list { display:flex; flex-direction:column; gap:1rem; }
+        .pg-course-row {
+            background:var(--color-surface);
+            border:1px solid var(--color-border);
+            border-radius:8px;
+            padding:1.25rem 1.5rem;
+            display:grid;
+            grid-template-columns:2fr 1fr auto;
+            align-items:center;
+            gap:1.5rem;
+            transition:border-color 0.2s, box-shadow 0.2s;
+        }
+        @media(max-width:640px){ .pg-course-row { grid-template-columns:1fr; gap:0.75rem; } }
+        .pg-course-row:hover { border-color:var(--color-primary); box-shadow:0 4px 12px rgba(0,0,0,0.05); }
+        .pg-course-row.hidden { display:none; }
+
+        .pg-course-name { font-size:0.95rem; font-weight:700; color:var(--color-text-main); margin-bottom:0.2rem; }
+        .pg-course-sub  { font-size:0.78rem; color:var(--color-text-muted); }
+
+        .pg-bar-wrap { min-width:0; }
+        .pg-bar-top { display:flex; justify-content:space-between; font-size:0.75rem; color:var(--color-text-muted); margin-bottom:0.35rem; }
+        .pg-bar { height:7px; background:var(--color-border); border-radius:4px; overflow:hidden; }
+        .pg-bar-fill { height:100%; border-radius:4px; background:var(--color-primary); transition:width 0.5s ease; }
+        .pg-bar-fill.done { background:#16a34a; }
+
+        .pg-badge {
+            font-size:0.72rem;
+            font-weight:700;
+            text-transform:uppercase;
+            letter-spacing:0.05em;
+            padding:0.3rem 0.7rem;
+            border-radius:999px;
+            white-space:nowrap;
+        }
+        .pg-badge.ongoing   { background:#FEF3C7; color:#92400E; }
+        .pg-badge.completed { background:#DCFCE7; color:#166534; }
+    </style>
+</head>
+<body class="bg-motif">
+
+    <nav class="pg-nav">
+        <div class="pg-nav-inner">
+            <a href="index.html" class="nav-brand"><span>Vidya</span>stra</a>
+            <ul class="pg-nav-links">
+                <li><a href="learning-home.html">Home</a></li>
+                <li><a href="courses.html">Courses</a></li>
+                <li><a href="progress.html" class="active">Progress</a></li>
+                <li><a href="student-dashboard.html">Profile</a></li>
+            </ul>
+            <button type="button" class="appearance-toggle" aria-label="Appearance settings" aria-expanded="false" aria-controls="appearance-panel">Appearance</button>
+        </div>
+    </nav>
+
+    <div class="pg-page">
+
+        <div style="margin-bottom:2rem;" class="animate-on-scroll">
+            <h1 style="font-size:clamp(1.75rem,3vw,2.25rem);margin-bottom:0.3rem;">My Progress</h1>
+            <p style="margin:0;color:var(--color-text-muted);font-size:1rem;">Track your learning journey across all courses.</p>
+        </div>
+
+        <!-- Summary -->
+        <div class="pg-summary animate-on-scroll">
+            <div class="pg-stat">
+                <span class="pg-stat-icon">📚</span>
+                <span class="pg-stat-value" id="total-count">7</span>
+                <span class="pg-stat-label">Total Courses</span>
+            </div>
+            <div class="pg-stat">
+                <span class="pg-stat-icon">🏆</span>
+                <span class="pg-stat-value" id="done-count">3</span>
+                <span class="pg-stat-label">Completed</span>
+            </div>
+            <div class="pg-stat">
+                <span class="pg-stat-icon">📖</span>
+                <span class="pg-stat-value" id="ongoing-count">4</span>
+                <span class="pg-stat-label">Ongoing</span>
+            </div>
+        </div>
+
+        <!-- Filter -->
+        <div class="pg-filter animate-on-scroll">
+            <button class="pg-filter-btn active" onclick="filter('all',this)">All</button>
+            <button class="pg-filter-btn" onclick="filter('ongoing',this)">Ongoing</button>
+            <button class="pg-filter-btn" onclick="filter('completed',this)">Completed</button>
+        </div>
+
+        <!-- Course list -->
+        <div class="pg-course-list animate-on-scroll" id="course-list">
+
+            <div class="pg-course-row" data-status="ongoing">
+                <div>
+                    <div class="pg-course-name">Web Development Basics</div>
+                    <div class="pg-course-sub">Module 3 of 8</div>
+                </div>
+                <div class="pg-bar-wrap">
+                    <div class="pg-bar-top"><span>Progress</span><span>60%</span></div>
+                    <div class="pg-bar"><div class="pg-bar-fill" style="width:60%"></div></div>
+                </div>
+                <span class="pg-badge ongoing">Ongoing</span>
+            </div>
+
+            <div class="pg-course-row" data-status="ongoing">
+                <div>
+                    <div class="pg-course-name">Vedic Mathematics</div>
+                    <div class="pg-course-sub">Module 4 of 10</div>
+                </div>
+                <div class="pg-bar-wrap">
+                    <div class="pg-bar-top"><span>Progress</span><span>40%</span></div>
+                    <div class="pg-bar"><div class="pg-bar-fill" style="width:40%"></div></div>
+                </div>
+                <span class="pg-badge ongoing">Ongoing</span>
+            </div>
+
+            <div class="pg-course-row" data-status="ongoing">
+                <div>
+                    <div class="pg-course-name">Classical Mechanics</div>
+                    <div class="pg-course-sub">Module 2 of 6</div>
+                </div>
+                <div class="pg-bar-wrap">
+                    <div class="pg-bar-top"><span>Progress</span><span>25%</span></div>
+                    <div class="pg-bar"><div class="pg-bar-fill" style="width:25%"></div></div>
+                </div>
+                <span class="pg-badge ongoing">Ongoing</span>
+            </div>
+
+            <div class="pg-course-row" data-status="ongoing">
+                <div>
+                    <div class="pg-course-name">Indian Philosophy</div>
+                    <div class="pg-course-sub">Module 6 of 8</div>
+                </div>
+                <div class="pg-bar-wrap">
+                    <div class="pg-bar-top"><span>Progress</span><span>72%</span></div>
+                    <div class="pg-bar"><div class="pg-bar-fill" style="width:72%"></div></div>
+                </div>
+                <span class="pg-badge ongoing">Ongoing</span>
+            </div>
+
+            <div class="pg-course-row" data-status="completed">
+                <div>
+                    <div class="pg-course-name">Advanced Mathematics</div>
+                    <div class="pg-course-sub">All 12 modules done</div>
+                </div>
+                <div class="pg-bar-wrap">
+                    <div class="pg-bar-top"><span>Progress</span><span>100%</span></div>
+                    <div class="pg-bar"><div class="pg-bar-fill done" style="width:100%"></div></div>
+                </div>
+                <span class="pg-badge completed">Completed</span>
+            </div>
+
+            <div class="pg-course-row" data-status="completed">
+                <div>
+                    <div class="pg-course-name">Sanskrit Foundations</div>
+                    <div class="pg-course-sub">All 9 modules done</div>
+                </div>
+                <div class="pg-bar-wrap">
+                    <div class="pg-bar-top"><span>Progress</span><span>100%</span></div>
+                    <div class="pg-bar"><div class="pg-bar-fill done" style="width:100%"></div></div>
+                </div>
+                <span class="pg-badge completed">Completed</span>
+            </div>
+
+            <div class="pg-course-row" data-status="completed">
+                <div>
+                    <div class="pg-course-name">World History</div>
+                    <div class="pg-course-sub">All 10 modules done</div>
+                </div>
+                <div class="pg-bar-wrap">
+                    <div class="pg-bar-top"><span>Progress</span><span>100%</span></div>
+                    <div class="pg-bar"><div class="pg-bar-fill done" style="width:100%"></div></div>
+                </div>
+                <span class="pg-badge completed">Completed</span>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Appearance Panel -->
+    <div id="appearance-panel" class="appearance-panel" aria-hidden="true" hidden>
+        <div class="appearance-panel-header">Appearance</div>
+        <div class="appearance-panel-body">
+            <div class="appearance-panel-row">
+                <label class="appearance-toggle-label"><input type="checkbox" class="appearance-dark-toggle"><span>Dark mode</span></label>
+            </div>
+            <div class="appearance-panel-row">
+                <span class="appearance-field-label">Theme</span>
+                <select id="appearance-theme-select" class="appearance-select">
+                    <option value="default">Default Light</option>
+                    <option value="vedic">Vedic Warm</option>
+                    <option value="modern">Modern Minimal</option>
+                    <option value="academic">Academic Calm</option>
+                </select>
+            </div>
+            <div class="appearance-panel-row">
+                <span class="appearance-field-label">Font</span>
+                <select id="appearance-font-select" class="appearance-select">
+                    <option value="default">Default Serif</option>
+                    <option value="sans">Clean Sans-Serif</option>
+                    <option value="classical">Traditional Classical Serif</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function filter(type, btn) {
+            document.querySelectorAll('.pg-filter-btn').forEach(function(b){ b.classList.remove('active'); });
+            btn.classList.add('active');
+            document.querySelectorAll('.pg-course-row').forEach(function(row){
+                if (type === 'all') { row.classList.remove('hidden'); }
+                else { row.classList.toggle('hidden', row.dataset.status !== type); }
+            });
+        }
+    </script>
+    <script src="js/main.js?v=2"></script>
+</body>
+</html>

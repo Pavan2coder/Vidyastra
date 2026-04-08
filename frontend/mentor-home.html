@@ -1,0 +1,275 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mentor Portal | Vidyastra</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script>(function(){try{var s=localStorage.getItem("vidyastra_appearance");if(!s)return;var p=JSON.parse(s),r=document.documentElement;["theme-default","theme-vedic","theme-modern","theme-academic"].forEach(function(c){r.classList.remove(c);});["font-default","font-sans","font-classical"].forEach(function(c){r.classList.remove(c);});r.classList.remove("mode-dark");if(p.theme)r.classList.add("theme-"+p.theme);if(p.font)r.classList.add("font-"+p.font);if(p.mode==="dark")r.classList.add("mode-dark");}catch(e){}})();</script>
+<link rel="stylesheet" href="css/style.css?v=2">
+<style>
+:root{--color-primary:#111111;--color-primary-hover:#374151;--color-secondary:#374151;--color-accent:#6b7280;}
+.lh-nav{background:var(--color-surface);border-bottom:1px solid var(--color-border);padding:1rem 0;position:sticky;top:0;z-index:100;}
+.lh-nav-inner{max-width:1200px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;}
+.lh-nav-links{display:flex;align-items:center;gap:0.25rem;list-style:none;}
+.lh-nav-links a{padding:0.4rem 0.85rem;border-radius:6px;font-size:0.9rem;font-weight:500;color:var(--color-text-main);text-decoration:none;transition:background 0.15s,color 0.15s;}
+.lh-nav-links a:hover,.lh-nav-links a.active{background:#f3f4f6;color:#111;}
+.lh-nav-right{display:flex;align-items:center;gap:1rem;}
+.lh-greeting{font-size:0.9rem;color:var(--color-text-muted);white-space:nowrap;}
+.lh-greeting span{font-weight:600;color:var(--color-text-main);}
+.lh-avatar{width:38px;height:38px;border-radius:50%;background:#111;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;flex-shrink:0;cursor:pointer;}
+.lh-page{max-width:1200px;margin:0 auto;padding:0 1.5rem;}
+.lh-welcome{padding:1.5rem 0 0.5rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap;position:relative;}
+.lh-welcome-sub{font-size:1rem;font-weight:500;color:var(--color-text-muted);margin-bottom:0.4rem;}
+.lh-welcome-text h1{font-size:clamp(1.9rem,3.5vw,2.75rem);margin-bottom:0.5rem;line-height:1.2;}
+.lh-welcome-text p{font-size:1rem;color:var(--color-text-muted);margin-bottom:0;max-width:50ch;}
+.lh-welcome-art{font-size:5rem;line-height:1;opacity:0.12;user-select:none;}
+.lh-section{padding:3rem 0;}
+.lh-section-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1.5rem;border-bottom:1px solid var(--color-border);padding-bottom:0.75rem;}
+.lh-section-header h2{font-size:1.1rem;font-family:var(--font-heading);font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--color-text-muted);margin:0;}
+.lh-section-header a{font-size:0.85rem;color:#111;text-decoration:none;font-weight:600;}
+.lh-continue-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;}
+@media(max-width:900px){.lh-continue-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:580px){.lh-continue-grid{grid-template-columns:1fr;}}
+.lh-course-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:8px;padding:1.5rem;display:flex;flex-direction:column;transition:border-color 0.2s,box-shadow 0.2s;}
+.lh-course-card:hover{border-color:#111;box-shadow:0 4px 16px rgba(0,0,0,0.08);}
+.lh-course-card h3{font-size:1rem;font-weight:700;color:var(--color-text-main);margin-bottom:0.3rem;}
+.lh-course-card .lh-course-meta{font-size:0.78rem;color:var(--color-text-muted);margin-bottom:1rem;}
+.lh-progress-wrap{margin-bottom:1.25rem;margin-top:auto;}
+.lh-progress-label{display:flex;justify-content:space-between;font-size:0.75rem;color:var(--color-text-muted);margin-bottom:0.4rem;}
+.lh-progress-bar{height:6px;background:var(--color-border);border-radius:3px;overflow:hidden;}
+.lh-progress-fill{height:100%;background:#111;border-radius:3px;transition:width 0.6s ease;}
+.lh-explore-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem;}
+@media(max-width:1024px){.lh-explore-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:580px){.lh-explore-grid{grid-template-columns:1fr;}}
+.lh-explore-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:8px;overflow:hidden;display:flex;flex-direction:column;transition:border-color 0.2s,box-shadow 0.2s;}
+.lh-explore-card:hover{border-color:#111;box-shadow:0 4px 16px rgba(0,0,0,0.08);}
+.lh-explore-thumb{height:110px;background:linear-gradient(135deg,var(--color-bg-alt),var(--color-border));display:flex;align-items:center;justify-content:center;font-size:2.25rem;flex-shrink:0;}
+.lh-explore-body{padding:1.1rem 1.25rem 1.25rem;display:flex;flex-direction:column;flex:1;}
+.lh-explore-body h3{font-size:0.92rem;font-weight:700;color:var(--color-text-main);margin-bottom:0.35rem;}
+.lh-explore-body p{font-size:0.8rem;color:var(--color-text-muted);margin-bottom:1rem;line-height:1.5;flex:1;}
+.lh-quick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+@media(max-width:700px){.lh-quick-grid{grid-template-columns:repeat(2,1fr);}}
+.lh-quick-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:12px;padding:1.4rem 1rem;display:flex;flex-direction:column;align-items:center;text-align:center;gap:0.6rem;cursor:pointer;transition:border-color 0.2s,box-shadow 0.2s,transform 0.2s;text-decoration:none;color:inherit;}
+.lh-quick-card:hover{border-color:#111;box-shadow:0 6px 18px rgba(0,0,0,0.1);transform:translateY(-3px);}
+.lh-quick-card.empty{background:var(--color-bg-alt);cursor:default;}
+.lh-quick-card.empty:hover{transform:none;box-shadow:none;border-color:var(--color-border);}
+.lh-quick-icon{font-size:1.8rem;line-height:1;}
+.lh-quick-label{font-size:0.82rem;font-weight:700;color:var(--color-text-main);}
+.lh-thread-card{background:var(--color-surface);border:1px solid var(--color-border);border-left:4px solid #111;border-radius:8px;padding:1rem 1.25rem;display:flex;align-items:center;gap:1rem;margin-bottom:0.85rem;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;}
+.lh-thread-card:hover{transform:translateX(4px);box-shadow:0 4px 14px rgba(0,0,0,0.08);}
+.lh-thread-dot{width:10px;height:10px;border-radius:50%;background:#22c55e;flex-shrink:0;box-shadow:0 0 0 3px rgba(34,197,94,0.2);}
+.lh-thread-info h4{font-size:0.9rem;font-weight:700;margin-bottom:2px;color:var(--color-text-main);}
+.lh-thread-info p{font-size:0.75rem;color:var(--color-text-muted);margin:0;}
+.lh-thread-badge{margin-left:auto;font-size:0.7rem;font-weight:700;background:#f3f4f6;color:#111;padding:3px 10px;border-radius:999px;white-space:nowrap;}
+.lh-prog-list{display:flex;flex-direction:column;gap:1rem;}
+.lh-prog-top{display:flex;justify-content:space-between;font-size:0.85rem;font-weight:600;margin-bottom:5px;}
+.lh-prog-pct{color:#111;}
+.lh-prog-bar{height:8px;background:var(--color-border);border-radius:4px;overflow:hidden;}
+.lh-prog-fill{height:100%;border-radius:4px;background:#111;}
+.lh-stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem;}
+@media(max-width:768px){.lh-stats-grid{grid-template-columns:repeat(2,1fr);}}
+.lh-stat-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:8px;padding:1.75rem 1rem;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.04);transition:box-shadow 0.2s,border-color 0.2s;}
+.lh-stat-card:hover{border-color:#111;box-shadow:0 4px 16px rgba(0,0,0,0.08);}
+.lh-stat-icon{font-size:1.75rem;margin-bottom:0.6rem;display:block;}
+.lh-stat-value{font-family:var(--font-heading);font-size:2.1rem;font-weight:800;color:#111;line-height:1;margin-bottom:0.4rem;display:block;}
+.lh-stat-label{font-size:0.78rem;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.06em;font-weight:600;display:block;}
+.lh-pills{display:flex;flex-wrap:wrap;gap:0.75rem;}
+.lh-pill{padding:0.6rem 1.25rem;border-radius:999px;background:var(--color-surface);border:1.5px solid var(--color-border);font-size:0.85rem;font-weight:600;cursor:pointer;color:var(--color-text-main);text-decoration:none;transition:background 0.15s,border-color 0.15s,transform 0.15s;}
+.lh-pill:hover{background:#111;color:#fff;border-color:#111;transform:translateY(-2px);}
+.lh-footer{border-top:1px solid var(--color-border);padding:2rem 0;margin-top:3rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+.lh-footer p{font-size:0.85rem;color:var(--color-text-muted);margin:0;}
+.lh-footer-links{display:flex;gap:1.25rem;}
+.lh-footer-links a{font-size:0.85rem;color:var(--color-text-muted);text-decoration:none;}
+.lh-footer-links a:hover{color:#111;}
+.lh-divider{border:none;border-top:1px solid var(--color-border);margin:0;}
+.btn{background:#f3f4f6;color:#111;border-color:#d1d5db;}
+.btn:hover{background:#e5e7eb;}
+</style>
+</head>
+<body class="bg-motif"><nav class="lh-nav" role="navigation">
+  <div class="lh-nav-inner">
+    <a href="index.html" class="nav-brand"><span>Vidya</span>stra</a>
+    <ul class="lh-nav-links" id="lh-nav-links" role="list">
+      <li><a href="mentor-home.html" class="active">Home</a></li>
+      <li><a href="mentor-sessions.html">Sessions</a></li>
+      <li><a href="mentor-requests.html">Requests</a></li>
+      <li><a href="mentor-messages.html">Messages</a></li>
+      <li><a href="mentor-profile.html">Profile</a></li>
+    </ul>
+    <div class="lh-nav-right">
+      <p class="lh-greeting">Hello, <span id="nav-username">Saarthi</span></p>
+      <div class="lh-avatar" id="nav-avatar">S</div>
+      <button type="button" class="appearance-toggle" aria-label="Appearance settings" aria-expanded="false" aria-controls="appearance-panel">Appearance</button>
+    </div>
+  </div>
+</nav>
+
+<div class="lh-page">
+
+  <!-- HERO -->
+  <section class="lh-welcome animate-on-scroll">
+    <div class="lh-welcome-text">
+      <p class="lh-welcome-sub">Hi, <span id="welcome-username">Saarthi</span> 🙏</p>
+      <h1>Welcome back to your Gurukul</h1>
+      <p>Guide, inspire, and elevate your mentees every day.</p>
+    </div>
+    <div class="lh-welcome-art">🧭</div>
+  </section>
+
+  <hr class="lh-divider">
+
+  <!-- MENTORSHIP SESSIONS -->
+  <section class="lh-section animate-on-scroll">
+    <div class="lh-section-header"><h2>Mentorship Sessions</h2><a href="mentor-sessions.html">View all →</a></div>
+    <div class="lh-continue-grid">
+      <div class="lh-course-card animate-on-scroll">
+        <h3>Career Guidance — Arjun Kumar</h3>
+        <p class="lh-course-meta">Session 3 of 8 · Last met today</p>
+        <div class="lh-progress-wrap">
+          <div class="lh-progress-label"><span>Progress</span><span>60%</span></div>
+          <div class="lh-progress-bar"><div class="lh-progress-fill" style="width:60%"></div></div>
+        </div>
+        <a href="mentor-sessions.html" class="btn btn-sm">Resume →</a>
+      </div>
+      <div class="lh-course-card animate-on-scroll">
+        <h3>JEE Prep — Priya Sharma</h3>
+        <p class="lh-course-meta">Session 4 of 10 · Last met yesterday</p>
+        <div class="lh-progress-wrap">
+          <div class="lh-progress-label"><span>Progress</span><span>40%</span></div>
+          <div class="lh-progress-bar"><div class="lh-progress-fill" style="width:40%"></div></div>
+        </div>
+        <a href="mentor-sessions.html" class="btn btn-sm">Resume →</a>
+      </div>
+      <div class="lh-course-card animate-on-scroll">
+        <h3>Web Dev — Rohan Mehta</h3>
+        <p class="lh-course-meta">Session 2 of 6 · Last met 3 days ago</p>
+        <div class="lh-progress-wrap">
+          <div class="lh-progress-label"><span>Progress</span><span>25%</span></div>
+          <div class="lh-progress-bar"><div class="lh-progress-fill" style="width:25%"></div></div>
+        </div>
+        <a href="mentor-sessions.html" class="btn btn-sm">Resume →</a>
+      </div>
+    </div>
+  </section>
+
+  <hr class="lh-divider">
+
+  <!-- EXPLORE DOMAINS -->
+  <section class="lh-section animate-on-scroll">
+    <div class="lh-section-header"><h2>Explore Domains</h2><a href="#">Browse all →</a></div>
+    <div class="lh-explore-grid">
+      <div class="lh-explore-card animate-on-scroll"><div class="lh-explore-thumb">🎯</div><div class="lh-explore-body"><h3>Career Guidance</h3><p>Help students navigate career paths and opportunities.</p><a href="#" class="btn btn-sm">Explore</a></div></div>
+      <div class="lh-explore-card animate-on-scroll"><div class="lh-explore-thumb">📚</div><div class="lh-explore-body"><h3>Academic Mentoring</h3><p>Support students in their academic journey and exams.</p><a href="#" class="btn btn-sm">Explore</a></div></div>
+      <div class="lh-explore-card animate-on-scroll"><div class="lh-explore-thumb">🧠</div><div class="lh-explore-body"><h3>Skill Development</h3><p>Guide students in building technical and soft skills.</p><a href="#" class="btn btn-sm">Explore</a></div></div>
+      <div class="lh-explore-card animate-on-scroll"><div class="lh-explore-thumb">🌱</div><div class="lh-explore-body"><h3>Personal Growth</h3><p>Mentor students on mindset, habits, and life goals.</p><a href="#" class="btn btn-sm">Explore</a></div></div>
+    </div>
+  </section>
+
+  <hr class="lh-divider">
+
+  <!-- LIVE MENTORSHIP -->
+  <section class="lh-section animate-on-scroll">
+    <div class="lh-section-header"><h2>Live Mentorship</h2><a href="#">Browse All →</a></div>
+    <div class="lh-thread-card"><div class="lh-thread-dot"></div><div class="lh-thread-info"><h4>Career Guidance — Arjun Kumar</h4><p>1-on-1 · Active now</p></div><span class="lh-thread-badge">Live</span></div>
+    <div class="lh-thread-card"><div class="lh-thread-dot"></div><div class="lh-thread-info"><h4>JEE Prep Group Session</h4><p>4 mentees · Active now</p></div><span class="lh-thread-badge">Live</span></div>
+    <div class="lh-thread-card"><div class="lh-thread-dot" style="background:#374151;box-shadow:0 0 0 3px rgba(55,65,81,0.2);"></div><div class="lh-thread-info"><h4>Web Dev Review — Rohan Mehta</h4><p>Scheduled · 3 pending questions</p></div><span class="lh-thread-badge">Upcoming</span></div>
+  </section>
+
+  <hr class="lh-divider">
+
+  <!-- QUICK ACTIONS -->
+  <section class="lh-section animate-on-scroll">
+    <div class="lh-section-header"><h2>Quick Actions</h2></div>
+    <div class="lh-quick-grid">
+      <a href="mentor-sessions.html"  class="lh-quick-card"><span class="lh-quick-icon">📅</span><span class="lh-quick-label">Start Session</span></a>
+      <a href="#"                     class="lh-quick-card"><span class="lh-quick-icon">🤖</span><span class="lh-quick-label">AI Mentor</span></a>
+      <a href="mentor-home.html"      class="lh-quick-card"><span class="lh-quick-icon">🏠</span><span class="lh-quick-label">Dashboard</span></a>
+      <a href="#"                     class="lh-quick-card"><span class="lh-quick-icon">📋</span><span class="lh-quick-label">Assign Task</span></a>
+      <a href="mentor-messages.html"  class="lh-quick-card"><span class="lh-quick-icon">💬</span><span class="lh-quick-label">Chat with Mentees</span></a>
+      <a href="analytics.html"        class="lh-quick-card"><span class="lh-quick-icon">📊</span><span class="lh-quick-label">Review Progress</span></a>
+    </div>
+  </section>
+
+  <hr class="lh-divider">
+
+  <!-- EXPLORE MORE -->
+  <section class="lh-section animate-on-scroll">
+    <div class="lh-section-header"><h2>Explore More</h2></div>
+    <div class="lh-pills">
+      <a href="mentor-connect.html" class="lh-pill">🤝 Mentor Connect</a>
+      <a href="#"                   class="lh-pill">📅 Planner</a>
+      <a href="#"                   class="lh-pill">🗓 Session Scheduler</a>
+      <a href="analytics.html"      class="lh-pill">📊 Reports</a>
+      <a href="library.html"        class="lh-pill">📚 Library</a>
+    </div>
+  </section>
+
+  <hr class="lh-divider">
+
+  <!-- MENTEE GROWTH -->
+  <section class="lh-section animate-on-scroll">
+    <div class="lh-section-header"><h2>Mentee Growth</h2><a href="analytics.html">View all →</a></div>
+    <div class="lh-prog-list">
+      <div><div class="lh-prog-top"><span>Arjun Kumar — Career Guidance</span><span class="lh-prog-pct">70%</span></div><div class="lh-prog-bar"><div class="lh-prog-fill" style="width:70%"></div></div></div>
+      <div><div class="lh-prog-top"><span>Priya Sharma — JEE Prep</span><span class="lh-prog-pct">50%</span></div><div class="lh-prog-bar"><div class="lh-prog-fill" style="width:50%"></div></div></div>
+      <div><div class="lh-prog-top"><span>Rohan Mehta — Web Dev</span><span class="lh-prog-pct">60%</span></div><div class="lh-prog-bar"><div class="lh-prog-fill" style="width:60%"></div></div></div>
+      <div><div class="lh-prog-top"><span>Ananya Singh — Philosophy</span><span class="lh-prog-pct">80%</span></div><div class="lh-prog-bar"><div class="lh-prog-fill" style="width:80%"></div></div></div>
+      <div><div class="lh-prog-top"><span>Vikram Nair — Mathematics</span><span class="lh-prog-pct">45%</span></div><div class="lh-prog-bar"><div class="lh-prog-fill" style="width:45%"></div></div></div>
+    </div>
+  </section>
+
+  <hr class="lh-divider">
+
+  <!-- PROGRESS OVERVIEW -->
+  <section class="lh-section animate-on-scroll">
+    <div class="lh-section-header"><h2>Progress Overview</h2></div>
+    <div class="lh-stats-grid">
+      <div class="lh-stat-card animate-on-scroll"><span class="lh-stat-icon">👥</span><span class="lh-stat-value">24</span><span class="lh-stat-label">Active Mentees</span></div>
+      <div class="lh-stat-card animate-on-scroll"><span class="lh-stat-icon">📅</span><span class="lh-stat-value">142</span><span class="lh-stat-label">Sessions Done</span></div>
+      <div class="lh-stat-card animate-on-scroll"><span class="lh-stat-icon">⏳</span><span class="lh-stat-value">3</span><span class="lh-stat-label">Pending Requests</span></div>
+      <div class="lh-stat-card animate-on-scroll"><span class="lh-stat-icon">⭐</span><span class="lh-stat-value">4.9</span><span class="lh-stat-label">Avg Rating</span></div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="lh-footer">
+    <p>© 2025 Vidyastra · <em>Sa Vidya Ya Vimuktaye</em></p>
+    <nav class="lh-footer-links">
+      <a href="index.html">Home</a>
+      <a href="mentor-sessions.html">Sessions</a>
+      <a href="login-mentor.html" id="footer-signout">Sign Out</a>
+    </nav>
+  </footer>
+
+</div>
+
+<div id="appearance-panel" class="appearance-panel" aria-hidden="true" hidden>
+  <div class="appearance-panel-header">Appearance</div>
+  <div class="appearance-panel-body">
+    <div class="appearance-panel-row"><label class="appearance-toggle-label"><input type="checkbox" class="appearance-dark-toggle"><span>Dark mode</span></label></div>
+    <div class="appearance-panel-row"><span class="appearance-field-label">Theme</span><select id="appearance-theme-select" class="appearance-select"><option value="default">Default Light</option><option value="vedic">Vedic Warm</option><option value="modern">Modern Minimal</option><option value="academic">Academic Calm</option></select></div>
+    <div class="appearance-panel-row"><span class="appearance-field-label">Font</span><select id="appearance-font-select" class="appearance-select"><option value="default">Default Serif</option><option value="sans">Clean Sans-Serif</option><option value="classical">Traditional Classical Serif</option></select></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var name=localStorage.getItem("userName")||"Saarthi";
+  try{var u=JSON.parse(localStorage.getItem("auth_user")||"null");if(u&&u.name)name=u.name;}catch(e){}
+  var first=name.split(" ")[0];
+  ["nav-username","welcome-username"].forEach(function(id){var el=document.getElementById(id);if(el)el.textContent=first;});
+  var av=document.getElementById("nav-avatar");
+  if(av){var p=name.trim().split(" ");av.textContent=p.length>=2?(p[0][0]+p[p.length-1][0]).toUpperCase():name.slice(0,2).toUpperCase();}
+  var hamburger=document.getElementById("lh-hamburger");
+  var navLinks=document.getElementById("lh-nav-links");
+  if(hamburger&&navLinks){hamburger.addEventListener("click",function(){var open=navLinks.classList.toggle("open");hamburger.setAttribute("aria-expanded",open);});}
+  var so=document.getElementById("footer-signout");
+  if(so){so.addEventListener("click",function(e){e.preventDefault();localStorage.removeItem("auth_token");localStorage.removeItem("auth_user");location.href="login-mentor.html";});}
+})();
+</script>
+<script src="js/main.js?v=2"></script>
+</body>
+</html>

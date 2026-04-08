@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vidyastra | The Modern Gurukul</title>
+    <!-- Fonts: Merriweather (Strong Serif) & Inter (Calm Sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        (function() {
+            try {
+                var stored = localStorage.getItem('vidyastra_appearance');
+                if (!stored) return;
+                var parsed = JSON.parse(stored);
+                var root = document.documentElement;
+                if (!root) return;
+                var theme = parsed.theme || 'default';
+                var font = parsed.font || 'default';
+                var mode = parsed.mode || 'light';
+                var themeClasses = ['theme-default', 'theme-vedic', 'theme-modern', 'theme-academic'];
+                var fontClasses = ['font-default', 'font-sans', 'font-classical'];
+                for (var i = 0; i < themeClasses.length; i++) root.classList.remove(themeClasses[i]);
+                for (var j = 0; j < fontClasses.length; j++) root.classList.remove(fontClasses[j]);
+                root.classList.remove('mode-dark');
+                if (theme === 'default' || theme === 'vedic' || theme === 'modern' || theme === 'academic') {
+                    root.classList.add('theme-' + theme);
+                }
+                if (font === 'default' || font === 'sans' || font === 'classical') {
+                    root.classList.add('font-' + font);
+                }
+                if (mode === 'dark') {
+                    root.classList.add('mode-dark');
+                }
+            } catch (e) {
+            }
+        })();
+    </script>
+    <link rel="stylesheet" href="css/style.css?v=2">
+</head>
+<body class="bg-motif">
+    <!-- White transition overlay -->
+    <div class="page-transition-overlay"></div>
+
+    <!-- Header -->
+    <header class="site-header temple-border-top">
+        <div class="container" style="display: flex; justify-content: center; align-items: center; position: relative;">
+            <a href="index.html" class="nav-brand animate-on-scroll">
+                <span style="color: var(--color-text-main);">Vidya</span>stra
+            </a>
+            <button type="button" class="appearance-toggle" aria-label="Appearance settings" aria-expanded="false" aria-controls="appearance-panel" style="position: absolute; right: 0;">Appearance</button>
+        </div>
+    </header>
+
+    <!-- Hero Section (Centered & Symmetrical) -->
+    <section class="section hero-sunrise fade-in-load" style="padding: 12rem 0; text-align: center;">
+        <div class="container">
+            <h1 style="max-width: 20ch; margin: 0 auto 2rem auto;">Knowledge Rooted in <span style="color: var(--color-primary);">Ageless Wisdom.</span></h1>
+            <p class="text-lead" style="margin: 0 auto 3.5rem auto; color: var(--color-text-muted); max-width: 60ch;">
+                A digital Gurukul for the serious student. We merge modern academic rigor with the focused discipline of Indian knowledge traditions.
+            </p>
+            <div>
+                <a href="choose-path.html" class="btn">Begin Journey</a>
+            </div>
+            
+            <div style="margin-top: var(--space-lg); opacity: 0.8; text-align: center;">
+                <p style="font-family: var(--font-heading); font-size: 1.5rem; font-weight: 700; color: var(--color-primary); margin-bottom: 0.5rem;">Vidya Dadati Vinayam</p>
+                <p style="font-style: italic; color: var(--color-text-muted); font-size: 1rem;">"Knowledge gives discipline"</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-alt">
+        <div class="container">
+            <div class="animate-on-scroll" style="max-width: 720px; margin: 0 auto var(--space-lg) auto; text-align: center;">
+                <h2>Platform Journey Map</h2>
+                <p style="font-size: 1.1rem; color: var(--color-text-muted);">A clear path from first step to wisdom.</p>
+            </div>
+
+            <div class="platform-journey-map animate-on-scroll">
+                <div class="journey-linear">
+                    <div class="journey-node">
+                        <div class="journey-icon">◎</div>
+                        <div class="journey-label">
+                            <span class="journey-title">Start</span>
+                            <span class="journey-meta">First intention</span>
+                        </div>
+                    </div>
+                    <div class="journey-arrow">→</div>
+                    <div class="journey-node">
+                        <div class="journey-icon">☀</div>
+                        <div class="journey-label">
+                            <span class="journey-title">Splash Page</span>
+                            <span class="journey-meta">Opening impression</span>
+                        </div>
+                    </div>
+                    <div class="journey-arrow">→</div>
+                    <div class="journey-node">
+                        <div class="journey-icon">⌂</div>
+                        <div class="journey-label">
+                            <span class="journey-title">Home Page</span>
+                            <span class="journey-meta">Core narrative</span>
+                        </div>
+                    </div>
+                    <div class="journey-arrow">→</div>
+                    <div class="journey-node">
+                        <div class="journey-icon">⇢</div>
+                        <div class="journey-label">
+                            <span class="journey-title">Choose Path</span>
+                            <span class="journey-meta">Select your role</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="journey-branches">
+                    <div class="journey-branch">
+                        <div class="journey-branch-header">
+                            <div class="journey-icon">👤</div>
+                            <div class="journey-branch-text">
+                                <span class="journey-branch-title">Student Path</span>
+                                <span class="journey-branch-meta">For focused learners</span>
+                            </div>
+                        </div>
+                        <div class="journey-branch-flow">
+                            <div class="journey-step">
+                                <div class="journey-step-icon">⛩</div>
+                                <div class="journey-step-label">
+                                    <span class="journey-title">Student Portal</span>
+                                    <span class="journey-meta">Entry options</span>
+                                </div>
+                            </div>
+                            <div class="journey-step-arrow">↓</div>
+                            <div class="journey-step">
+                                <div class="journey-step-icon">⇥</div>
+                                <div class="journey-step-label">
+                                    <span class="journey-title">Sign In</span>
+                                    <span class="journey-meta">Returning shishya</span>
+                                </div>
+                            </div>
+                            <div class="journey-step-arrow">or</div>
+                            <div class="journey-step">
+                                <div class="journey-step-icon">＋</div>
+                                <div class="journey-step-label">
+                                    <span class="journey-title">Sign Up</span>
+                                    <span class="journey-meta">New enrollment</span>
+                                </div>
+                            </div>
+                            <div class="journey-step-arrow">↓</div>
+                            <div class="journey-step">
+                                <div class="journey-step-icon">▦</div>
+                                <div class="journey-step-label">
+                                    <span class="journey-title">Student Dashboard</span>
+                                    <span class="journey-meta">Practice space (placeholder)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="journey-branch">
+                        <div class="journey-branch-header">
+                            <div class="journey-icon">📘</div>
+                            <div class="journey-branch-text">
+                                <span class="journey-branch-title">Guru Path</span>
+                                <span class="journey-branch-meta">For teachers and guides</span>
+                            </div>
+                        </div>
+                        <div class="journey-branch-flow">
+                            <div class="journey-step">
+                                <div class="journey-step-icon">⛩</div>
+                                <div class="journey-step-label">
+                                    <span class="journey-title">Teacher Portal</span>
+                                    <span class="journey-meta">Entry options</span>
+                                </div>
+                            </div>
+                            <div class="journey-step-arrow">↓</div>
+                            <div class="journey-step">
+                                <div class="journey-step-icon">⇥</div>
+                                <div class="journey-step-label">
+                                    <span class="journey-title">Log In</span>
+                                    <span class="journey-meta">Existing guru</span>
+                                </div>
+                            </div>
+                            <div class="journey-step-arrow">or</div>
+                            <div class="journey-step">
+                                <div class="journey-step-icon">＋</div>
+                                <div class="journey-step-label">
+                                    <span class="journey-title">Enroll</span>
+                                    <span class="journey-meta">New application</span>
+                                </div>
+                            </div>
+                            <div class="journey-step-arrow">↓</div>
+                            <div class="journey-step">
+                                <div class="journey-step-icon">▦</div>
+                                <div class="journey-step-label">
+                                    <span class="journey-title">Guru Dashboard</span>
+                                    <span class="journey-meta">Teaching space (placeholder)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="journey-branch">
+                        <div class="journey-branch-header">
+                            <div class="journey-icon">★</div>
+                            <div class="journey-branch-text">
+                                <span class="journey-branch-title">Mentor Path</span>
+                                <span class="journey-branch-meta">For senior guides</span>
+                            </div>
+                        </div>
+                        <div class="journey-branch-flow">
+                            <div class="journey-step">
+                                <div class="journey-step-icon">⛩</div>
+                                <div class="journey-step-label">
+                                    <span class="journey-title">Mentor Portal</span>
+                                    <span class="journey-meta">Entry options</span>
+                                </div>
+                            </div>
+                            <div class="journey-step-arrow">↓</div>
+                            <div class="journey-step">
+                                <div class="journey-step-icon">⇥</div>
+                                <div class="journey-step-label">
+                                    <span class="journey-title">Sign In</span>
+                                    <span class="journey-meta">Returning mentor</span>
+                                </div>
+                            </div>
+                            <div class="journey-step-arrow">or</div>
+                            <div class="journey-step">
+                                <div class="journey-step-icon">＋</div>
+                                <div class="journey-step-label">
+                                    <span class="journey-title">Sign Up</span>
+                                    <span class="journey-meta">New application</span>
+                                </div>
+                            </div>
+                            <div class="journey-step-arrow">↓</div>
+                            <div class="journey-step">
+                                <div class="journey-step-icon">▦</div>
+                                <div class="journey-step-label">
+                                    <span class="journey-title">Mentor Dashboard</span>
+                                    <span class="journey-meta">Guidance space (placeholder)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Learning Matters Section -->
+    <section class="section" style="padding-top: 0; padding-bottom: 1rem;">
+        <div class="container" style="max-width: 800px; text-align: center;">
+             <div class="animate-on-scroll">
+                <h2 style="margin-bottom: 2rem;">Why Learning Matters</h2>
+                
+                <p style="margin-bottom: 1.5rem; color: var(--color-text-main); font-size: 1.15rem;">
+                    In a world obsessed with speed, learning has become scattered and shallow. The focus has shifted from understanding to accumulation, leaving students with information but without direction.
+                </p>
+                
+                <p style="margin-bottom: 1.5rem; color: var(--color-text-main); font-size: 1.15rem;">
+                    True education is not a checklist of outcomes or a collection of certificates. It is the disciplined cultivation of the mind, building the capacity to think clearly and understand deeply.
+                </p>
+                
+                <p style="color: var(--color-text-main); font-size: 1.15rem; margin-bottom: 0;">
+                    We are here to restore weight and purpose to this process. By prioritizing depth over distraction, we aim to help learners build a foundation that withstands the test of time.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <div class="separator-vedic animate-on-scroll" style="margin-top: 1rem;"><span>❖</span></div>
+
+    <!-- Philosophy Section -->
+    <section class="section section-alt">
+        <div class="container">
+            <div class="animate-on-scroll" style="max-width: 700px; margin: 0 auto var(--space-lg) auto; text-align: center;">
+                <h2>The Learning Philosophy</h2>
+                <p>Built on principles that respect authority, discipline, and deep inquiry.</p>
+            </div>
+            
+            <div class="grid-3" style="gap: 2rem;">
+                <div class="academic-block animate-on-scroll">
+                    <span class="academic-meta">(Dhyana)</span>
+                    <h3>Focus</h3>
+                    <p>Distraction-free environments to cultivate deep concentration and mental clarity.</p>
+                </div>
+                <div class="academic-block animate-on-scroll">
+                    <span class="academic-meta">(Abhyasa)</span>
+                    <h3>Practice</h3>
+                    <p>Rigorous repetition to ensure true mastery of concepts and internalization of knowledge.</p>
+                </div>
+                <div class="academic-block animate-on-scroll">
+                    <span class="academic-meta">(Upadesha)</span>
+                    <h3>Guidance</h3>
+                    <p>Direct, respectful channels for teachers to impart wisdom and correct understanding.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roots To Wisdom Section -->
+    <section class="section" style="padding-bottom: 2rem;">
+        <div class="container" style="max-width: 800px; text-align: center;">
+            <div class="animate-on-scroll">
+                <h2 style="margin-bottom: 2rem;">Roots To Wisdom</h2>
+                
+                <p style="margin-bottom: 1.5rem; color: var(--color-text-main); font-size: 1.15rem;">
+                    True intellectual growth requires a foundation that is both stable and deep. By anchoring modern education in established cultural and intellectual roots, we provide a necessary context for learning. This grounding ensures that the pursuit of knowledge remains relevant and meaningful, rather than a fragmented collection of data points.
+                </p>
+                
+                <p style="margin-bottom: 1.5rem; color: var(--color-text-main); font-size: 1.15rem;">
+                    Information is merely the starting point of the educational journey. When processed through rigorous inquiry and reflection, this information matures into understanding. It is this transition that allows a student to perceive the underlying patterns and principles that govern a subject, moving beyond simple recall toward true comprehension.
+                </p>
+                
+                <p style="color: var(--color-text-main); font-size: 1.15rem; margin-bottom: 0;">
+                    The ultimate objective is the development of wisdom. By integrating Indian knowledge traditions with contemporary academic standards, we facilitate a progression where accumulated knowledge becomes an internal guide. Wisdom is the capacity to apply understanding with discernment, transforming the mind into a tool for lifelong clarity and purpose.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <div class="separator-vedic animate-on-scroll" style="margin-top: 1rem;"><span>❖</span></div>
+
+    <!-- Footer -->
+    <footer class="temple-border-top" style="padding: var(--space-lg) 0; background: var(--color-surface); border-top: 1px solid var(--color-border);">
+        <div class="container">
+            <div class="grid-3 footer-columns">
+                <div class="animate-on-scroll">
+                    <h4 style="color: var(--color-primary);">Vidyastra</h4>
+                    <p style="font-size: 0.9rem; margin-bottom: 0.35rem;">Knowledge Rooted in Timeless Wisdom.</p>
+                    <p style="font-size: 0.9rem; color: var(--color-text-muted); max-width: 32rem;">
+                        A platform that bridges ancient wisdom with modern learning, connecting students, gurus, and mentors
+                        on a journey from knowledge to wisdom.
+                    </p>
+                </div>
+                <div class="animate-on-scroll footer-links">
+                    <div class="footer-links-column">
+                        <h5 style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-muted);">Quick Links</h5>
+                        <ul style="list-style: none; margin-top: 1rem;">
+                            <li style="margin-bottom: 0.5rem;"><a href="home.html" style="color: var(--color-text-main);">Home</a></li>
+                            <li style="margin-bottom: 0.5rem;"><a href="#" style="color: var(--color-text-main);">About</a></li>
+                            <li style="margin-bottom: 0.5rem;"><a href="choose-path.html" style="color: var(--color-text-main);">Student Portal</a></li>
+                            <li style="margin-bottom: 0.5rem;"><a href="choose-path.html" style="color: var(--color-text-main);">Guru Portal</a></li>
+                            <li style="margin-bottom: 0.5rem;"><a href="choose-path.html" style="color: var(--color-text-main);">Mentor Portal</a></li>
+                            <li style="margin-bottom: 0.5rem;"><a href="choose-path.html" style="color: var(--color-text-main);">Choose Path</a></li>
+                            <li style="margin-bottom: 0.5rem;"><a href="#" style="color: var(--color-text-main);">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-links-column">
+                        <h5 style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-muted);">Resources</h5>
+                        <ul style="list-style: none; margin-top: 1rem;">
+                            <li style="margin-bottom: 0.5rem;"><a href="#learning-philosophy" style="color: var(--color-text-main);">Learning Philosophy</a></li>
+                            <li style="margin-bottom: 0.5rem;"><a href="#platform-journey-map" style="color: var(--color-text-main);">Platform Journey Map</a></li>
+                            <li style="margin-bottom: 0.5rem;"><a href="#" style="color: var(--color-text-main);">Community Guidelines</a></li>
+                            <li style="margin-bottom: 0.5rem;"><a href="#" style="color: var(--color-text-main);">Privacy Policy</a></li>
+                            <li style="margin-bottom: 0.5rem;"><a href="#" style="color: var(--color-text-main);">Terms of Service</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="animate-on-scroll">
+                    <h5 style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-muted);">Connect With Us</h5>
+                    <ul style="list-style: none; margin-top: 1rem;">
+                        <li style="margin-bottom: 0.5rem;">
+                            <span style="font-size: 0.85rem; color: var(--color-text-muted);">Email:</span>
+                            <a href="mailto:support@vidyastra.in" style="color: var(--color-text-main);">support@vidyastra.in</a>
+                        </li>
+                        <li style="margin-bottom: 1rem;">
+                            <span style="font-size: 0.85rem; color: var(--color-text-muted);">Location:</span>
+                            <span style="color: var(--color-text-main);">India</span>
+                        </li>
+                        <li style="margin-bottom: 0.5rem;"><a href="#" style="color: var(--color-text-main);">Instagram</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="#" style="color: var(--color-text-main);">LinkedIn</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="#" style="color: var(--color-text-main);">YouTube</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="#" style="color: var(--color-text-main);">Twitter / X</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div style="border-top: 1px solid var(--color-border); margin-top: 2rem; padding-top: 1.25rem; text-align: center; font-size: 0.85rem; color: var(--color-text-muted);">
+                © 2026 Vidyastra. All rights reserved. Crafted with purpose for seekers of wisdom.
+            </div>
+        </div>
+    </footer>
+
+    <div id="appearance-panel" class="appearance-panel" aria-hidden="true" hidden>
+        <div class="appearance-panel-header">Appearance</div>
+        <div class="appearance-panel-body">
+            <div class="appearance-panel-row">
+                <label class="appearance-toggle-label">
+                    <input type="checkbox" class="appearance-dark-toggle">
+                    <span>Dark mode</span>
+                </label>
+            </div>
+            <div class="appearance-panel-row">
+                <span class="appearance-field-label">Theme</span>
+                <select id="appearance-theme-select" class="appearance-select">
+                    <option value="default">Default Light</option>
+                    <option value="vedic">Vedic Warm</option>
+                    <option value="modern">Modern Minimal</option>
+                    <option value="academic">Academic Calm</option>
+                </select>
+            </div>
+            <div class="appearance-panel-row">
+                <span class="appearance-field-label">Font</span>
+                <select id="appearance-font-select" class="appearance-select">
+                    <option value="default">Default Serif</option>
+                    <option value="sans">Clean Sans-Serif</option>
+                    <option value="classical">Traditional Classical Serif</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js?v=2"></script>
+</body>
+</html>

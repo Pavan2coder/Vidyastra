@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Home | Vidyastra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Appearance: apply theme/font/dark before paint -->
+    <script>
+        (function () {
+            try {
+                var s = localStorage.getItem('vidyastra_appearance');
+                if (!s) return;
+                var p = JSON.parse(s), r = document.documentElement;
+                ['theme-default','theme-vedic','theme-modern','theme-academic'].forEach(function(c){ r.classList.remove(c); });
+                ['font-default','font-sans','font-classical'].forEach(function(c){ r.classList.remove(c); });
+                r.classList.remove('mode-dark');
+                if (p.theme) r.classList.add('theme-' + p.theme);
+                if (p.font)  r.classList.add('font-'  + p.font);
+                if (p.mode === 'dark') r.classList.add('mode-dark');
+            } catch (e) {}
+        })();
+    </script>
+
+    <link rel="stylesheet" href="css/style.css?v=2">
+
+    <style>
+        /* ── Page-scoped styles only — no global overrides ── */
+
+        /* Navbar */
+        .lh-nav {
+            background: var(--color-surface);
+            border-bottom: 1px solid var(--color-border);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .lh-nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        .lh-nav-links {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            list-style: none;
+        }
+        .lh-nav-links a {
+            padding: 0.4rem 0.85rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--color-text-main);
+            text-decoration: none;
+            transition: background 0.15s, color 0.15s;
+        }
+        .lh-nav-links a:hover,
+        .lh-nav-links a.active {
+            background: var(--color-bg-alt);
+            color: var(--color-primary);
+        }
+        .lh-nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .lh-greeting {
+            font-size: 0.9rem;
+            color: var(--color-text-muted);
+            white-space: nowrap;
+        }
+        .lh-greeting span {
+            font-weight: 600;
+            color: var(--color-text-main);
+        }
+        .lh-avatar {
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            background: var(--color-primary);
+            color: #fff;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+        /* Hamburger for mobile */
+        .lh-hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 4px;
+        }
+        .lh-hamburger span {
+            display: block;
+            width: 22px; height: 2px;
+            background: var(--color-text-main);
+            border-radius: 2px;
+            transition: 0.2s;
+        }
+        @media (max-width: 768px) {
+            .lh-hamburger { display: flex; }
+            .lh-nav-links {
+                display: none;
+                position: absolute;
+                top: 100%; left: 0; right: 0;
+                background: var(--color-surface);
+                border-bottom: 1px solid var(--color-border);
+                flex-direction: column;
+                padding: 1rem 1.5rem;
+                gap: 0.25rem;
+            }
+            .lh-nav-links.open { display: flex; }
+            .lh-nav-links a { width: 100%; }
+        }
+
+        /* Layout wrapper */
+        .lh-page { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+
+        /* ── Welcome Section ── */
+        .lh-welcome {
+            padding: 1.5rem 0 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            flex-wrap: wrap;
+            position: relative;
+        }
+        .lh-welcome-mascot-wrap {
+            flex-shrink: 0;
+            width: 420px;
+            height: auto;
+            position: relative;
+            align-self: center;
+        }
+        .lh-welcome-mascot {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: bottom center;
+            filter: drop-shadow(0 6px 20px rgba(0,0,0,0.13));
+            display: block;
+        }
+        @media(max-width: 900px) {
+            .lh-welcome-mascot-wrap { width: 220px; height: 220px; }
+        }
+        @media(max-width: 600px) {
+            .lh-welcome-mascot-wrap { width: 140px; height: 140px; opacity: 0.75; }
+        }
+        .lh-welcome-sub {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--color-text-muted);
+            margin-bottom: 0.4rem;
+            letter-spacing: 0.01em;
+        }
+        .lh-welcome-text h1 {
+            font-size: clamp(1.9rem, 3.5vw, 2.75rem);
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+        }
+        .lh-welcome-text p {
+            font-size: 1rem;
+            color: var(--color-text-muted);
+            margin-bottom: 0;
+            max-width: 50ch;
+        }
+        .lh-welcome-art {
+            font-size: 5rem;
+            line-height: 1;
+            opacity: 0.12;
+            user-select: none;
+        }
+
+        /* ── Section headings ── */
+        .lh-section { padding: 3rem 0; }
+        .lh-section-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 0.75rem;
+        }
+        .lh-section-header h2 {
+            font-size: 1.1rem;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--color-text-muted);
+            margin: 0;
+        }
+        .lh-section-header a {
+            font-size: 0.85rem;
+            color: var(--color-primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* ── Continue Learning cards ── */
+        .lh-continue-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.25rem;
+        }
+        @media (max-width: 900px) { .lh-continue-grid { grid-template-columns: repeat(2,1fr); } }
+        @media (max-width: 580px) { .lh-continue-grid { grid-template-columns: 1fr; } }
+        .lh-course-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .lh-course-card:hover {
+            border-color: var(--color-primary);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+        }
+        .lh-course-card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--color-text-main);
+            margin-bottom: 0.3rem;
+        }
+        .lh-course-card .lh-course-meta {
+            font-size: 0.78rem;
+            color: var(--color-text-muted);
+            margin-bottom: 1rem;
+        }
+        .lh-progress-wrap {
+            margin-bottom: 1.25rem;
+            margin-top: auto;
+        }
+        .lh-progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--color-text-muted);
+            margin-bottom: 0.4rem;
+        }
+        .lh-progress-bar {
+            height: 6px;
+            background: var(--color-border);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .lh-progress-fill {
+            height: 100%;
+            background: var(--color-primary);
+            border-radius: 3px;
+            transition: width 0.6s ease;
+        }
+
+        /* ── Explore Courses grid ── */
+        .lh-explore-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.25rem;
+        }
+        @media (max-width: 1024px) { .lh-explore-grid { grid-template-columns: repeat(2,1fr); } }
+        @media (max-width: 580px)  { .lh-explore-grid { grid-template-columns: 1fr; } }
+        .lh-explore-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .lh-explore-card:hover {
+            border-color: var(--color-primary);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+        }
+        .lh-explore-thumb {
+            height: 110px;
+            background: linear-gradient(135deg, var(--color-bg-alt), var(--color-border));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.25rem;
+            flex-shrink: 0;
+        }
+        .lh-explore-body {
+            padding: 1.1rem 1.25rem 1.25rem;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        .lh-explore-body h3 {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: var(--color-text-main);
+            margin-bottom: 0.35rem;
+        }
+        .lh-explore-body p {
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+            flex: 1;
+        }
+
+        /* ── Quick Actions GRID ── */
+        .lh-quick-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+        @media(max-width:700px){ .lh-quick-grid { grid-template-columns: repeat(2,1fr); } }
+        .lh-quick-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 1.4rem 1rem;
+            display: flex; flex-direction: column;
+            align-items: center; text-align: center; gap: 0.6rem;
+            cursor: pointer;
+            transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+            text-decoration: none; color: inherit;
+        }
+        .lh-quick-card:hover {
+            border-color: var(--color-primary);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+            transform: translateY(-3px);
+        }
+        .lh-quick-card.empty { background: var(--color-bg-alt); cursor: default; }
+        .lh-quick-card.empty:hover { transform: none; box-shadow: none; border-color: var(--color-border); }
+        .lh-quick-icon { font-size: 1.8rem; line-height: 1; }
+        .lh-quick-label { font-size: 0.82rem; font-weight: 700; color: var(--color-text-main); }
+
+        /* ── Threads ── */
+        .lh-thread-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-left: 4px solid var(--color-primary);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            display: flex; align-items: center; gap: 1rem;
+            margin-bottom: 0.85rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .lh-thread-card:hover { transform: translateX(4px); box-shadow: 0 4px 14px rgba(0,0,0,0.07); }
+        .lh-thread-dot {
+            width: 10px; height: 10px; border-radius: 50%;
+            background: #22c55e; flex-shrink: 0;
+            box-shadow: 0 0 0 3px rgba(34,197,94,0.2);
+        }
+        .lh-thread-info h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 2px; color: var(--color-text-main); }
+        .lh-thread-info p  { font-size: 0.75rem; color: var(--color-text-muted); margin: 0; }
+        .lh-thread-badge {
+            margin-left: auto; font-size: 0.7rem; font-weight: 700;
+            background: var(--color-bg-alt); color: var(--color-primary);
+            padding: 3px 10px; border-radius: 999px; white-space: nowrap;
+        }
+
+        /* ── Progress bars ── */
+        .lh-prog-list { display: flex; flex-direction: column; gap: 1rem; }
+        .lh-prog-top { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px; }
+        .lh-prog-pct { color: var(--color-primary); }
+        .lh-prog-bar { height: 8px; background: var(--color-border); border-radius: 4px; overflow: hidden; }
+        .lh-prog-fill { height: 100%; border-radius: 4px; background: var(--color-primary); }
+
+        /* ── Two col ── */
+        .lh-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+        @media(max-width:700px){ .lh-two-col { grid-template-columns: 1fr; } }
+
+        /* ── Explore More pills ── */
+        .lh-pills { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+        .lh-pill {
+            padding: 0.6rem 1.25rem; border-radius: 999px;
+            background: var(--color-surface); border: 1.5px solid var(--color-border);
+            font-size: 0.85rem; font-weight: 600; cursor: pointer;
+            color: var(--color-text-main); text-decoration: none;
+            transition: background 0.15s, border-color 0.15s, transform 0.15s;
+        }
+        .lh-pill:hover { background: var(--color-primary); color: #fff; border-color: var(--color-primary); transform: translateY(-2px); }
+
+        /* ── Progress Overview ── */
+        .lh-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.25rem;
+        }
+        @media (max-width: 768px) { .lh-stats-grid { grid-template-columns: repeat(2,1fr); } }
+        @media (max-width: 420px) { .lh-stats-grid { grid-template-columns: 1fr; } }
+        .lh-stat-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 1.75rem 1rem;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            transition: box-shadow 0.2s, border-color 0.2s;
+        }
+        .lh-stat-card:hover {
+            border-color: var(--color-primary);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+        }
+        .lh-stat-icon {
+            font-size: 1.75rem;
+            margin-bottom: 0.6rem;
+            display: block;
+        }
+        .lh-stat-value {
+            font-family: var(--font-heading);
+            font-size: 2.1rem;
+            font-weight: 800;
+            color: var(--color-primary);
+            line-height: 1;
+            margin-bottom: 0.4rem;
+            display: block;
+        }
+        .lh-stat-label {
+            font-size: 0.78rem;
+            color: var(--color-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            font-weight: 600;
+            display: block;
+        }
+
+        /* ── Footer ── */
+        .lh-footer {
+            border-top: 1px solid var(--color-border);
+            padding: 2rem 0;
+            margin-top: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .lh-footer p {
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+            margin: 0;
+        }
+        .lh-footer-links {
+            display: flex;
+            gap: 1.25rem;
+        }
+        .lh-footer-links a {
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+            text-decoration: none;
+        }
+        .lh-footer-links a:hover { color: var(--color-primary); }
+
+        /* ── Separator ── */
+        .lh-divider {
+            border: none;
+            border-top: 1px solid var(--color-border);
+            margin: 0;
+        }
+    </style>
+</head>
+<body class="bg-motif">
+
+    <!-- ══════════════════════════════════════════
+         1. NAVBAR
+    ══════════════════════════════════════════ -->
+    <nav class="lh-nav" role="navigation" aria-label="Main navigation">
+        <div class="lh-nav-inner">
+            <a href="index.html" class="nav-brand"><span>Vidya</span>stra</a>
+
+            <button class="lh-hamburger" id="lh-hamburger" aria-label="Toggle menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+
+            <ul class="lh-nav-links" id="lh-nav-links" role="list">
+                <li><a href="learning-home.html" class="active">Home</a></li>
+                <li><a href="courses.html">Courses</a></li>
+                <li><a href="assessments.html">Progress</a></li>
+                <li><a href="student-dashboard.html">Profile</a></li>
+            </ul>
+
+            <div class="lh-nav-right">
+                <p class="lh-greeting">Hello, <span id="nav-username">Student</span></p>
+                <div class="lh-avatar" id="nav-avatar" title="Profile">S</div>
+                <button type="button" class="appearance-toggle" aria-label="Appearance settings" aria-expanded="false" aria-controls="appearance-panel">Appearance</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ══════════════════════════════════════════
+         2. WELCOME SECTION
+    ══════════════════════════════════════════ -->
+    <div class="lh-page">
+        <section class="lh-welcome animate-on-scroll" aria-labelledby="welcome-heading">
+            <div class="lh-welcome-text">
+                <p class="lh-welcome-sub">Hi, <span id="welcome-username">Student</span> 👋</p>
+                <h1 id="welcome-heading">Welcome back to your Gurukul</h1>
+                <p>Continue your journey of knowledge and mastery. Every step forward is a step toward wisdom.</p>
+            </div>
+            <div class="lh-welcome-mascot-wrap">
+                <svg viewBox="0 0 200 220" fill="none" xmlns="http://www.w3.org/2000/svg" class="lh-welcome-mascot" aria-label="Student illustration">
+                    <!-- Body -->
+                    <ellipse cx="100" cy="185" rx="45" ry="18" fill="var(--color-border)" opacity="0.5"/>
+                    <!-- Robe -->
+                    <path d="M60 130 Q55 175 65 200 H135 Q145 175 140 130 Q120 145 100 145 Q80 145 60 130Z" fill="var(--color-primary)" opacity="0.85"/>
+                    <!-- Neck -->
+                    <rect x="92" y="105" width="16" height="20" rx="4" fill="#f5c5a3"/>
+                    <!-- Head -->
+                    <ellipse cx="100" cy="88" rx="28" ry="30" fill="#f5c5a3"/>
+                    <!-- Hair -->
+                    <path d="M72 80 Q72 55 100 55 Q128 55 128 80 Q120 65 100 65 Q80 65 72 80Z" fill="#3d2b1f"/>
+                    <!-- Eyes -->
+                    <ellipse cx="91" cy="86" rx="4" ry="4.5" fill="#fff"/>
+                    <ellipse cx="109" cy="86" rx="4" ry="4.5" fill="#fff"/>
+                    <circle cx="92" cy="87" r="2.5" fill="#3d2b1f"/>
+                    <circle cx="110" cy="87" r="2.5" fill="#3d2b1f"/>
+                    <circle cx="93" cy="86" r="1" fill="#fff"/>
+                    <circle cx="111" cy="86" r="1" fill="#fff"/>
+                    <!-- Smile -->
+                    <path d="M93 97 Q100 103 107 97" stroke="#c2410c" stroke-width="2" stroke-linecap="round" fill="none"/>
+                    <!-- Book -->
+                    <rect x="62" y="148" width="36" height="28" rx="3" fill="#fff" stroke="var(--color-border)" stroke-width="1.5"/>
+                    <line x1="80" y1="148" x2="80" y2="176" stroke="var(--color-border)" stroke-width="1.5"/>
+                    <line x1="67" y1="156" x2="77" y2="156" stroke="var(--color-primary)" stroke-width="1.5" opacity="0.6"/>
+                    <line x1="67" y1="162" x2="77" y2="162" stroke="var(--color-primary)" stroke-width="1.5" opacity="0.6"/>
+                    <line x1="67" y1="168" x2="77" y2="168" stroke="var(--color-primary)" stroke-width="1.5" opacity="0.6"/>
+                    <!-- Arms -->
+                    <path d="M60 135 Q45 150 55 165" stroke="var(--color-primary)" stroke-width="10" stroke-linecap="round" fill="none" opacity="0.85"/>
+                    <path d="M140 135 Q155 150 145 165" stroke="var(--color-primary)" stroke-width="10" stroke-linecap="round" fill="none" opacity="0.85"/>
+                    <!-- Hands -->
+                    <ellipse cx="55" cy="167" rx="8" ry="7" fill="#f5c5a3"/>
+                    <ellipse cx="145" cy="167" rx="8" ry="7" fill="#f5c5a3"/>
+                    <!-- Graduation cap -->
+                    <rect x="76" y="60" width="48" height="8" rx="2" fill="#3d2b1f"/>
+                    <polygon points="100,48 76,60 124,60" fill="#3d2b1f"/>
+                    <line x1="124" y1="60" x2="130" y2="72" stroke="#c2410c" stroke-width="2"/>
+                    <circle cx="130" cy="74" r="3" fill="#c2410c"/>
+                </svg>
+            </div>
+        </section>
+
+        <hr class="lh-divider">
+
+        <!-- ══════════════════════════════════════════
+             3. CONTINUE LEARNING
+        ══════════════════════════════════════════ -->
+        <section class="lh-section animate-on-scroll" aria-labelledby="continue-heading">
+            <div class="lh-section-header">
+                <h2 id="continue-heading">Continue Learning</h2>
+                <a href="courses.html">View all →</a>
+            </div>
+            <div class="lh-continue-grid">
+
+                <div class="lh-course-card animate-on-scroll">
+                    <h3>Web Development Basics</h3>
+                    <p class="lh-course-meta">Module 3 of 8 · Last accessed today</p>
+                    <div class="lh-progress-wrap">
+                        <div class="lh-progress-label">
+                            <span>Progress</span><span>60%</span>
+                        </div>
+                        <div class="lh-progress-bar">
+                            <div class="lh-progress-fill" style="width:60%"></div>
+                        </div>
+                    </div>
+                    <a href="courses.html" class="btn btn-sm">Resume →</a>
+                </div>
+
+                <div class="lh-course-card animate-on-scroll">
+                    <h3>Vedic Mathematics</h3>
+                    <p class="lh-course-meta">Module 4 of 10 · Last accessed yesterday</p>
+                    <div class="lh-progress-wrap">
+                        <div class="lh-progress-label">
+                            <span>Progress</span><span>40%</span>
+                        </div>
+                        <div class="lh-progress-bar">
+                            <div class="lh-progress-fill" style="width:40%"></div>
+                        </div>
+                    </div>
+                    <a href="courses.html" class="btn btn-sm">Resume →</a>
+                </div>
+
+                <div class="lh-course-card animate-on-scroll">
+                    <h3>Classical Mechanics</h3>
+                    <p class="lh-course-meta">Module 2 of 6 · Last accessed 3 days ago</p>
+                    <div class="lh-progress-wrap">
+                        <div class="lh-progress-label">
+                            <span>Progress</span><span>25%</span>
+                        </div>
+                        <div class="lh-progress-bar">
+                            <div class="lh-progress-fill" style="width:25%"></div>
+                        </div>
+                    </div>
+                    <a href="courses.html" class="btn btn-sm">Resume →</a>
+                </div>
+
+            </div>
+        </section>
+
+        <hr class="lh-divider">
+
+        <!-- ══════════════════════════════════════════
+             4. EXPLORE COURSES
+        ══════════════════════════════════════════ -->
+        <section class="lh-section animate-on-scroll" aria-labelledby="explore-heading">
+            <div class="lh-section-header">
+                <h2 id="explore-heading">Explore Courses</h2>
+                <a href="courses.html">Browse all →</a>
+            </div>
+            <div class="lh-explore-grid">
+
+                <div class="lh-explore-card animate-on-scroll">
+                    <div class="lh-explore-thumb">📐</div>
+                    <div class="lh-explore-body">
+                        <h3>Advanced Mathematics</h3>
+                        <p>Calculus, linear algebra, and number theory from first principles.</p>
+                        <a href="courses.html" class="btn btn-sm">Start Learning</a>
+                    </div>
+                </div>
+
+                <div class="lh-explore-card animate-on-scroll">
+                    <div class="lh-explore-thumb">🧬</div>
+                    <div class="lh-explore-body">
+                        <h3>Life Sciences</h3>
+                        <p>Biology, ecology, and the science of living systems.</p>
+                        <a href="courses.html" class="btn btn-sm">Start Learning</a>
+                    </div>
+                </div>
+
+                <div class="lh-explore-card animate-on-scroll">
+                    <div class="lh-explore-thumb">🏛️</div>
+                    <div class="lh-explore-body">
+                        <h3>Indian Philosophy</h3>
+                        <p>Explore Vedanta, Nyaya, and classical schools of thought.</p>
+                        <a href="courses.html" class="btn btn-sm">Start Learning</a>
+                    </div>
+                </div>
+
+                <div class="lh-explore-card animate-on-scroll">
+                    <div class="lh-explore-thumb">💻</div>
+                    <div class="lh-explore-body">
+                        <h3>Computer Science</h3>
+                        <p>Algorithms, data structures, and systems programming.</p>
+                        <a href="courses.html" class="btn btn-sm">Start Learning</a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <hr class="lh-divider">
+
+        <!-- JOIN THREADS -->
+        <section class="lh-section animate-on-scroll">
+            <div class="lh-section-header">
+                <h2>Join Threads</h2>
+                <a href="#">Browse All →</a>
+            </div>
+            <div class="lh-thread-card">
+                <div class="lh-thread-dot"></div>
+                <div class="lh-thread-info">
+                    <h4>Physics Doubts — Chapter 5</h4>
+                    <p>24 members · Active now</p>
+                </div>
+                <span class="lh-thread-badge">Live</span>
+            </div>
+            <div class="lh-thread-card">
+                <div class="lh-thread-dot"></div>
+                <div class="lh-thread-info">
+                    <h4>Vedic Math Study Group</h4>
+                    <p>18 members · Active now</p>
+                </div>
+                <span class="lh-thread-badge">Live</span>
+            </div>
+            <div class="lh-thread-card">
+                <div class="lh-thread-dot" style="background:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,0.2);"></div>
+                <div class="lh-thread-info">
+                    <h4>JEE Prep Discussion</h4>
+                    <p>52 members · 3 new posts</p>
+                </div>
+                <span class="lh-thread-badge">Active</span>
+            </div>
+        </section>
+
+        <hr class="lh-divider">
+
+        <!-- QUICK ACTIONS -->
+        <section class="lh-section animate-on-scroll" aria-label="Quick actions">
+            <div class="lh-section-header">
+                <h2>Quick Actions</h2>
+            </div>
+            <div class="lh-quick-grid">
+                <a href="#" class="lh-quick-card" onclick="openQuickDoubt(event)">
+                    <span class="lh-quick-icon">🤔</span>
+                    <span class="lh-quick-label">Doubt Solver</span>
+                </a>
+                <a href="#" class="lh-quick-card" onclick="openQuickAI(event)">
+                    <span class="lh-quick-icon">🤖</span>
+                    <span class="lh-quick-label">AI Solver Agent</span>
+                </a>
+                <a href="learning-home.html" class="lh-quick-card">
+                    <span class="lh-quick-icon">🏠</span>
+                    <span class="lh-quick-label">Dashboard</span>
+                </a>
+                <a href="progress.html" class="lh-quick-card">
+                    <span class="lh-quick-icon">📜</span>
+                    <span class="lh-quick-label">History</span>
+                </a>
+                <a href="courses.html" class="lh-quick-card">
+                    <span class="lh-quick-icon">📝</span>
+                    <span class="lh-quick-label">DPP / Practice</span>
+                </a>
+                <div class="lh-quick-card empty">
+                    <span class="lh-quick-icon">➕</span>
+                    <span class="lh-quick-label" style="color:var(--color-text-muted);">Coming Soon</span>
+                </div>
+            </div>
+        </section>
+
+        <hr class="lh-divider">
+
+        <!-- EXPLORE MORE -->
+        <section class="lh-section animate-on-scroll">
+            <div class="lh-section-header"><h2>Explore More</h2></div>
+            <div class="lh-pills">
+                <a href="mentor-connect.html" class="lh-pill">🧑‍🏫 Guru Connect</a>
+                <a href="mentor-connect.html" class="lh-pill">🤝 Mentor Connect</a>
+                <a href="#"                   class="lh-pill">📅 Planner</a>
+                <a href="#"                   class="lh-pill">📋 Paid Tests</a>
+                <a href="library.html"        class="lh-pill">📚 Library</a>
+            </div>
+        </section>
+
+        <hr class="lh-divider">
+
+        <!-- COURSE PROGRESS -->
+        <section class="lh-section animate-on-scroll">
+            <div class="lh-section-header">
+                <h2>Course Progress</h2>
+                <a href="progress.html">View all →</a>
+            </div>
+            <div class="lh-prog-list">
+                <div><div class="lh-prog-top"><span>Physics</span><span class="lh-prog-pct">70%</span></div><div class="lh-prog-bar"><div class="lh-prog-fill" style="width:70%"></div></div></div>
+                <div><div class="lh-prog-top"><span>Mathematics</span><span class="lh-prog-pct">50%</span></div><div class="lh-prog-bar"><div class="lh-prog-fill" style="width:50%"></div></div></div>
+                <div><div class="lh-prog-top"><span>Web Development</span><span class="lh-prog-pct">60%</span></div><div class="lh-prog-bar"><div class="lh-prog-fill" style="width:60%"></div></div></div>
+                <div><div class="lh-prog-top"><span>Vedic Mathematics</span><span class="lh-prog-pct">40%</span></div><div class="lh-prog-bar"><div class="lh-prog-fill" style="width:40%"></div></div></div>
+                <div><div class="lh-prog-top"><span>Classical Mechanics</span><span class="lh-prog-pct">25%</span></div><div class="lh-prog-bar"><div class="lh-prog-fill" style="width:25%"></div></div></div>
+            </div>
+        </section>
+
+        <hr class="lh-divider">
+
+        <!-- PROGRESS OVERVIEW -->
+        <section class="lh-section animate-on-scroll" aria-labelledby="progress-heading">
+            <div class="lh-section-header">
+                <h2 id="progress-heading">Progress Overview</h2>
+            </div>
+            <div class="lh-stats-grid">
+                <div class="lh-stat-card animate-on-scroll">
+                    <div class="lh-stat-icon">🏆</div>
+                    <div class="lh-stat-value">4</div>
+                    <div class="lh-stat-label">Courses Completed</div>
+                </div>
+                <div class="lh-stat-card animate-on-scroll">
+                    <div class="lh-stat-icon">📖</div>
+                    <div class="lh-stat-value">3</div>
+                    <div class="lh-stat-label">Ongoing Courses</div>
+                </div>
+                <div class="lh-stat-card animate-on-scroll">
+                    <div class="lh-stat-icon">⏱️</div>
+                    <div class="lh-stat-value">48h</div>
+                    <div class="lh-stat-label">Total Learning Time</div>
+                </div>
+                <div class="lh-stat-card animate-on-scroll">
+                    <div class="lh-stat-icon">⭐</div>
+                    <div class="lh-stat-value">92</div>
+                    <div class="lh-stat-label">Mastery Score</div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="lh-divider">
+
+        <!-- FOOTER -->
+        <footer class="lh-footer" role="contentinfo">
+            <p>© 2025 Vidyastra · <em>Sa Vidya Ya Vimuktaye</em></p>
+            <nav class="lh-footer-links" aria-label="Footer links">
+                <a href="index.html">Home</a>
+                <a href="courses.html">Courses</a>
+                <a href="login.html" id="footer-signout">Sign Out</a>
+            </nav>
+        </footer>
+    </div><!-- /.lh-page -->
+
+    <!-- Appearance Panel -->
+    <div id="appearance-panel" class="appearance-panel" aria-hidden="true" hidden>
+        <div class="appearance-panel-header">Appearance</div>
+        <div class="appearance-panel-body">
+            <div class="appearance-panel-row">
+                <label class="appearance-toggle-label">
+                    <input type="checkbox" class="appearance-dark-toggle">
+                    <span>Dark mode</span>
+                </label>
+            </div>
+            <div class="appearance-panel-row">
+                <span class="appearance-field-label">Theme</span>
+                <select id="appearance-theme-select" class="appearance-select">
+                    <option value="default">Default Light</option>
+                    <option value="vedic">Vedic Warm</option>
+                    <option value="modern">Modern Minimal</option>
+                    <option value="academic">Academic Calm</option>
+                </select>
+            </div>
+            <div class="appearance-panel-row">
+                <span class="appearance-field-label">Font</span>
+                <select id="appearance-font-select" class="appearance-select">
+                    <option value="default">Default Serif</option>
+                    <option value="sans">Clean Sans-Serif</option>
+                    <option value="classical">Traditional Classical Serif</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Inline JS: user greeting + hamburger + sign out -->
+    <script>
+        (function () {
+            // ── User greeting ──
+            var name = localStorage.getItem('userName') || 'Student';
+            var raw  = localStorage.getItem('auth_user');
+            if (raw) {
+                try { name = JSON.parse(raw).name || name; } catch (e) {}
+            }
+            var firstName = name.split(' ')[0];
+
+            var navUser = document.getElementById('nav-username');
+            if (navUser) navUser.textContent = firstName;
+
+            var welcomeUser = document.getElementById('welcome-username');
+            if (welcomeUser) welcomeUser.textContent = firstName;
+
+            var avatar = document.getElementById('nav-avatar');
+            if (avatar) {
+                var parts = name.trim().split(' ');
+                avatar.textContent = parts.length >= 2
+                    ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+                    : name.slice(0, 2).toUpperCase();
+            }
+
+            // ── Hamburger ──
+            var hamburger = document.getElementById('lh-hamburger');
+            var navLinks  = document.getElementById('lh-nav-links');
+            if (hamburger && navLinks) {
+                hamburger.addEventListener('click', function () {
+                    var open = navLinks.classList.toggle('open');
+                    hamburger.setAttribute('aria-expanded', open);
+                });
+            }
+
+            // ── Quick action buttons (legacy IDs kept for compatibility) ──
+            ['viewCourses','trackProgress','editProfile','openLibrary','mentorConnect'].forEach(function(id){
+                var el = document.getElementById(id);
+                if (el) {
+                    var map = { viewCourses:'courses.html', trackProgress:'progress.html', editProfile:'profile.html', openLibrary:'library.html', mentorConnect:'mentor-connect.html' };
+                    el.onclick = function(){ window.location.href = map[id]; };
+                }
+            });
+
+            // ── Sign out ──
+            var signout = document.getElementById('footer-signout');
+            if (signout) {
+                signout.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    localStorage.removeItem('auth_token');
+                    localStorage.removeItem('auth_user');
+                    window.location.href = 'login.html';
+                });
+            }
+        })();
+    </script>
+
+    <script src="js/main.js?v=2"></script>
+
+    <!-- ── Doubt Solver Modal ── -->
+    <div class="vd-modal-overlay" id="doubt-modal" style="position:fixed;inset:0;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;z-index:2000;opacity:0;visibility:hidden;transition:opacity 0.25s,visibility 0.25s;padding:1rem;">
+        <div style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:12px;width:100%;max-width:540px;box-shadow:0 20px 60px rgba(0,0,0,0.2);overflow:hidden;">
+            <div style="padding:1.25rem 1.5rem;border-bottom:1px solid var(--color-border);display:flex;align-items:center;justify-content:space-between;">
+                <h3 style="font-size:1.1rem;font-family:var(--font-heading);margin:0;">🤔 Doubt Solver</h3>
+                <button onclick="closeQModal('doubt-modal')" style="width:32px;height:32px;border-radius:50%;border:1px solid var(--color-border);background:var(--color-bg-alt);color:var(--color-text-muted);font-size:1rem;cursor:pointer;">✕</button>
+            </div>
+            <div style="padding:1.5rem;">
+                <div id="qd-msgs" style="height:260px;overflow-y:auto;display:flex;flex-direction:column;gap:0.75rem;margin-bottom:1rem;padding:0.5rem;border:1px solid var(--color-border);border-radius:8px;background:var(--color-bg-alt);"></div>
+                <div style="display:flex;gap:0.5rem;">
+                    <input id="qd-input" type="text" placeholder="Type your doubt…" onkeydown="if(event.key==='Enter')sendQDoubt()" style="flex:1;padding:0.7rem 1rem;border:1.5px solid var(--color-border);border-radius:8px;font-family:var(--font-body);font-size:0.9rem;background:var(--color-surface);color:var(--color-text-main);">
+                    <button onclick="sendQDoubt()" style="padding:0.7rem 1.25rem;border-radius:8px;border:none;background:var(--color-primary);color:#fff;font-weight:700;cursor:pointer;">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── AI Solver Modal ── -->
+    <div class="vd-modal-overlay" id="ai-modal" style="position:fixed;inset:0;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;z-index:2000;opacity:0;visibility:hidden;transition:opacity 0.25s,visibility 0.25s;padding:1rem;">
+        <div style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:12px;width:100%;max-width:540px;box-shadow:0 20px 60px rgba(0,0,0,0.2);overflow:hidden;">
+            <div style="padding:1.25rem 1.5rem;border-bottom:1px solid var(--color-border);display:flex;align-items:center;justify-content:space-between;">
+                <h3 style="font-size:1.1rem;font-family:var(--font-heading);margin:0;">🤖 AI Solver Agent</h3>
+                <button onclick="closeQModal('ai-modal')" style="width:32px;height:32px;border-radius:50%;border:1px solid var(--color-border);background:var(--color-bg-alt);color:var(--color-text-muted);font-size:1rem;cursor:pointer;">✕</button>
+            </div>
+            <div style="padding:1.5rem;">
+                <div id="qa-msgs" style="height:260px;overflow-y:auto;display:flex;flex-direction:column;gap:0.75rem;margin-bottom:1rem;padding:0.5rem;border:1px solid var(--color-border);border-radius:8px;background:var(--color-bg-alt);"></div>
+                <div style="display:flex;gap:0.5rem;">
+                    <input id="qa-input" type="text" placeholder="Ask me anything…" onkeydown="if(event.key==='Enter')sendQAI()" style="flex:1;padding:0.7rem 1rem;border:1.5px solid var(--color-border);border-radius:8px;font-family:var(--font-body);font-size:0.9rem;background:var(--color-surface);color:var(--color-text-main);">
+                    <button onclick="sendQAI()" style="padding:0.7rem 1.25rem;border-radius:8px;border:none;background:var(--color-primary);color:#fff;font-weight:700;cursor:pointer;">Ask</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openQModal(id, greeting, inputId) {
+            var el = document.getElementById(id);
+            el.style.opacity = '1'; el.style.visibility = 'visible';
+            var msgs = document.getElementById(id === 'doubt-modal' ? 'qd-msgs' : 'qa-msgs');
+            if (!msgs.children.length) addQMsg(msgs, 'bot', greeting);
+            setTimeout(function(){ document.getElementById(inputId).focus(); }, 100);
+            el.onclick = function(e){ if(e.target===el) closeQModal(id); };
+        }
+        function closeQModal(id) {
+            var el = document.getElementById(id);
+            el.style.opacity = '0'; el.style.visibility = 'hidden';
+        }
+        function openQuickDoubt(e) {
+            e.preventDefault();
+            openQModal('doubt-modal', '👋 Hi! Ask me any doubt about your courses — HTML, CSS, JavaScript, Maths, Physics, anything!', 'qd-input');
+        }
+        function openQuickAI(e) {
+            e.preventDefault();
+            openQModal('ai-modal', '🤖 Hello! I\'m your AI Solver Agent. I can explain concepts, give code examples, and help you understand any topic. What would you like to learn?', 'qa-input');
+        }
+        function addQMsg(container, type, text) {
+            var div = document.createElement('div');
+            div.style.cssText = 'max-width:85%;padding:0.65rem 1rem;border-radius:10px;font-size:0.88rem;line-height:1.5;' +
+                (type === 'user' ? 'background:var(--color-primary);color:#fff;align-self:flex-end;margin-left:auto;' : 'background:var(--color-surface);border:1px solid var(--color-border);align-self:flex-start;color:var(--color-text-main);');
+            div.textContent = text;
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+        function sendQDoubt() {
+            var input = document.getElementById('qd-input');
+            var msgs  = document.getElementById('qd-msgs');
+            var q = input.value.trim(); if (!q) return;
+            addQMsg(msgs, 'user', q); input.value = '';
+            var typing = document.createElement('div');
+            typing.style.cssText = 'font-size:0.85rem;color:var(--color-text-muted);font-style:italic;padding:0.5rem;';
+            typing.textContent = '⏳ Thinking…'; msgs.appendChild(typing); msgs.scrollTop = msgs.scrollHeight;
+            setTimeout(function(){
+                typing.remove();
+                var lower = q.toLowerCase();
+                var reply = lower.includes('html') ? '📄 HTML defines the structure of web pages using tags like <h1>, <p>, <div>. It\'s the skeleton of every website.' :
+                    lower.includes('css') ? '🎨 CSS styles your HTML — colors, fonts, spacing, layout. Use selectors like `.class` or `#id` to target elements.' :
+                    lower.includes('js') || lower.includes('javascript') ? '⚡ JavaScript adds interactivity. It runs in the browser and can respond to clicks, fetch data, and update the page.' :
+                    lower.includes('math') || lower.includes('calculus') ? '📐 Great math question! Break it down step by step. Start with the formula, identify what you know, then solve.' :
+                    lower.includes('physics') ? '⚛️ Physics problems become easier when you draw a diagram first, identify forces, and apply the right formula.' :
+                    '🤔 Good question! Try breaking it into smaller parts. Which specific part is confusing you the most?';
+                addQMsg(msgs, 'bot', reply);
+            }, 1200);
+        }
+        function sendQAI() {
+            var input = document.getElementById('qa-input');
+            var msgs  = document.getElementById('qa-msgs');
+            var q = input.value.trim(); if (!q) return;
+            addQMsg(msgs, 'user', q); input.value = '';
+            var typing = document.createElement('div');
+            typing.style.cssText = 'font-size:0.85rem;color:var(--color-text-muted);font-style:italic;padding:0.5rem;';
+            typing.textContent = '🤖 Processing…'; msgs.appendChild(typing); msgs.scrollTop = msgs.scrollHeight;
+            setTimeout(function(){
+                typing.remove();
+                var lower = q.toLowerCase();
+                var reply = lower.includes('explain') || lower.includes('what') ?
+                    '📘 Great question! Let me explain: every concept in programming builds on simpler ideas. Start with the basics, practice with examples, and the complex parts become clear naturally.' :
+                    lower.includes('example') || lower.includes('code') ?
+                    '💻 Here\'s a simple example approach: 1) Understand the problem, 2) Write pseudocode, 3) Translate to real code, 4) Test with edge cases. Want me to walk through a specific example?' :
+                    lower.includes('difference') ?
+                    '🔍 The key differences usually involve: purpose, syntax, performance, and use cases. Could you specify which two concepts you\'re comparing?' :
+                    lower.includes('error') || lower.includes('bug') ?
+                    '🐛 Debugging steps: 1) Read the error message carefully, 2) Check the line number, 3) Add console.log() to trace values, 4) Search the error message online if stuck.' :
+                    '🤖 Interesting! Based on your question, I\'d suggest exploring this topic through hands-on practice. Try building a small project that uses this concept — that\'s the fastest way to truly understand it.';
+                addQMsg(msgs, 'bot', reply);
+            }, 1500);
+        }
+    </script>
+</body>
+</html>

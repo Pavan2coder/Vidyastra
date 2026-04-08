@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vidyastra | Enter</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Isolated Splash CSS -->
+    <link rel="stylesheet" href="css/splash-theme.css?v=9">
+</head>
+<body>
+    <!-- White transition overlay -->
+    <div class="page-transition-overlay"></div>
+
+    <div class="splash-container">
+        <div class="splash-logo">
+            <span>Vidya</span>stra
+        </div>
+        
+        <p class="splash-tagline">
+            Knowledge Rooted in Ageless Wisdom.
+        </p>
+
+        <!-- Button removed for automatic redirect -->
+    </div>
+
+    <script>
+        // Page Entry Fade
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.querySelector('.page-transition-overlay').classList.add('hidden');
+            }, 100);
+
+            // Automatic Redirect after 2 seconds
+            setTimeout(function() {
+                const overlay = document.querySelector('.page-transition-overlay');
+                
+                // Fade to white
+                overlay.classList.remove('hidden');
+                
+                // Wait for transition to finish before navigating
+                setTimeout(function() {
+                    window.location.href = 'home.html';
+                }, 800); // Matches CSS transition duration
+            }, 1500); // 1.5 second delay as requested
+        });
+    </script>
+</body>
+</html>

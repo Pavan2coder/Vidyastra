@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Content | Vidyastra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        (function(){try{var s=localStorage.getItem('vidyastra_appearance');if(!s)return;var p=JSON.parse(s),r=document.documentElement;['theme-default','theme-vedic','theme-modern','theme-academic'].forEach(function(c){r.classList.remove(c);});['font-default','font-sans','font-classical'].forEach(function(c){r.classList.remove(c);});r.classList.remove('mode-dark');if(p.theme)r.classList.add('theme-'+p.theme);if(p.font)r.classList.add('font-'+p.font);if(p.mode==='dark')r.classList.add('mode-dark');}catch(e){}})();
+    </script>
+    <link rel="stylesheet" href="css/style.css?v=2">
+    <style>
+        .uc-nav { background:var(--color-surface); border-bottom:1px solid var(--color-border); padding:1rem 0; position:sticky; top:0; z-index:100; }
+        .uc-nav-inner { max-width:1200px; margin:0 auto; padding:0 1.5rem; display:flex; align-items:center; justify-content:space-between; }
+        .uc-back { font-size:0.88rem; font-weight:600; color:var(--color-text-muted); text-decoration:none; display:inline-flex; align-items:center; gap:0.4rem; transition:color 0.15s; }
+        .uc-back:hover { color:var(--color-primary); }
+
+        .uc-page { max-width:600px; margin:3rem auto; padding:0 1.5rem 4rem; }
+
+        .uc-card {
+            background:var(--color-surface);
+            border:1px solid var(--color-border);
+            border-radius:8px;
+            padding:2.25rem;
+        }
+        .uc-card-title {
+            font-size:1rem; font-family:var(--font-heading); font-weight:700;
+            text-transform:uppercase; letter-spacing:0.07em;
+            color:var(--color-text-muted);
+            margin-bottom:1.75rem;
+            padding-bottom:0.75rem;
+            border-bottom:1px solid var(--color-border);
+        }
+
+        .uc-field { margin-bottom:1.25rem; }
+        .uc-label {
+            display:block;
+            font-size:0.8rem; font-weight:600;
+            text-transform:uppercase; letter-spacing:0.05em;
+            color:var(--color-text-muted);
+            margin-bottom:0.4rem;
+        }
+        .uc-input, .uc-select {
+            width:100%;
+            padding:0.75rem 1rem;
+            border:1.5px solid var(--color-border);
+            border-radius:6px;
+            font-family:var(--font-body);
+            font-size:0.95rem;
+            color:var(--color-text-main);
+            background:var(--color-surface);
+            transition:border-color 0.2s, box-shadow 0.2s;
+            box-sizing:border-box;
+        }
+        .uc-input:focus, .uc-select:focus {
+            outline:none;
+            border-color:var(--color-primary);
+            box-shadow:0 0 0 3px rgba(194,65,12,0.1);
+        }
+
+        .uc-success {
+            display:none;
+            margin-top:1.25rem;
+            padding:0.9rem 1.1rem;
+            background:#DCFCE7;
+            border:1px solid #86EFAC;
+            border-radius:6px;
+            font-size:0.88rem; font-weight:600;
+            color:#166534;
+            text-align:center;
+        }
+        .uc-success.show { display:block; }
+    </style>
+</head>
+<body class="bg-motif">
+
+    <nav class="uc-nav">
+        <div class="uc-nav-inner">
+            <a href="teacher-home.html" class="uc-back">← Back to Dashboard</a>
+            <a href="index.html" class="nav-brand"><span>Vidya</span>stra</a>
+            <button type="button" class="appearance-toggle" aria-label="Appearance settings" aria-expanded="false" aria-controls="appearance-panel">Appearance</button>
+        </div>
+    </nav>
+
+    <div class="uc-page">
+        <div class="uc-card animate-on-scroll">
+            <div class="uc-card-title">Upload Video Content</div>
+
+            <form id="upload-form" onsubmit="submitUpload(event)">
+
+                <div class="uc-field">
+                    <label class="uc-label" for="uc-course">Select Course</label>
+                    <select id="uc-course" class="uc-select" required>
+                        <option value="" disabled selected>Choose a course</option>
+                        <option>Vedic Mathematics</option>
+                        <option>Web Development Basics</option>
+                        <option>Classical Mechanics</option>
+                        <option>Indian Philosophy</option>
+                        <option>Sanskrit Foundations</option>
+                        <option>Advanced Mathematics</option>
+                    </select>
+                </div>
+
+                <div class="uc-field">
+                    <label class="uc-label" for="uc-module">Module Name</label>
+                    <input id="uc-module" class="uc-input" type="text" placeholder="e.g. Module 3: Advanced Sutras" required>
+                </div>
+
+                <div class="uc-field">
+                    <label class="uc-label" for="uc-title">Video Title</label>
+                    <input id="uc-title" class="uc-input" type="text" placeholder="e.g. Introduction to Ekadhikena Purvena" required>
+                </div>
+
+                <div class="uc-field">
+                    <label class="uc-label" for="uc-url">Video URL</label>
+                    <input id="uc-url" class="uc-input" type="url" placeholder="https://youtube.com/watch?v=..." required>
+                </div>
+
+                <button type="submit" class="btn" style="width:100%;margin-top:0.5rem;">🎬 Upload Content</button>
+
+                <div class="uc-success" id="uc-success">✓ Content uploaded successfully!</div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Appearance Panel -->
+    <div id="appearance-panel" class="appearance-panel" aria-hidden="true" hidden>
+        <div class="appearance-panel-header">Appearance</div>
+        <div class="appearance-panel-body">
+            <div class="appearance-panel-row">
+                <label class="appearance-toggle-label"><input type="checkbox" class="appearance-dark-toggle"><span>Dark mode</span></label>
+            </div>
+            <div class="appearance-panel-row">
+                <span class="appearance-field-label">Theme</span>
+                <select id="appearance-theme-select" class="appearance-select">
+                    <option value="default">Default Light</option>
+                    <option value="vedic">Vedic Warm</option>
+                    <option value="modern">Modern Minimal</option>
+                    <option value="academic">Academic Calm</option>
+                </select>
+            </div>
+            <div class="appearance-panel-row">
+                <span class="appearance-field-label">Font</span>
+                <select id="appearance-font-select" class="appearance-select">
+                    <option value="default">Default Serif</option>
+                    <option value="sans">Clean Sans-Serif</option>
+                    <option value="classical">Traditional Classical Serif</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function submitUpload(e) {
+            e.preventDefault();
+            var btn = e.target.querySelector('[type="submit"]');
+            btn.disabled = true;
+            btn.textContent = 'Uploading…';
+            setTimeout(function(){
+                document.getElementById('uc-success').classList.add('show');
+                btn.textContent = '✓ Uploaded';
+                e.target.reset();
+                setTimeout(function(){
+                    document.getElementById('uc-success').classList.remove('show');
+                    btn.disabled = false;
+                    btn.textContent = '🎬 Upload Content';
+                }, 3500);
+            }, 800);
+        }
+    </script>
+    <script src="js/main.js?v=2"></script>
+</body>
+</html>

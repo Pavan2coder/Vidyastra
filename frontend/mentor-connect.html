@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentor Connect | Vidyastra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        (function(){try{var s=localStorage.getItem('vidyastra_appearance');if(!s)return;var p=JSON.parse(s),r=document.documentElement;['theme-default','theme-vedic','theme-modern','theme-academic'].forEach(function(c){r.classList.remove(c);});['font-default','font-sans','font-classical'].forEach(function(c){r.classList.remove(c);});r.classList.remove('mode-dark');if(p.theme)r.classList.add('theme-'+p.theme);if(p.font)r.classList.add('font-'+p.font);if(p.mode==='dark')r.classList.add('mode-dark');}catch(e){}})();
+    </script>
+    <link rel="stylesheet" href="css/style.css?v=2">
+    <style>
+        .mc-nav { background:var(--color-surface); border-bottom:1px solid var(--color-border); padding:1rem 0; position:sticky; top:0; z-index:100; }
+        .mc-nav-inner { max-width:1200px; margin:0 auto; padding:0 1.5rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+        .mc-nav-links { display:flex; align-items:center; gap:0.25rem; list-style:none; }
+        .mc-nav-links a { padding:0.4rem 0.85rem; border-radius:6px; font-size:0.9rem; font-weight:500; color:var(--color-text-main); text-decoration:none; transition:background 0.15s,color 0.15s; }
+        .mc-nav-links a:hover, .mc-nav-links a.active { background:var(--color-bg-alt); color:var(--color-primary); }
+
+        .mc-page { max-width:1200px; margin:0 auto; padding:2.5rem 1.5rem 4rem; }
+
+        /* Grid */
+        .mc-grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fill, minmax(260px,1fr));
+            gap:1.25rem;
+            margin-top:2rem;
+        }
+
+        /* Card */
+        .mc-card {
+            background:var(--color-surface);
+            border:1px solid var(--color-border);
+            border-radius:8px;
+            padding:1.75rem 1.5rem;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            text-align:center;
+            gap:0.75rem;
+            transition:border-color 0.2s, box-shadow 0.2s;
+        }
+        .mc-card:hover {
+            border-color:var(--color-primary);
+            box-shadow:0 4px 16px rgba(0,0,0,0.07);
+        }
+
+        /* Avatar */
+        .mc-avatar {
+            width:64px; height:64px;
+            border-radius:50%;
+            background:var(--color-primary);
+            color:#fff;
+            display:flex; align-items:center; justify-content:center;
+            font-size:1.4rem;
+            font-weight:700;
+            font-family:var(--font-heading);
+            flex-shrink:0;
+        }
+
+        .mc-name { font-size:1rem; font-weight:700; color:var(--color-text-main); margin:0; }
+        .mc-title { font-size:0.8rem; color:var(--color-primary); font-weight:600; margin:0; }
+
+        /* Tags */
+        .mc-tags { display:flex; flex-wrap:wrap; justify-content:center; gap:0.4rem; }
+        .mc-tag {
+            font-size:0.68rem; font-weight:700;
+            text-transform:uppercase; letter-spacing:0.04em;
+            padding:0.2rem 0.6rem;
+            border-radius:999px;
+            background:var(--color-bg-alt);
+            border:1px solid var(--color-border);
+            color:var(--color-text-muted);
+        }
+
+        .mc-bio { font-size:0.8rem; color:var(--color-text-muted); line-height:1.5; margin:0; }
+
+        /* Connect button */
+        .mc-connect-btn {
+            margin-top:0.5rem;
+            width:100%;
+            padding:0.65rem;
+            border-radius:6px;
+            border:1px solid var(--color-primary);
+            background:transparent;
+            color:var(--color-primary);
+            font-size:0.85rem;
+            font-weight:700;
+            cursor:pointer;
+            transition:background 0.2s, color 0.2s;
+        }
+        .mc-connect-btn:hover { background:var(--color-primary); color:#fff; }
+        .mc-connect-btn.sent { background:var(--color-bg-alt); border-color:var(--color-border); color:var(--color-text-muted); cursor:default; }
+
+        /* Toast */
+        .mc-toast {
+            position:fixed;
+            bottom:2rem; left:50%;
+            transform:translateX(-50%) translateY(20px);
+            background:var(--color-text-main);
+            color:#fff;
+            padding:0.75rem 1.5rem;
+            border-radius:8px;
+            font-size:0.88rem;
+            font-weight:600;
+            opacity:0;
+            pointer-events:none;
+            transition:opacity 0.25s, transform 0.25s;
+            z-index:200;
+            white-space:nowrap;
+        }
+        .mc-toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+    </style>
+</head>
+<body class="bg-motif">
+
+    <nav class="mc-nav">
+        <div class="mc-nav-inner">
+            <a href="index.html" class="nav-brand"><span>Vidya</span>stra</a>
+            <ul class="mc-nav-links">
+                <li><a href="learning-home.html">Home</a></li>
+                <li><a href="courses.html">Courses</a></li>
+                <li><a href="progress.html">Progress</a></li>
+                <li><a href="mentor-connect.html" class="active">Mentors</a></li>
+            </ul>
+            <button type="button" class="appearance-toggle" aria-label="Appearance settings" aria-expanded="false" aria-controls="appearance-panel">Appearance</button>
+        </div>
+    </nav>
+
+    <div class="mc-page">
+
+        <div class="animate-on-scroll" style="margin-bottom:0.5rem;">
+            <h1 style="font-size:clamp(1.75rem,3vw,2.25rem);margin-bottom:0.3rem;">Mentor Connect</h1>
+            <p style="margin:0;color:var(--color-text-muted);font-size:1rem;">Connect with experienced mentors and get guided on your journey.</p>
+        </div>
+
+        <div class="mc-grid" id="mentor-grid">
+
+            <div class="mc-card animate-on-scroll">
+                <div class="mc-avatar">RS</div>
+                <p class="mc-name">Ramakant Shastri</p>
+                <p class="mc-title">Vedic Sciences & Mathematics</p>
+                <div class="mc-tags">
+                    <span class="mc-tag">Vedic Math</span>
+                    <span class="mc-tag">Sanskrit</span>
+                    <span class="mc-tag">Philosophy</span>
+                </div>
+                <p class="mc-bio">20+ years teaching Vedic traditions. Guides students in classical learning and modern applications.</p>
+                <button class="mc-connect-btn" onclick="connect(this, 'Ramakant Shastri')">🤝 Connect</button>
+            </div>
+
+            <div class="mc-card animate-on-scroll">
+                <div class="mc-avatar" style="background:var(--color-secondary);">PV</div>
+                <p class="mc-name">Priya Venkatesh</p>
+                <p class="mc-title">Computer Science & AI</p>
+                <div class="mc-tags">
+                    <span class="mc-tag">Web Dev</span>
+                    <span class="mc-tag">AI/ML</span>
+                    <span class="mc-tag">Algorithms</span>
+                </div>
+                <p class="mc-bio">Senior engineer at a top tech firm. Passionate about making CS accessible to every student.</p>
+                <button class="mc-connect-btn" onclick="connect(this, 'Priya Venkatesh')">🤝 Connect</button>
+            </div>
+
+            <div class="mc-card animate-on-scroll">
+                <div class="mc-avatar" style="background:#0F766E;">AK</div>
+                <p class="mc-name">Arjun Krishnamurthy</p>
+                <p class="mc-title">Physics & Classical Mechanics</p>
+                <div class="mc-tags">
+                    <span class="mc-tag">Physics</span>
+                    <span class="mc-tag">Mechanics</span>
+                    <span class="mc-tag">Astronomy</span>
+                </div>
+                <p class="mc-bio">PhD in Theoretical Physics. Bridges ancient Indian astronomy with modern scientific understanding.</p>
+                <button class="mc-connect-btn" onclick="connect(this, 'Arjun Krishnamurthy')">🤝 Connect</button>
+            </div>
+
+            <div class="mc-card animate-on-scroll">
+                <div class="mc-avatar" style="background:#7C3AED;">SM</div>
+                <p class="mc-name">Sunita Mehta</p>
+                <p class="mc-title">Life Sciences & Ayurveda</p>
+                <div class="mc-tags">
+                    <span class="mc-tag">Biology</span>
+                    <span class="mc-tag">Ayurveda</span>
+                    <span class="mc-tag">Wellness</span>
+                </div>
+                <p class="mc-bio">Integrative health practitioner combining modern biology with traditional Ayurvedic knowledge.</p>
+                <button class="mc-connect-btn" onclick="connect(this, 'Sunita Mehta')">🤝 Connect</button>
+            </div>
+
+            <div class="mc-card animate-on-scroll">
+                <div class="mc-avatar" style="background:#B45309;">DG</div>
+                <p class="mc-name">Devraj Gupta</p>
+                <p class="mc-title">History & Indian Philosophy</p>
+                <div class="mc-tags">
+                    <span class="mc-tag">History</span>
+                    <span class="mc-tag">Philosophy</span>
+                    <span class="mc-tag">Culture</span>
+                </div>
+                <p class="mc-bio">Author and historian specialising in ancient Indian civilisations and philosophical traditions.</p>
+                <button class="mc-connect-btn" onclick="connect(this, 'Devraj Gupta')">🤝 Connect</button>
+            </div>
+
+            <div class="mc-card animate-on-scroll">
+                <div class="mc-avatar" style="background:#0369A1;">NR</div>
+                <p class="mc-name">Nalini Rao</p>
+                <p class="mc-title">Mathematics & Data Science</p>
+                <div class="mc-tags">
+                    <span class="mc-tag">Calculus</span>
+                    <span class="mc-tag">Statistics</span>
+                    <span class="mc-tag">Data</span>
+                </div>
+                <p class="mc-bio">Professor of Applied Mathematics. Helps students build strong foundations in analytical thinking.</p>
+                <button class="mc-connect-btn" onclick="connect(this, 'Nalini Rao')">🤝 Connect</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="mc-toast" id="mc-toast"></div>
+
+    <!-- Appearance Panel -->
+    <div id="appearance-panel" class="appearance-panel" aria-hidden="true" hidden>
+        <div class="appearance-panel-header">Appearance</div>
+        <div class="appearance-panel-body">
+            <div class="appearance-panel-row">
+                <label class="appearance-toggle-label"><input type="checkbox" class="appearance-dark-toggle"><span>Dark mode</span></label>
+            </div>
+            <div class="appearance-panel-row">
+                <span class="appearance-field-label">Theme</span>
+                <select id="appearance-theme-select" class="appearance-select">
+                    <option value="default">Default Light</option>
+                    <option value="vedic">Vedic Warm</option>
+                    <option value="modern">Modern Minimal</option>
+                    <option value="academic">Academic Calm</option>
+                </select>
+            </div>
+            <div class="appearance-panel-row">
+                <span class="appearance-field-label">Font</span>
+                <select id="appearance-font-select" class="appearance-select">
+                    <option value="default">Default Serif</option>
+                    <option value="sans">Clean Sans-Serif</option>
+                    <option value="classical">Traditional Classical Serif</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script>
+        // Load real mentors from API and append to grid
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const data = await apiGetMentors();
+                const grid = document.getElementById('mentor-grid');
+                data.mentors.forEach(m => {
+                    const initials = m.name.trim().split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+                    const card = document.createElement('div');
+                    card.className = 'mc-card animate-on-scroll';
+                    card.innerHTML = `
+                        <div class="mc-avatar">${initials}</div>
+                        <p class="mc-name">${m.name}</p>
+                        <p class="mc-title">${m.expertise || 'General Guidance'}</p>
+                        <p class="mc-bio">Available for mentoring sessions.</p>
+                        <button class="mc-connect-btn" onclick="connect(this, '${m.name}')">🤝 Connect</button>`;
+                    grid.appendChild(card);
+                });
+            } catch (err) { /* fallback to static cards */ }
+        });
+
+        function connect(btn, name) {
+            if (btn.classList.contains('sent')) return;
+            btn.classList.add('sent');
+            btn.textContent = '✓ Request Sent';
+            var toast = document.getElementById('mc-toast');
+            toast.textContent = '✓ Connection request sent to ' + name;
+            toast.classList.add('show');
+            setTimeout(function(){ toast.classList.remove('show'); }, 3000);
+        }
+    </script>
+    <script src="js/main.js?v=2"></script>
+</body>
+</html>
